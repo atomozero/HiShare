@@ -27,8 +27,9 @@ namespace beshare {
 
 
 ShareNetClient ::
-ShareNetClient(const BDirectory & shareDir, int32 localPort) :
-   _mtt(NULL), 
+ShareNetClient(const BDirectory & shareDir, int32 localPort, ServerConnection * owner) :
+   _owner(owner),
+   _mtt(NULL),
    _shareDir(shareDir),
    _queryActive(false),
    _localSharePort(localPort),
@@ -105,7 +106,7 @@ ConnectToServer(const char * serverName, uint16 port)
    if ((_mtt->StartInternalThread() == B_NO_ERROR)&&(_mtt->AddNewConnectSession(serverName, port) == B_NO_ERROR))
    {
       UpdateEncoding();
-      ((ShareWindow*)Looper())->SetConnectStatus(true, false);
+      ((ShareWindow*)Looper())->SetConnectStatus(_owner, true, false);
    }
    else
    {
@@ -123,7 +124,7 @@ DisconnectFromServer()
 {
    AbortScanSharesThread();
 
-   ((ShareWindow *)Looper())->SetQueryInProgress(false);
+   ((ShareWindow *)Looper())->SetQueryInProgress(_owner, false);
 
    delete _fileCountRunner;
    _fileCountRunner = NULL;
@@ -140,7 +141,7 @@ DisconnectFromServer()
       // since we're no longer connected, there's no point in watching the shared dirs anymore
       UnwatchAllDirs();
 
-      ((ShareWindow *)Looper())->SetConnectStatus(false, false);
+      ((ShareWindow *)Looper())->SetConnectStatus(_owner, false, false);
    }
    else ((ShareWindow*)Looper())->UpdateTitleBar();
 
@@ -189,7 +190,7 @@ StartQuery(const char * sessionIDRegExp, const char * fileNameRegExp)
          ping()->AddInt32("count", _pingCount++);
          SendMessageToSessions(ping, true);
       }
-      ((ShareWindow *)Looper())->SetQueryInProgress(true);
+      ((ShareWindow *)Looper())->SetQueryInProgress(_owner, true);
 
       _queryActive = true;
       _sessionIDRegExp.SetPattern(sessionIDRegExp);
@@ -387,7 +388,7 @@ MessageReceived(BMessage * msg)
                   // upload our user status...
                   SetLocalUserStatus(_localUserStatus());
 
-                  ((ShareWindow *)Looper())->SetConnectStatus(true, true);
+                  ((ShareWindow *)Looper())->SetConnectStatus(_owner, true, true);
 
                   // When this pong gets back to us, it's then a good time
                   // to process our onLogin script... all users and so on will be known then.
@@ -607,7 +608,7 @@ MessageReceived(const MessageRef & msgRef)
          }
 
          int32 count;
-         if ((msg->FindInt32("count", &count) == B_NO_ERROR)&&(count >= _pingCount-1)) ((ShareWindow *)Looper())->SetQueryInProgress(false);
+         if ((msg->FindInt32("count", &count) == B_NO_ERROR)&&(count >= _pingCount-1)) ((ShareWindow *)Looper())->SetQueryInProgress(_owner, false);
       }
       break;
 
@@ -726,11 +727,11 @@ MessageReceived(const MessageRef & msgRef)
                switch(GetPathDepth(nodepath()))
                {
                   case SESSION_ID_DEPTH: 
-                     ((ShareWindow*)Looper())->RemoveUser(sessionID());
+                     ((ShareWindow*)Looper())->RemoveUser(_owner, sessionID());
                   break;
 
                   case FILE_INFO_DEPTH: 
-                     ((ShareWindow*)Looper())->RemoveResult(sessionID(), GetPathClause(FILE_INFO_DEPTH, nodepath())); 
+                     ((ShareWindow*)Looper())->RemoveResult(_owner, sessionID(), GetPathClause(FILE_INFO_DEPTH, nodepath())); 
                   break;
                }
             }
@@ -807,19 +808,19 @@ MessageReceived(const MessageRef & msgRef)
                               bool ranges = false;
                               (void) pmsg->FindBool("supports_ranges", &ranges);
 
-                              ((ShareWindow *)Looper())->PutUser(sessionID(), name, hostName(), port, &isBot, installID, (clientStr.Length()>0)?clientStr():NULL,&sph,&ssl,&ranges);
+                              ((ShareWindow *)Looper())->PutUser(_owner, sessionID(), name, hostName(), port, &isBot, installID, (clientStr.Length()>0)?clientStr():NULL,&sph,&ssl,&ranges);
                            }
                         }
                         else if (strncmp(nodeName, "userstatus", 9) == 0)
                         {
                            const char * status;
-                           if (pmsg->FindString("userstatus", &status) == B_NO_ERROR) ((ShareWindow *)Looper())->SetUserStatus(sessionID(), status);
+                           if (pmsg->FindString("userstatus", &status) == B_NO_ERROR) ((ShareWindow *)Looper())->SetUserStatus(_owner, sessionID(), status);
                         }
                         else if (strncmp(nodeName, "uploadstats", 11) == 0)
                         {
                            uint32 cur, max;
                            if ((pmsg->FindInt32("cur", (int32*)&cur) == B_NO_ERROR)&&
-                               (pmsg->FindInt32("max", (int32*)&max) == B_NO_ERROR)) ((ShareWindow *)Looper())->SetUserUploadStats(sessionID(), cur, max);
+                               (pmsg->FindInt32("max", (int32*)&max) == B_NO_ERROR)) ((ShareWindow *)Looper())->SetUserUploadStats(_owner, sessionID(), cur, max);
                         }
                         else if (strncmp(nodeName, "bandwidth", 9) == 0)
                         {
@@ -827,21 +828,21 @@ MessageReceived(const MessageRef & msgRef)
                            const char * label;
                            if ((pmsg->FindString("label", &label) == B_NO_ERROR)&& 
                                (pmsg->FindInt32("bps", (int32*)&bps) == B_NO_ERROR))
-                              ((ShareWindow *)Looper())->SetUserBandwidth(sessionID(), label, bps);
+                              ((ShareWindow *)Looper())->SetUserBandwidth(_owner, sessionID(), label, bps);
                         }
                         else if (strncmp(nodeName, "filecount", 9) == 0)
                         {
                            int32 fc;
                            if (pmsg->FindInt32("filecount", &fc) == B_NO_ERROR)
-                              ((ShareWindow *)Looper())->SetUserFileCount(sessionID(), fc);
+                              ((ShareWindow *)Looper())->SetUserFileCount(_owner, sessionID(), fc);
                         }
                         else if (strncmp(nodeName, "fires", 5) == 0)
                         {
-                           ((ShareWindow *)Looper())->SetUserIsFirewalled(sessionID(), true);
+                           ((ShareWindow *)Looper())->SetUserIsFirewalled(_owner, sessionID(), true);
                         }
                         else if (strncmp(nodeName, "files", 5) == 0)
                         {
-                           ((ShareWindow *)Looper())->SetUserIsFirewalled(sessionID(), false);
+                           ((ShareWindow *)Looper())->SetUserIsFirewalled(_owner, sessionID(), false);
                         }
                      }
                      break;
@@ -852,7 +853,7 @@ MessageReceived(const MessageRef & msgRef)
                         if ((_queryActive)&&(_sessionIDRegExp.Match(sessionID()))&&(_fileNameRegExp.Match(fileName))) 
                         {
                            MessageRef unpacked = InflateMessage(tempRef);
-                           if (unpacked()) ((ShareWindow *)Looper())->PutResult(sessionID(), fileName, (GetPathClause(USER_NAME_DEPTH, nodepath())[2] == 'r'), unpacked);
+                           if (unpacked()) ((ShareWindow *)Looper())->PutResult(_owner, sessionID(), fileName, (GetPathClause(USER_NAME_DEPTH, nodepath())[2] == 'r'), unpacked);
                         }
                      }
                      break;

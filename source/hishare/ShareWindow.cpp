@@ -4522,9 +4522,10 @@ RemoveServerItem(const char * serverName, bool quiet)
 // The methods below are called by our ShareNetClient at the appropriate times.
 void 
 ShareWindow ::
-SetConnectStatus(bool isConnecting, bool isConnected)
+SetConnectStatus(ServerConnection * conn, bool isConnecting, bool isConnected)
 {
-   if ((!_isConnected)&&(isConnected)) 
+   (void) conn;  // phase 1: threaded through; per-connection status handling comes later
+   if ((!_isConnected)&&(isConnected))
    {
       LogMessage(LOG_INFORMATION_MESSAGE, str(STR_CONNECTION_ESTABLISHED));
 
@@ -4562,8 +4563,9 @@ SetConnectStatus(bool isConnecting, bool isConnected)
 
 void 
 ShareWindow ::
-PutUser(const char * sessionID, const char * userName, const char * hostName, int port, bool * isBot, uint64 installID, const char * client, bool * supportsPartialHash, bool * supportsSSL, bool * supportsRanges)
+PutUser(ServerConnection * conn, const char * sessionID, const char * userName, const char * hostName, int port, bool * isBot, uint64 installID, const char * client, bool * supportsPartialHash, bool * supportsSSL, bool * supportsRanges)
 {
+   (void) conn;  // phase 1: threaded through but not yet used (phase 2 keys users per connection)
    bool addName = true;
    RemoteUserItem * user;
    if (_users.Get(sessionID, user) == B_NO_ERROR)
@@ -4631,53 +4633,54 @@ RestartDownloadsFor(const RemoteUserItem * user)
 
 void
 ShareWindow ::
-SetUserBandwidth(const char * sessionID, const char * label, uint32 bps)
+SetUserBandwidth(ServerConnection * conn, const char * sessionID, const char * label, uint32 bps)
 {
-   PutUser(sessionID, NULL, NULL, -1, NULL, 0, NULL, NULL);  // make sure the RemoteUserItem is present!
+   PutUser(conn, sessionID, NULL, NULL, -1, NULL, 0, NULL, NULL);  // make sure the RemoteUserItem is present!
    RemoteUserItem * user;
    if (_users.Get(sessionID, user) == B_NO_ERROR) user->SetBandwidth(label, bps);
 }
 
 void
 ShareWindow ::
-SetUserStatus(const char * sessionID, const char * status)
+SetUserStatus(ServerConnection * conn, const char * sessionID, const char * status)
 {
-   PutUser(sessionID, NULL, NULL, -1, NULL, 0, NULL, NULL);  // make sure the RemoteUserItem is present!
+   PutUser(conn, sessionID, NULL, NULL, -1, NULL, 0, NULL, NULL);  // make sure the RemoteUserItem is present!
    RemoteUserItem * user;
    if (_users.Get(sessionID, user) == B_NO_ERROR) user->SetStatus(status, SubstituteLabelledURLs(status).Trim()());
 }
 
 void
 ShareWindow ::
-SetUserUploadStats(const char * sessionID, uint32 cur, uint32 max)
+SetUserUploadStats(ServerConnection * conn, const char * sessionID, uint32 cur, uint32 max)
 {
-   PutUser(sessionID, NULL, NULL, -1, NULL, 0, NULL, NULL);  // make sure the RemoteUserItem is present!
+   PutUser(conn, sessionID, NULL, NULL, -1, NULL, 0, NULL, NULL);  // make sure the RemoteUserItem is present!
    RemoteUserItem * user;
    if (_users.Get(sessionID, user) == B_NO_ERROR) user->SetUploadStats(cur, max);
 }
 
 void
 ShareWindow ::
-SetUserIsFirewalled(const char * sessionID, bool fw)
+SetUserIsFirewalled(ServerConnection * conn, const char * sessionID, bool fw)
 {
-   PutUser(sessionID, NULL, NULL, -1, NULL, 0, NULL, NULL);  // make sure the RemoteUserItem is present!
+   PutUser(conn, sessionID, NULL, NULL, -1, NULL, 0, NULL, NULL);  // make sure the RemoteUserItem is present!
    RemoteUserItem * user;
    if (_users.Get(sessionID, user) == B_NO_ERROR) user->SetFirewalled(fw);
 }
 
 void
 ShareWindow ::
-SetUserFileCount(const char * sessionID, int32 fc)
+SetUserFileCount(ServerConnection * conn, const char * sessionID, int32 fc)
 {
-   PutUser(sessionID, NULL, NULL, -1, NULL, 0, NULL, NULL);  // make sure the RemoteUserItem is present!
+   PutUser(conn, sessionID, NULL, NULL, -1, NULL, 0, NULL, NULL);  // make sure the RemoteUserItem is present!
    RemoteUserItem * user;
    if (_users.Get(sessionID, user) == B_NO_ERROR) user->SetNumSharedFiles(fc);
 }
 
 void 
 ShareWindow ::
-RemoveUser(const char * sessionID)
+RemoveUser(ServerConnection * conn, const char * sessionID)
 {
+   (void) conn;  // phase 1: threaded through but not yet used
    RemoteUserItem * user;
    if (_users.Remove(sessionID, user) == B_NO_ERROR) 
    {
@@ -4712,9 +4715,9 @@ SendToPrivateChatWindows(BMessage & msg, const RemoteUserItem * matchesItem)
 
 void 
 ShareWindow ::
-PutResult(const char * sessionID, const char * fileName, bool isFirewalled, const MessageRef & fileInfo)
+PutResult(ServerConnection * conn, const char * sessionID, const char * fileName, bool isFirewalled, const MessageRef & fileInfo)
 {
-   PutUser(sessionID, NULL, NULL, -1, NULL, 0, NULL, NULL);  // make sure the RemoteUserItem is present!
+   PutUser(conn, sessionID, NULL, NULL, -1, NULL, 0, NULL, NULL);  // make sure the RemoteUserItem is present!
    RemoteUserItem * user;
    if (_users.Get(sessionID, user) == B_NO_ERROR)
    {
@@ -4737,8 +4740,9 @@ DownloadAllResults()
 
 void 
 ShareWindow ::
-RemoveResult(const char * sessionID, const char * fileName)
+RemoveResult(ServerConnection * conn, const char * sessionID, const char * fileName)
 {
+   (void) conn;  // phase 1: threaded through but not yet used
    RemoteUserItem * user;
    if (_users.Get(sessionID, user) == B_NO_ERROR) user->RemoveFile(fileName);
 }
@@ -5872,8 +5876,9 @@ UpdatePrivateWindowUserList(PrivateChatWindow * w, const char * target)
 
 void
 ShareWindow ::
-SetQueryInProgress(bool qp)
+SetQueryInProgress(ServerConnection * conn, bool qp)
 {
+   (void) conn;  // phase 1: threaded through; aggregate query state handling comes later
    if (qp != (_queryInProgressRunner != NULL))
    {
       if (qp)

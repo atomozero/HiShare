@@ -21,12 +21,14 @@
 
 namespace beshare {
 
+class ServerConnection;
+
 /*
  * This class handles the TCP connection to the MUSCLE server, and
  * also maintains files in the shares (uploads) directory as well
  * as the query-results directory.
  */
-class ShareNetClient : public BHandler 
+class ShareNetClient : public BHandler
 {
 public:
    /*
@@ -35,7 +37,11 @@ public:
     * can connect to in order to download files from us.  It can be -1 if we
     * aren't connect-to-able.
     */
-   ShareNetClient(const BDirectory & shareDir, int32 localSharePort);
+   ShareNetClient(const BDirectory & shareDir, int32 localSharePort, ServerConnection * owner = NULL);
+
+   /* The ServerConnection that owns us; identifies which server this client
+    * talks to, so callbacks into ShareWindow can be attributed to it. */
+   ServerConnection * GetOwner() const {return _owner;}
    ~ShareNetClient();
 
    /* Closes any current connection to the MUSCLE server and starts a new one. */
@@ -217,6 +223,8 @@ private:
 
    String _localUserName;
    String _localUserStatus;
+
+   ServerConnection * _owner;
 
    BMessageTransceiverThread * _mtt;
 

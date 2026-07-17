@@ -5,7 +5,7 @@ namespace beshare {
 
 ServerConnection ::
 ServerConnection(int32 connID, const BDirectory & shareDir, int32 localSharePort)
-   : _connID(connID), _netClient(new ShareNetClient(shareDir, localSharePort))
+   : _connID(connID), _netClient(new ShareNetClient(shareDir, localSharePort, this))
 {
    // empty
 }

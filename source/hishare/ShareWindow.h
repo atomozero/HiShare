@@ -55,14 +55,14 @@ public:
 
    virtual void DispatchMessage(BMessage * msg, BHandler * handler);
 
-   void SetConnectStatus(bool isConnecting, bool isConnected);
+   void SetConnectStatus(ServerConnection * conn, bool isConnecting, bool isConnected);
 
-   void PutUser(const char * sessionID, const char * userName, const char * hostName, int userPort, bool * isBot, uint64 installID, const char * client, bool * supportsPartialHash, bool * supportsSSL = NULL, bool * supportsRanges = NULL);
-   void RemoveUser(const char * sessionID);
+   void PutUser(ServerConnection * conn, const char * sessionID, const char * userName, const char * hostName, int userPort, bool * isBot, uint64 installID, const char * client, bool * supportsPartialHash, bool * supportsSSL = NULL, bool * supportsRanges = NULL);
+   void RemoveUser(ServerConnection * conn, const char * sessionID);
    
-   void PutResult(const char * sessionID, const char * fileName, bool isFirewalled, const MessageRef & fileInfo);
+   void PutResult(ServerConnection * conn, const char * sessionID, const char * fileName, bool isFirewalled, const MessageRef & fileInfo);
    void DownloadAllResults();  // selects every current query result and starts downloading (scripting hook)
-   void RemoveResult(const char * sessionID, const char * fileName);
+   void RemoveResult(ServerConnection * conn, const char * sessionID, const char * fileName);
 
    void FileTransferConnected(ShareFileTransfer * who);
    void FileTransferDisconnected(ShareFileTransfer * who);
@@ -92,11 +92,11 @@ public:
    // and that's the only way to download files from us.
    void ConnectBackRequestReceived(const char * targetSessionID, uint16 port, const MessageRef & optBase);
 
-   void SetUserUploadStats(const char * sessionID, uint32 cur, uint32 max);
-   void SetUserStatus(const char * sessionID, const char * status);
-   void SetUserBandwidth(const char * sessionID, const char * label, uint32 bps);
-   void SetUserFileCount(const char * sessionID, int32 fileCount);
-   void SetUserIsFirewalled(const char * sessionID, bool firewalled); 
+   void SetUserUploadStats(ServerConnection * conn, const char * sessionID, uint32 cur, uint32 max);
+   void SetUserStatus(ServerConnection * conn, const char * sessionID, const char * status);
+   void SetUserBandwidth(ServerConnection * conn, const char * sessionID, const char * label, uint32 bps);
+   void SetUserFileCount(ServerConnection * conn, const char * sessionID, int32 fileCount);
+   void SetUserIsFirewalled(ServerConnection * conn, const char * sessionID, bool firewalled);
 
    // Tells the net client to send a message to another BeShare client, asking it
    // to connect back to us.
@@ -135,7 +135,7 @@ public:
    virtual bool OkayToLog(LogMessageType type, LogDestinationType dest, bool isPrivate) const;
    virtual void UpdateColors();
 
-   void SetQueryInProgress(bool qp);
+   void SetQueryInProgress(ServerConnection * conn, bool qp);
 
    int GetNumResultsPages() const {return _resultsPages.GetNumItems();}
    int GetCurrentResultsPage() const {return _currentPage;}
@@ -396,6 +396,7 @@ private:
    // is a convenience accessor for that single connection's MUSCLE client.
    Queue<ServerConnection *> _connections;
    ShareNetClient * NetClient() const {return _connections.IsEmpty() ? NULL : _connections.Head()->Client();}
+   ServerConnection * PrimaryConnection() const {return _connections.IsEmpty() ? NULL : _connections.Head();}
 
    PrefilledBitmap _defaultBitmap;
 
