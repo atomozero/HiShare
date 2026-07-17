@@ -2645,7 +2645,7 @@ ConnectBackRequestReceived(const char * targetSessionID, uint16 port, const Mess
    if (_sharingEnabled->IsMarked())
    {
       RemoteUserItem * target;
-      if ((_users.Get(targetSessionID, target) == B_NO_ERROR)&&(target->GetFirewalled() == false))
+      if ((_users.Get(MakeUserKey(PrimaryConnection(), targetSessionID)(), target) == B_NO_ERROR)&&(target->GetFirewalled() == false))  // TODO(multi-server): use the target's own connection
       {
          // Check the IP address to make sure it's not banned
          uint32 rip = ParseRemoteIP(target->GetHostName());
@@ -3845,7 +3845,7 @@ void ShareWindow :: MessageReceived(BMessage * msg)
             RemoteUserItem * user;
             if ((who->IsUploadSession() == false)&&(who->IsActive() == false)&&
                 (NetClient()->GetFirewalled() == false)&&
-                (_users.Get(who->GetRemoteSessionID(), user) == B_NO_ERROR))  // is he still online?
+                (_users.Get(MakeUserKey(PrimaryConnection(), who->GetRemoteSessionID())(), user) == B_NO_ERROR))  // is he still online?  TODO(multi-server): use the transfer's own connection
             {
                who->ForgetRemoteAddress();  // so the restarted session runs in accept (connect-back) mode
                if ((who->SetLocalSessionID(NetClient()->GetLocalSessionID()) == B_NO_ERROR)&&
@@ -4188,14 +4188,14 @@ LogMessage(LogMessageType type, const char * text, const char * optSessionID, co
    if ((_ignorePattern.Length() > 0)&&(optSessionID))
    {
       RemoteUserItem * user;
-      if ((_users.Get(optSessionID, user) == B_NO_ERROR)&&(MatchesUserFilter(user, _ignorePattern()))) return;
+      if ((_users.Get(MakeUserKey(PrimaryConnection(), optSessionID)(), user) == B_NO_ERROR)&&(MatchesUserFilter(user, _ignorePattern()))) return;  // TODO(multi-server): use the sender's own connection
    }
 
    const rgb_color watchColor = GetColor(COLOR_WATCH);
    if ((optSessionID)&&((optEchoTo == NULL)||(optEchoTo == this))&&(type == LOG_REMOTE_USER_CHAT_MESSAGE))
    {
       RemoteUserItem * user;
-      if (_users.Get(optSessionID, user) == B_NO_ERROR)
+      if (_users.Get(MakeUserKey(PrimaryConnection(), optSessionID)(), user) == B_NO_ERROR)  // TODO(multi-server): use the sender's own connection
       {
          if (isPersonal)
          {
@@ -4561,14 +4561,25 @@ SetConnectStatus(ServerConnection * conn, bool isConnecting, bool isConnected)
 }
 
 
-void 
+String
+ShareWindow ::
+MakeUserKey(ServerConnection * conn, const char * sessionID) const
+{
+   char buf[32];
+   sprintf(buf, "%ld:", conn ? (long) conn->GetConnID() : -1L);
+   String key = buf;
+   key += sessionID;
+   return key;
+}
+
+void
 ShareWindow ::
 PutUser(ServerConnection * conn, const char * sessionID, const char * userName, const char * hostName, int port, bool * isBot, uint64 installID, const char * client, bool * supportsPartialHash, bool * supportsSSL, bool * supportsRanges)
 {
-   (void) conn;  // phase 1: threaded through but not yet used (phase 2 keys users per connection)
+   const String userKey = MakeUserKey(conn, sessionID);
    bool addName = true;
    RemoteUserItem * user;
-   if (_users.Get(sessionID, user) == B_NO_ERROR)
+   if (_users.Get(userKey(), user) == B_NO_ERROR)
    {
       if ((userName == NULL)||(strcmp(userName, user->GetDisplayHandle()) == 0)) addName = false;  // no change needed!
       else
@@ -4581,7 +4592,8 @@ PutUser(ServerConnection * conn, const char * sessionID, const char * userName, 
    else
    {
       user = new RemoteUserItem(this, sessionID);
-      _users.Put(user->GetSessionID(), user);
+      user->SetConn(conn);
+      _users.Put(user->GetUserKey(), user);
       _usersView->AddItem(user);
       _usersView->SortItems();
    }
@@ -4637,7 +4649,7 @@ SetUserBandwidth(ServerConnection * conn, const char * sessionID, const char * l
 {
    PutUser(conn, sessionID, NULL, NULL, -1, NULL, 0, NULL, NULL);  // make sure the RemoteUserItem is present!
    RemoteUserItem * user;
-   if (_users.Get(sessionID, user) == B_NO_ERROR) user->SetBandwidth(label, bps);
+   if (_users.Get(MakeUserKey(conn, sessionID)(), user) == B_NO_ERROR) user->SetBandwidth(label, bps);
 }
 
 void
@@ -4646,7 +4658,7 @@ SetUserStatus(ServerConnection * conn, const char * sessionID, const char * stat
 {
    PutUser(conn, sessionID, NULL, NULL, -1, NULL, 0, NULL, NULL);  // make sure the RemoteUserItem is present!
    RemoteUserItem * user;
-   if (_users.Get(sessionID, user) == B_NO_ERROR) user->SetStatus(status, SubstituteLabelledURLs(status).Trim()());
+   if (_users.Get(MakeUserKey(conn, sessionID)(), user) == B_NO_ERROR) user->SetStatus(status, SubstituteLabelledURLs(status).Trim()());
 }
 
 void
@@ -4655,7 +4667,7 @@ SetUserUploadStats(ServerConnection * conn, const char * sessionID, uint32 cur, 
 {
    PutUser(conn, sessionID, NULL, NULL, -1, NULL, 0, NULL, NULL);  // make sure the RemoteUserItem is present!
    RemoteUserItem * user;
-   if (_users.Get(sessionID, user) == B_NO_ERROR) user->SetUploadStats(cur, max);
+   if (_users.Get(MakeUserKey(conn, sessionID)(), user) == B_NO_ERROR) user->SetUploadStats(cur, max);
 }
 
 void
@@ -4664,7 +4676,7 @@ SetUserIsFirewalled(ServerConnection * conn, const char * sessionID, bool fw)
 {
    PutUser(conn, sessionID, NULL, NULL, -1, NULL, 0, NULL, NULL);  // make sure the RemoteUserItem is present!
    RemoteUserItem * user;
-   if (_users.Get(sessionID, user) == B_NO_ERROR) user->SetFirewalled(fw);
+   if (_users.Get(MakeUserKey(conn, sessionID)(), user) == B_NO_ERROR) user->SetFirewalled(fw);
 }
 
 void
@@ -4673,7 +4685,7 @@ SetUserFileCount(ServerConnection * conn, const char * sessionID, int32 fc)
 {
    PutUser(conn, sessionID, NULL, NULL, -1, NULL, 0, NULL, NULL);  // make sure the RemoteUserItem is present!
    RemoteUserItem * user;
-   if (_users.Get(sessionID, user) == B_NO_ERROR) user->SetNumSharedFiles(fc);
+   if (_users.Get(MakeUserKey(conn, sessionID)(), user) == B_NO_ERROR) user->SetNumSharedFiles(fc);
 }
 
 void 
@@ -4682,7 +4694,7 @@ RemoveUser(ServerConnection * conn, const char * sessionID)
 {
    (void) conn;  // phase 1: threaded through but not yet used
    RemoteUserItem * user;
-   if (_users.Remove(sessionID, user) == B_NO_ERROR) 
+   if (_users.Remove(MakeUserKey(conn, sessionID)(), user) == B_NO_ERROR)
    {
       // Any downloads who are awaiting callbacks from this user might as well forget it now
       // he can't get the message and call us back if he's left the server!
@@ -4719,7 +4731,7 @@ PutResult(ServerConnection * conn, const char * sessionID, const char * fileName
 {
    PutUser(conn, sessionID, NULL, NULL, -1, NULL, 0, NULL, NULL);  // make sure the RemoteUserItem is present!
    RemoteUserItem * user;
-   if (_users.Get(sessionID, user) == B_NO_ERROR)
+   if (_users.Get(MakeUserKey(conn, sessionID)(), user) == B_NO_ERROR)
    {
       user->SetFirewalled(isFirewalled);
       user->PutFile(fileName, fileInfo);
@@ -4744,7 +4756,7 @@ RemoveResult(ServerConnection * conn, const char * sessionID, const char * fileN
 {
    (void) conn;  // phase 1: threaded through but not yet used
    RemoteUserItem * user;
-   if (_users.Get(sessionID, user) == B_NO_ERROR) user->RemoveFile(fileName);
+   if (_users.Get(MakeUserKey(conn, sessionID)(), user) == B_NO_ERROR) user->RemoveFile(fileName);
 }
 
 void 
@@ -5279,7 +5291,7 @@ ParseUserTargets(const char * text, Hashtable<RemoteUserItem *, String> & sendTo
       for (int i=clauses.GetNumItems()-1; i>=0; i--)
       {
          RemoteUserItem * user;
-         if (_users.Get(clauses[i](), user) == B_NO_ERROR)
+         if (_users.Get(MakeUserKey(PrimaryConnection(), clauses[i]())(), user) == B_NO_ERROR)  // TODO(multi-server): resolve target across connections
          {
             sendTo.Put(user, setRestOfString);
             clauses.RemoveItemAt(i);
@@ -5832,7 +5844,7 @@ ShareWindow ::
 GetUserNameBySessionID(const char * sessionID) const
 {
    RemoteUserItem * user;
-   return (_users.Get(sessionID, user) == B_NO_ERROR) ? user->GetVerbatimHandle() : NULL;
+   return (_users.Get(MakeUserKey(PrimaryConnection(), sessionID)(), user) == B_NO_ERROR) ? user->GetVerbatimHandle() : NULL;  // TODO(multi-server): resolve across connections
 }         
 
 void ShareWindow :: GetUserNameForSession(const char * sessionID, String & retUserName) const

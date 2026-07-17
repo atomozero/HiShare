@@ -398,6 +398,11 @@ private:
    ShareNetClient * NetClient() const {return _connections.IsEmpty() ? NULL : _connections.Head()->Client();}
    ServerConnection * PrimaryConnection() const {return _connections.IsEmpty() ? NULL : _connections.Head();}
 
+   // Builds the _users table key "<connID>:<sessionID>" for a (connection, session)
+   // pair, so identical session IDs on different servers don't collide.  Must match
+   // RemoteUserItem::SetConn()'s key format.
+   String MakeUserKey(ServerConnection * conn, const char * sessionID) const;
+
    PrefilledBitmap _defaultBitmap;
 
    Hashtable<const char *, RemoteUserItem *> _users;

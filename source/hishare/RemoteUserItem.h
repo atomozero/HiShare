@@ -11,6 +11,7 @@ namespace beshare {
 
 class RemoteFileItem;
 class ShareWindow;
+class ServerConnection;
 
 // This class represents a single remote user and his current matching file set
 class RemoteUserItem : public CLVEasyItem
@@ -57,6 +58,15 @@ public:
 
    ShareWindow * GetOwner() const {return _owner;}
 
+   /* The server connection this user was seen on. */
+   void SetConn(ServerConnection * conn);
+   ServerConnection * GetConn() const {return _conn;}
+
+   /* The key under which this user is stored in ShareWindow's user table:
+    * "<connID>:<sessionID>", so that identical session IDs on different
+    * servers don't collide.  Valid once SetConn() has been called. */
+   const char * GetUserKey() const {return _userKey();}
+
    String GetUserString() const;
 
    bool GetFirewalled() const {return _firewalled;}
@@ -77,7 +87,9 @@ private:
    float GetLoadFactor() const;
 
    ShareWindow * _owner;
+   ServerConnection * _conn;
    String _sessionID;
+   String _userKey;
    String _handle;
    String _displayHandle;
    String _status;

@@ -1,5 +1,6 @@
 #include "RemoteUserItem.h"
 #include "RemoteFileItem.h"
+#include "ServerConnection.h"
 #include "ShareStrings.h"
 #include "ShareWindow.h"
 
@@ -18,7 +19,7 @@ enum {
 
 RemoteUserItem ::
 RemoteUserItem(ShareWindow * owner, const char * sessionID)
-   : _owner(owner), _sessionID(sessionID), _handle(str(STR_ANONYMOUS)), _displayHandle(str(STR_ANONYMOUS)), _port(0), _firewalled(false), _isBot(false), _supportsPartialHash(false), _supportsSSL(false), _supportsRanges(false), _bandwidthLabel(str(STR_UNKNOWN)), _bandwidth(0), _installID(0)
+   : _owner(owner), _conn(NULL), _sessionID(sessionID), _handle(str(STR_ANONYMOUS)), _displayHandle(str(STR_ANONYMOUS)), _port(0), _firewalled(false), _isBot(false), _supportsPartialHash(false), _supportsSSL(false), _supportsRanges(false), _bandwidthLabel(str(STR_UNKNOWN)), _bandwidth(0), _installID(0)
 {
  
    String text = GetUserString();
@@ -39,6 +40,20 @@ RemoteUserItem ::
    text += str(STR_HAS_DISCONNECTED);
    _owner->LogMessage(LOG_USER_EVENT_MESSAGE, text());
    ClearFiles();
+}
+
+void
+RemoteUserItem ::
+SetConn(ServerConnection * conn)
+{
+   _conn = conn;
+
+   // Build the table key "<connID>:<sessionID>" so that identical session IDs
+   // seen on different servers stay distinct.  Must match ShareWindow::MakeUserKey().
+   char buf[32];
+   sprintf(buf, "%ld:", conn ? (long) conn->GetConnID() : -1L);
+   _userKey = buf;
+   _userKey += _sessionID;
 }
 
 String
