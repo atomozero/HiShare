@@ -137,7 +137,7 @@ savebeos : CFLAGS += -DSAVE_BEOS
 savebeos : RESOURCE = BeShare-sbe.rsrc
 savebeos : all
 
-HiShare : PortMapper.o ReflowingTextView.o ShareNetClient.o ShareFileTransfer.o \
+HiShare : PortMapper.o ReflowingTextView.o ShareNetClient.o ServerConnection.o ShareFileTransfer.o \
           ChatWindow.o ShareApplication.o ShareWindow.o PrivateChatWindow.o \
           MessageTransceiverThread.o Thread.o AcceptSocketsThread.o Message.o \
           SetupSystem.o String.o main.o SysLog.o AbstractMessageIOGateway.o \

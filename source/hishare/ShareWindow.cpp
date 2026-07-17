@@ -1218,7 +1218,6 @@ ShareWindow :: ShareWindow(uint64 installID, BMessage & settingsMsg, const char 
    _isConnected(false),
    _currentPage(0),
    _bytesShown(0LL),
-   _netClient(NULL),
    _defaultBitmap(BRect(0,0,15,15),B_COLOR_8_BIT,DefaultData,false,false),
    _maxSimultaneousUploadSessions(5),
    _maxSimultaneousUploadSessionsPerUser(2),
@@ -1386,8 +1385,9 @@ ShareWindow :: ShareWindow(uint64 installID, BMessage & settingsMsg, const char 
 
    // set up the net client: this is what talks to the MUSCLE server for us
    (void)GetAppSubdir("shared", _shareDir, true);
-   _netClient = new ShareNetClient(_shareDir, (_acceptThread.GetPort() > 0) ? (int32)_acceptThread.GetPort() : -1);
-   AddHandler(_netClient);
+   ServerConnection * conn = new ServerConnection(0, _shareDir, (_acceptThread.GetPort() > 0) ? (int32)_acceptThread.GetPort() : -1);
+   _connections.AddTail(conn);
+   AddHandler(conn->Client());
 
    SetSizeLimits(MIN_WIDTH, MAX_WIDTH, MIN_HEIGHT, MAX_HEIGHT);
 
@@ -1441,8 +1441,8 @@ ShareWindow :: ShareWindow(uint64 installID, BMessage & settingsMsg, const char 
    _settingsStateMenu = settingsMenu;
 
    bool fw;
-   if ((settingsMsg.FindBool("firewalled", &fw) == B_NO_ERROR)&&(fw)) _netClient->SetFirewalled(true);
-   _userIntendedFirewalled = _netClient->GetFirewalled();  // remember the user's own preference
+   if ((settingsMsg.FindBool("firewalled", &fw) == B_NO_ERROR)&&(fw)) NetClient()->SetFirewalled(true);
+   _userIntendedFirewalled = NetClient()->GetFirewalled();  // remember the user's own preference
 
    settingsMenu->AddItem(MakeLimitSubmenu(settingsMsg, SHAREWINDOW_COMMAND_SET_UPLOAD_LIMIT, str(STR_MAX_SIMULTANEOUS_UPLOADS), "uploads", _maxSimultaneousUploadSessions));
    settingsMenu->AddItem(MakeLimitSubmenu(settingsMsg, SHAREWINDOW_COMMAND_SET_UPLOAD_PER_USER_LIMIT, str(STR_MAX_SIMULTANEOUS_UPLOADS_PER_USER), "uploadsperuser", _maxSimultaneousUploadSessionsPerUser));
@@ -1650,7 +1650,7 @@ ShareWindow :: ShareWindow(uint64 installID, BMessage & settingsMsg, const char 
 #if BESHARE_TLS_ENABLED
    settingsMenu->AddItem(_requireTLS);
 #endif
-   if (_netClient) _netClient->SetRequireTLS(requireTLS);
+   if (NetClient()) NetClient()->SetRequireTLS(requireTLS);
 
    // Finish the File menu: the categorised Settings window, then Quit, at the bottom.
    fileMenu->AddItem(new BSeparatorItem);
@@ -1767,7 +1767,7 @@ ShareWindow :: ShareWindow(uint64 installID, BMessage & settingsMsg, const char 
 
             if (settingsMsg.FindString("username", &un) != B_NO_ERROR)
                  un = first ? first : FACTORY_DEFAULT_USER_NAME;
-            _netClient->SetLocalUserName(un);
+            NetClient()->SetLocalUserName(un);
 
             _userNameEntry = new BTextControl(
                 BRect(userNameMenuLeft+userNameMenuWidth,6,STATUS_VIEW_WIDTH-(USER_STATUS_WIDTH+1),
@@ -1804,7 +1804,7 @@ ShareWindow :: ShareWindow(uint64 installID, BMessage & settingsMsg, const char 
 
             if (settingsMsg.FindString("userstatus", &us) != B_NO_ERROR)
                  us = first ? first : FACTORY_DEFAULT_USER_STATUS;
-            _netClient->SetLocalUserStatus(us);
+            NetClient()->SetLocalUserStatus(us);
 
             _userStatusEntry = new BTextControl(
              BRect(userStatusMenuLeft+userStatusMenuWidth,6,STATUS_VIEW_WIDTH-1,statusViewFrame.Height()),
@@ -2018,7 +2018,7 @@ ShareWindow :: ShareWindow(uint64 installID, BMessage & settingsMsg, const char 
       BMessage xfrMsg;
       for (int i=0; settingsMsg.FindMessage("transfer", i, &xfrMsg) == B_NO_ERROR; i++)
       {
-         ShareFileTransfer * xfer = new ShareFileTransfer(_downloadsDir, _netClient->GetLocalSessionID(), 0, 0, _maxDownloadRate);
+         ShareFileTransfer * xfer = new ShareFileTransfer(_downloadsDir, NetClient()->GetLocalSessionID(), 0, 0, _maxDownloadRate);
          xfer->SetFromArchive(xfrMsg);
          AddHandler(xfer);
          xfer->AbortSession(true, true);  // start up already errored out but ready to restart
@@ -2262,9 +2262,9 @@ void
 ShareWindow ::
 SetFirewalledMode(bool firewalled)
 {
-   if (_netClient->GetFirewalled() == firewalled) return;  // no change
+   if (NetClient()->GetFirewalled() == firewalled) return;  // no change
 
-   _netClient->SetFirewalled(firewalled);
+   NetClient()->SetFirewalled(firewalled);
    if (_queryEnabled)  // force query refresh so that only non-firewalled files are visible
    {
       SetQueryEnabled(false, false);
@@ -2320,7 +2320,8 @@ ShareWindow :: ~ShareWindow()
 
    ClearUsers();
 
-   delete _netClient;
+   for (uint32 i=0; i<_connections.GetNumItems(); i++) delete _connections[i];
+   _connections.Clear();
 
    if (_doubleBufferBitmap)
    {
@@ -2389,7 +2390,7 @@ GenerateSettingsMessage(BMessage & settingsMsg)
    settingsMsg.AddFloat("fontsize", GetFontSize());
    settingsMsg.AddString("font", GetFont()());
 
-   if (_netClient->GetLocalUserName()[0]) settingsMsg.AddString("username", _netClient->GetLocalUserName());
+   if (NetClient()->GetLocalUserName()[0]) settingsMsg.AddString("username", NetClient()->GetLocalUserName());
    if (_fileNameQueryEntry->Text()[0]) settingsMsg.AddString("query", _fileNameQueryEntry->Text());
 
    // Save any additional strings....
@@ -2420,7 +2421,7 @@ GenerateSettingsMessage(BMessage & settingsMsg)
 
    // Persist the user's own firewalled preference, not the mapper's temporary
    // runtime override (which is cleared while a port mapping is active).
-   settingsMsg.AddBool("firewalled", _mapperClearedFirewalled ? _userIntendedFirewalled : _netClient->GetFirewalled());
+   settingsMsg.AddBool("firewalled", _mapperClearedFirewalled ? _userIntendedFirewalled : NetClient()->GetFirewalled());
    settingsMsg.AddBool("autoportforward", _autoPortForwardEnabled);
    if (_showNotifications) settingsMsg.AddBool("shownotifications", _showNotifications->IsMarked());
    if (_requireTLS) settingsMsg.AddBool("requiretls", _requireTLS->IsMarked());
@@ -2588,7 +2589,7 @@ AddBandwidthOption(BMenu * bMenu, const char * label, int32 bps)
    if (bps == (int) _uploadBandwidth) 
    {
       item->SetMarked(true);
-      _netClient->SetUploadBandwidth(label, bps);
+      NetClient()->SetUploadBandwidth(label, bps);
    }
    bMenu->AddItem(item);
 }
@@ -2653,13 +2654,13 @@ ConnectBackRequestReceived(const char * targetSessionID, uint16 port, const Mess
          if (banTimeLeft > 0)
          {
             MessageRef banRef = MakeBannedMessage(banTimeLeft, optBase);
-            if ((_netClient)&&(banRef())&&
+            if ((NetClient())&&(banRef())&&
                 (banRef()->AddString(PR_NAME_SESSION, "") == B_NO_ERROR)&&
-                (banRef()->AddString(PR_NAME_KEYS, String("/*/")+targetSessionID) == B_NO_ERROR)) _netClient->SendMessageToSessions(banRef, true);
+                (banRef()->AddString(PR_NAME_KEYS, String("/*/")+targetSessionID) == B_NO_ERROR)) NetClient()->SendMessageToSessions(banRef, true);
          }
          else
          {
-            ShareFileTransfer * xfer = new ShareFileTransfer(_shareDir, _netClient->GetLocalSessionID(), target->GetInstallID(), 0, _maxUploadRate);
+            ShareFileTransfer * xfer = new ShareFileTransfer(_shareDir, NetClient()->GetLocalSessionID(), target->GetInstallID(), 0, _maxUploadRate);
             AddHandler(xfer);
 
             // The downloader tells us (via "use_ssl" in the connect-back request) whether to
@@ -2703,7 +2704,7 @@ RequestDownloads(const BMessage & filelistMsg, const BDirectory & downloadDir, B
             ShareFileTransfer * xfer;
             if (newTransferSessions.Get(owner, xfer) == B_ERROR)
             {
-               xfer = new ShareFileTransfer(downloadDir, _netClient->GetLocalSessionID(), owner->GetInstallID(), owner->GetSupportsPartialHash() ? NUM_PARTIAL_HASH_BYTES : 0, _maxDownloadRate);
+               xfer = new ShareFileTransfer(downloadDir, NetClient()->GetLocalSessionID(), owner->GetInstallID(), owner->GetSupportsPartialHash() ? NUM_PARTIAL_HASH_BYTES : 0, _maxDownloadRate);
                AddHandler(xfer);
                newTransferSessions.Put(owner, xfer);
             }
@@ -2743,7 +2744,7 @@ status_t ShareWindow :: SetupNewDownload(const RemoteUserItem * user, ShareFileT
 {
    if ((user->GetFirewalled())||(forceRemoteIsFirewalled))
    {
-      if (_netClient->GetFirewalled())
+      if (NetClient()->GetFirewalled())
       {
          String errStr(str(STR_CANT_DOWNLOAD_FILES_FROM));
          errStr += user->GetUserString();
@@ -2754,7 +2755,7 @@ status_t ShareWindow :: SetupNewDownload(const RemoteUserItem * user, ShareFileT
       {
          // We accept and the (firewalled) peer connects back => we're the TLS server.
          // Encrypt if we require it, or if the peer advertises TLS support.
-         xfer->SetUseTLS(_netClient->GetRequireTLS() || user->GetSupportsSSL());
+         xfer->SetUseTLS(NetClient()->GetRequireTLS() || user->GetSupportsSSL());
          if (xfer->InitAcceptSession(user->GetSessionID()) == B_NO_ERROR) return B_NO_ERROR;
          else
          {
@@ -2787,7 +2788,7 @@ void
 ShareWindow ::
 SendConnectBackRequestMessage(const char * sessionID, uint16 port, bool useSSL)
 {
-   _netClient->SendConnectBackRequestMessage(sessionID, port, useSSL);
+   NetClient()->SendConnectBackRequestMessage(sessionID, port, useSSL);
 }
 
 static int SortShareFileTransfersBySize(ShareFileTransfer * const & s1, ShareFileTransfer * const & s2, void * cookie)
@@ -2827,7 +2828,7 @@ DequeueTransferSessions()
       {
          // Then sort the list so that smallest transfers are first
          Hashtable<ShareFileTransfer *, bool> sortList = origList;
-         sortList.SortByKey(SortShareFileTransfersBySizeFunctor(), _netClient);
+         sortList.SortByKey(SortShareFileTransfersBySizeFunctor(), NetClient());
 
          bool sortOrderChanged = false;
          if (sortList.GetNumItems() == origList.GetNumItems()) // paranoia
@@ -2872,7 +2873,7 @@ DequeueTransferSessions()
 
    DequeueTransferSessions(true);
    DequeueTransferSessions(false);
-   _netClient->SetUploadStats(CountUploadSessions(), _maxSimultaneousUploadSessions, false);
+   NetClient()->SetUploadStats(CountUploadSessions(), _maxSimultaneousUploadSessions, false);
 }
 
 uint32
@@ -3095,7 +3096,7 @@ void ShareWindow :: MessageReceived(BMessage * msg)
 
       case SHAREWINDOW_COMMAND_TOGGLE_FILE_SHARING_ENABLED:
          _sharingEnabled->SetMarked(!_sharingEnabled->IsMarked());
-         _netClient->SetFileSharingEnabled(_sharingEnabled->IsMarked());
+         NetClient()->SetFileSharingEnabled(_sharingEnabled->IsMarked());
          UpdateTitleBar();  // refresh the shared-file count in the header banner
       break;
 
@@ -3112,7 +3113,7 @@ void ShareWindow :: MessageReceived(BMessage * msg)
          if (msg->FindInt32("complevel", &compLevel) == B_NO_ERROR) 
          {
             _compressionLevel = compLevel;
-            _netClient->UpdateEncoding();
+            NetClient()->UpdateEncoding();
          }
       }
       break;
@@ -3341,7 +3342,7 @@ void ShareWindow :: MessageReceived(BMessage * msg)
          if ((_idleTimeoutMinutes > 0)&&(now > _lastInteractionAt + (_idleTimeoutMinutes * 60 * 1000000))) MakeAway();
 
          // If we haven't any server activity recent
-         _netClient->CheckServer();
+         NetClient()->CheckServer();
 
          // Let's also see if our settings have changed.  If they have, we'll save to disk now (in case we crash before we quit)
          BMessage temp;
@@ -3420,7 +3421,7 @@ void ShareWindow :: MessageReceived(BMessage * msg)
       case SHAREWINDOW_COMMAND_SET_ADVERTISED_BANDWIDTH:
       {
          const char * label;
-         if ((msg->FindString("label", &label) == B_NO_ERROR)&&(msg->FindInt32("bps", (int32 *) &_uploadBandwidth) == B_NO_ERROR)) _netClient->SetUploadBandwidth(label, _uploadBandwidth);
+         if ((msg->FindString("label", &label) == B_NO_ERROR)&&(msg->FindInt32("bps", (int32 *) &_uploadBandwidth) == B_NO_ERROR)) NetClient()->SetUploadBandwidth(label, _uploadBandwidth);
       }
       break;
 
@@ -3453,7 +3454,7 @@ void ShareWindow :: MessageReceived(BMessage * msg)
          // record their new preference (this is what gets persisted).
          _mapperManagesFirewalled = false;
          _mapperClearedFirewalled = false;
-         _userIntendedFirewalled = !_netClient->GetFirewalled();
+         _userIntendedFirewalled = !NetClient()->GetFirewalled();
          SetFirewalledMode(_userIntendedFirewalled);
       break;
 
@@ -3522,7 +3523,7 @@ void ShareWindow :: MessageReceived(BMessage * msg)
 #if BESHARE_TLS_ENABLED
          _requireTLS->SetMarked(!_requireTLS->IsMarked());
          // Update our advertised "supports_ssl" capability (re-publishes the name node).
-         if (_netClient) _netClient->SetRequireTLS(_requireTLS->IsMarked());
+         if (NetClient()) NetClient()->SetRequireTLS(_requireTLS->IsMarked());
 #endif
          // else: TLS is hidden/disabled for 1.0 (crash on the SSL client path) — ignore.
       break;
@@ -3579,7 +3580,7 @@ void ShareWindow :: MessageReceived(BMessage * msg)
             if ((_mapperManagesFirewalled)&&(reachable != -1))
             {
                bool wantFirewalled = (reachable == 0);
-               if (_netClient->GetFirewalled() != wantFirewalled)
+               if (NetClient()->GetFirewalled() != wantFirewalled)
                {
                   SetFirewalledMode(wantFirewalled);
                   _mapperClearedFirewalled = (wantFirewalled == false);
@@ -3625,7 +3626,7 @@ void ShareWindow :: MessageReceived(BMessage * msg)
             if ((_mapperManagesFirewalled)&&(_mapperClearedFirewalled))
             {
                _mapperClearedFirewalled = false;
-               if (_userIntendedFirewalled != _netClient->GetFirewalled())
+               if (_userIntendedFirewalled != NetClient()->GetFirewalled())
                {
                   SetFirewalledMode(_userIntendedFirewalled);
                   if (_userIntendedFirewalled)
@@ -3791,11 +3792,11 @@ void ShareWindow :: MessageReceived(BMessage * msg)
                            }
                            else
                            {
-                              ShareFileTransfer * newSession = new ShareFileTransfer(_shareDir, _netClient->GetLocalSessionID(), 0, 0, _maxUploadRate);
+                              ShareFileTransfer * newSession = new ShareFileTransfer(_shareDir, NetClient()->GetLocalSessionID(), 0, 0, _maxUploadRate);
                               AddHandler(newSession);
                               // A peer connected to us => we're the TLS server.  If we require TLS the
                               // peer already saw our "supports_ssl" flag and connected with TLS to match.
-                              newSession->SetUseTLS(_netClient->GetRequireTLS());
+                              newSession->SetUseTLS(NetClient()->GetRequireTLS());
                               if (newSession->InitSocketUploadSession(socket, remoteIP, CountActiveSessions(true, NULL) >= _maxSimultaneousUploadSessions) == B_NO_ERROR) _transferList->AddItem(newSession);
                               else
                               {
@@ -3843,11 +3844,11 @@ void ShareWindow :: MessageReceived(BMessage * msg)
             bool restarted = false;
             RemoteUserItem * user;
             if ((who->IsUploadSession() == false)&&(who->IsActive() == false)&&
-                (_netClient->GetFirewalled() == false)&&
+                (NetClient()->GetFirewalled() == false)&&
                 (_users.Get(who->GetRemoteSessionID(), user) == B_NO_ERROR))  // is he still online?
             {
                who->ForgetRemoteAddress();  // so the restarted session runs in accept (connect-back) mode
-               if ((who->SetLocalSessionID(_netClient->GetLocalSessionID()) == B_NO_ERROR)&&
+               if ((who->SetLocalSessionID(NetClient()->GetLocalSessionID()) == B_NO_ERROR)&&
                    (SetupNewDownload(user, who, true) == B_NO_ERROR))
                {
                   String s("Couldn't connect directly to ");
@@ -3939,7 +3940,7 @@ void ShareWindow :: MessageReceived(BMessage * msg)
          if (_autoReconnectRunner) LogMessage(LOG_INFORMATION_MESSAGE, str(STR_AUTO_RECONNECT_SEQUENCE_TERMINATED));
          ResetAutoReconnectState(true);  // user intervened, so reset count
          UpdateConnectStatus(false);     // make sure disconnect button goes disabled
-         _netClient->DisconnectFromServer();
+         NetClient()->DisconnectFromServer();
       break;
 
       case SHAREWINDOW_COMMAND_ABOUT:
@@ -4357,9 +4358,9 @@ SetQueryEnabled(bool e, bool putInQueryMenu)
          MakeRegexCaseInsensitive(fileExp);
 
          ClearResults();
-         _netClient->StartQuery(userExp.Length() > 0 ? userExp() : "*", fileExp());
+         NetClient()->StartQuery(userExp.Length() > 0 ? userExp() : "*", fileExp());
       }
-      else _netClient->StopQuery();
+      else NetClient()->StopQuery();
 
       UpdateQueryEnabledStatus();
    }
@@ -4384,7 +4385,7 @@ UpdateConnectStatus(bool titleToo)
    if (sname[0] == '\0') sname = "???";
    _disconnectMenuItem->SetEnabled((c)||(_autoReconnectRunner != NULL));
 
-   _firewalled->SetMarked(_netClient->GetFirewalled());
+   _firewalled->SetMarked(NetClient()->GetFirewalled());
 
    if (titleToo) UpdateTitleBar();
 
@@ -4416,10 +4417,10 @@ UpdateTitleBar()
       if (_isConnected)      { sub = "Connected to "; sub += _connectedTo; }
       else if (_isConnecting) sub = str(STR_CONNECTING_TO_SERVER_DOTDOTDOT);
       else                    sub = "Not connected";
-      if ((_netClient)&&(_sharingEnabled)&&(GetFileSharingEnabled()))
+      if ((NetClient())&&(_sharingEnabled)&&(GetFileSharingEnabled()))
       {
          char scbuf[48];
-         const uint32 sc = _netClient->GetSharedFileCount();
+         const uint32 sc = NetClient()->GetSharedFileCount();
          snprintf(scbuf, sizeof(scbuf), "%lu file%s shared", (unsigned long)sc, (sc == 1) ? "" : "s");
          sub += "   \xE2\x80\xA2  "; sub += scbuf;
       }
@@ -4529,7 +4530,7 @@ SetConnectStatus(bool isConnecting, bool isConnected)
 
       AddServerItem(_connectedTo(), false, 0);
 
-      _netClient->SetUploadStats(CountUploadSessions(), _maxSimultaneousUploadSessions, true);
+      NetClient()->SetUploadStats(CountUploadSessions(), _maxSimultaneousUploadSessions, true);
 
       if (_queryOnConnect.Length() > 0)
       {
@@ -4622,7 +4623,7 @@ RestartDownloadsFor(const RemoteUserItem * user)
           (next->IsConnected() == false)&&
           (next->IsConnecting() == false)&&
           (next->ErrorOccurred())&&
-          (next->SetLocalSessionID(_netClient->GetLocalSessionID()) == B_NO_ERROR)&&
+          (next->SetLocalSessionID(NetClient()->GetLocalSessionID()) == B_NO_ERROR)&&
           (SetupNewDownload(user, next, next->IsAcceptSession()) == B_NO_ERROR)) next->RestartSession();
    }
    DequeueTransferSessions();
@@ -5244,7 +5245,7 @@ bool
 ShareWindow ::
 GetFirewalled() const
 {
-   return _netClient->GetFirewalled();
+   return NetClient()->GetFirewalled();
 }
 
 status_t
@@ -5349,11 +5350,11 @@ SendOutMessageOrPing(const String & text, ChatWindow * optEchoTo, bool isPing)
 
             if (isPing) 
             {
-               _netClient->SendPing(sid);
+               NetClient()->SendPing(sid);
                if (pinging.Length() > 0) pinging += ", ";
                pinging += sid;
             }
-            else _netClient->SendChatMessage(user->GetSessionID(), sendText);
+            else NetClient()->SendChatMessage(user->GetSessionID(), sendText);
 
             if ((isPing == false)&&((showAllTargets)||(first))) LogMessage(LOG_LOCAL_USER_CHAT_MESSAGE, sendText, user->GetSessionID(), NULL, (isPing==false), optEchoTo);
             first = false;
@@ -5421,14 +5422,14 @@ String
 ShareWindow :: 
 GetQualifiedSharedFileName(const String & name) const
 {
-   if (_netClient->GetLocalSessionID()[0])
+   if (NetClient()->GetLocalSessionID()[0])
    {
-      entry_ref er = _netClient->FindSharedFile(name());
+      entry_ref er = NetClient()->FindSharedFile(name());
       if (BEntry(&er).Exists())
       {
          String ret(name);
          ret += "@";
-         ret += _netClient->GetLocalSessionID();
+         ret += NetClient()->GetLocalSessionID();
          return ret;
       }
    }
@@ -5618,7 +5619,7 @@ SendChatText(const String & t, ChatWindow * optEchoTo)
    else if (lowerText.Equals("/serverinfo"))
    { 
       _showServerStatus = true;
-      _netClient->SendGetParamsMessage();  // request server status.
+      NetClient()->SendGetParamsMessage();  // request server status.
       LogMessage(LOG_INFORMATION_MESSAGE, str(STR_SERVER_STATUS_REQUESTED), NULL, NULL, false, optEchoTo);
    }
    else if (lowerText.Equals("/unban"))
@@ -5772,7 +5773,7 @@ SendChatText(const String & t, ChatWindow * optEchoTo)
    else if (lowerText.Length() > 0)
    {
       const char * txt = text->Cstr()+(((lowerText.StartsWith("/me")==false)&&(lowerText[0]=='/'))?1:0);
-      _netClient->SendChatMessage("*", txt);  // if started with double slash, remove escape
+      NetClient()->SendChatMessage("*", txt);  // if started with double slash, remove escape
       LogMessage(LOG_LOCAL_USER_CHAT_MESSAGE, txt, NULL, NULL, false, optEchoTo);
    }
 }
@@ -5838,13 +5839,13 @@ void ShareWindow :: GetUserNameForSession(const char * sessionID, String & retUs
 
 void ShareWindow :: GetLocalUserName(String & retLocalUserName) const
 {
-   String ret(_netClient->GetLocalUserName());
+   String ret(NetClient()->GetLocalUserName());
    retLocalUserName = ret;
 }
 
 void ShareWindow :: GetLocalSessionID(String & retLocalSessionID) const
 {
-   String ret(_netClient->GetLocalSessionID());
+   String ret(NetClient()->GetLocalSessionID());
    retLocalSessionID = ret;
 }
 
@@ -6163,7 +6164,7 @@ void ShareWindow :: ReconnectToServer()
          const char * portStr = tok.GetNextToken();
          int port = portStr ? atoi(portStr) : 0;
          if (port <= 0) port = 2960;
-         _netClient->ConnectToServer(host, (uint16) (port ? port : 2960));
+         NetClient()->ConnectToServer(host, (uint16) (port ? port : 2960));
       }
    }
    UpdateConnectStatus(true);
@@ -6220,9 +6221,9 @@ ShareWindow :: SetLocalUserName(const char * name)
    // See if the new name is in our user name list;  if not, add it to the beginning
    UpdateLRUMenu(_userNameMenu, name, SHAREWINDOW_COMMAND_USER_SELECTED_USER_NAME, "username", 20, true);
 
-   _netClient->SetLocalUserName(name);
+   NetClient()->SetLocalUserName(name);
    String s(str(STR_YOUR_NAME_HAS_BEEN_CHANGED_TO));
-   s += _netClient->GetLocalUserName();
+   s += NetClient()->GetLocalUserName();
    LogMessage(LOG_USER_EVENT_MESSAGE, s());
    _resultsView->MakeFocus();  // so that when the user presses a key, it drops to the _textEntry
 }
@@ -6235,9 +6236,9 @@ ShareWindow :: SetLocalUserStatus(const char * status)
    // See if the new status is in our user status list;  if not, add it to the beginning
    UpdateLRUMenu(_userStatusMenu, status, SHAREWINDOW_COMMAND_USER_SELECTED_USER_STATUS, "userstatus", 20, true);
 
-   _netClient->SetLocalUserStatus(status);
+   NetClient()->SetLocalUserStatus(status);
    String s(str(STR_YOUR_STATUS_HAS_BEEN_CHANGED_TO));
-   s += _netClient->GetLocalUserStatus();
+   s += NetClient()->GetLocalUserStatus();
    LogMessage(LOG_USER_EVENT_MESSAGE, s());
    _resultsView->MakeFocus();  // so that when the user presses a key, it drops to the _textEntry
 }
@@ -6258,7 +6259,7 @@ void ShareWindow :: SetQuery(const char * query)
 
 void ShareWindow :: SendMessageToServer(const MessageRef & msg)
 {
-   _netClient->SendMessageToSessions(msg, true);
+   NetClient()->SendMessageToSessions(msg, true);
 }
 
 BBitmap * ShareWindow :: GetDoubleBufferBitmap(uint32 width, uint32 height)
@@ -6352,7 +6353,7 @@ void ShareWindow :: DoScreenShot(const String & fn, ChatWindow * optEchoTo)
    {
       // Generate a nice filename based on our name and the time
       fileName = "beshare_screenshot-";
-      fileName += _netClient->GetLocalUserName();
+      fileName += NetClient()->GetLocalUserName();
       fileName += '-';
       time_t now = time(NULL);
       char timeBuf[128];
@@ -6377,7 +6378,7 @@ void ShareWindow :: DoScreenShot(const String & fn, ChatWindow * optEchoTo)
       fn.Replace('/', '?');
 
       ad += fn;
-      String sid = _netClient->GetLocalSessionID();
+      String sid = NetClient()->GetLocalSessionID();
       if ((IsConnected())&&(sid.Length() > 0)) 
       {
          ad += "@";

@@ -22,6 +22,7 @@
 #include "ShareConstants.h"
 #include "ChatWindow.h"
 #include "ShareNetClient.h"
+#include "ServerConnection.h"
 #include "PortMapper.h"
 
 class ColumnListView;
@@ -102,7 +103,7 @@ public:
    void SendConnectBackRequestMessage(const char * remoteSessionID, uint16 port, bool useSSL);
 
    // Returns an entry_ref for the shared file with the given file name.
-   entry_ref FindSharedFile(const char * fileName) const {return _netClient->FindSharedFile(fileName);}
+   entry_ref FindSharedFile(const char * fileName) const {return NetClient()->FindSharedFile(fileName);}
 
    // See if any more transfers can be started
    void DequeueTransferSessions();
@@ -174,7 +175,7 @@ public:
    void BeginAutoReconnect();
 
    /** Returns true iff we are scanning our shares folder for files asynchronously */
-   bool IsScanningShares() const {return _netClient ? _netClient->IsScanningShares() : false;}
+   bool IsScanningShares() const {return NetClient() ? NetClient()->IsScanningShares() : false;}
 
    /** Called by our ShareNetClient when it's done scanning */
    void SharesScanComplete();
@@ -390,7 +391,11 @@ private:
 
    TransferListView * _transferList;
 
-   ShareNetClient * _netClient;
+   // The set of server connections.  During phase 0 of the multi-server work
+   // this always holds exactly one element, so behaviour is unchanged; NetClient()
+   // is a convenience accessor for that single connection's MUSCLE client.
+   Queue<ServerConnection *> _connections;
+   ShareNetClient * NetClient() const {return _connections.IsEmpty() ? NULL : _connections.Head()->Client();}
 
    PrefilledBitmap _defaultBitmap;
 
