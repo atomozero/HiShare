@@ -129,7 +129,7 @@ void CLVEasyItem::SetColumnContent(int column_index, const char *text, bool trun
 	((BRect**)m_cached_rects.Items())[column_index]->Set(-1,-1,-1,-1);
 	if(text == NULL || text[0] == 0)
 	{
-		((int32*)m_column_types.Items())[column_index] = CLVColNone;
+		((int64*)m_column_types.Items())[column_index] = CLVColNone;
 		((char**)m_column_content.Items())[column_index] = NULL;
 		((char**)m_aux_content.Items())[column_index] = NULL;
 	}
@@ -140,18 +140,18 @@ void CLVEasyItem::SetColumnContent(int column_index, const char *text, bool trun
 
 		if(!truncate)
 		{
-			((int32*)m_column_types.Items())[column_index] = CLVColStaticText;
+			((int64*)m_column_types.Items())[column_index] = CLVColStaticText;
 			((char**)m_aux_content.Items())[column_index] = NULL;
 		}
 		else
 		{
-			((int32*)m_column_types.Items())[column_index] = CLVColTruncateText|CLVColFlagNeedsTruncation;
+			((int64*)m_column_types.Items())[column_index] = CLVColTruncateText|CLVColFlagNeedsTruncation;
 			copy = new char[strlen(text)+3];
 			strcpy(copy,text);
 			((char**)m_aux_content.Items())[column_index] = copy;
 		}
 		if(right_justify)
-			((int32*)m_column_types.Items())[column_index] |= CLVColFlagRightJustify;
+			((int64*)m_column_types.Items())[column_index] |= CLVColFlagRightJustify;
 	}
 }
 
@@ -164,18 +164,18 @@ void CLVEasyItem::SetColumnContent(int column_index, const BBitmap *bitmap, floa
 	//Create the new entry
 	if(bitmap == NULL)
 	{
-		((int32*)m_column_types.Items())[column_index] = CLVColNone;
+		((int64*)m_column_types.Items())[column_index] = CLVColNone;
 		((char**)m_column_content.Items())[column_index] = NULL;
 		((char**)m_aux_content.Items())[column_index] = NULL;
 	}
 	else
 	{
 		if(copy)
-			((int32*)m_column_types.Items())[column_index] = CLVColBitmap|CLVColFlagBitmapIsCopy;
+			((int64*)m_column_types.Items())[column_index] = CLVColBitmap|CLVColFlagBitmapIsCopy;
 		else
-			((int32*)m_column_types.Items())[column_index] = CLVColBitmap;
+			((int64*)m_column_types.Items())[column_index] = CLVColBitmap;
 		if(right_justify)
-			((int32*)m_column_types.Items())[column_index] |= CLVColFlagRightJustify;
+			((int64*)m_column_types.Items())[column_index] |= CLVColFlagRightJustify;
 		BBitmap* the_bitmap;
 		if(copy)
 		{
@@ -189,7 +189,7 @@ void CLVEasyItem::SetColumnContent(int column_index, const BBitmap *bitmap, floa
 		else
 			the_bitmap = (BBitmap*)bitmap;
 		((BBitmap**)m_column_content.Items())[column_index] = the_bitmap;
-		((int32*)m_aux_content.Items())[column_index] = (int32)horizontal_offset;
+		((int64*)m_aux_content.Items())[column_index] = (int32)horizontal_offset;
 	}
 }
 
@@ -198,11 +198,11 @@ void CLVEasyItem::SetColumnUserTextContent(int column_index, bool truncate, bool
 {
 	PrepListsForSet(column_index);
 	if(truncate)
-		((int32*)m_column_types.Items())[column_index] = CLVColTruncateUserText;
+		((int64*)m_column_types.Items())[column_index] = CLVColTruncateUserText;
 	else
-		((int32*)m_column_types.Items())[column_index] = CLVColUserText;
+		((int64*)m_column_types.Items())[column_index] = CLVColUserText;
 	if(right_justify)
-		((int32*)m_column_types.Items())[column_index] |= CLVColFlagRightJustify;
+		((int64*)m_column_types.Items())[column_index] |= CLVColFlagRightJustify;
 }
 
 
@@ -278,7 +278,7 @@ void CLVEasyItem::DrawItemColumn(BView *owner, BRect item_column_rect, int32 col
 				BFont owner_font;
 				owner->GetFont(&owner_font);
 				TruncateText(column_index,item_column_rect.right-item_column_rect.left,&owner_font);
-				((int32*)m_column_types.Items())[column_index] &= (CLVColFlagNeedsTruncation^0xFFFFFFFF);
+				((int64*)m_column_types.Items())[column_index] &= (CLVColFlagNeedsTruncation^0xFFFFFFFF);
 			}
 			text = (const char*)m_aux_content.ItemAt(column_index);
 		}
@@ -443,7 +443,7 @@ void CLVEasyItem::ColumnWidthChanged(int32 column_index, float column_width, Col
 			//If it's onscreen, truncate and invalidate the changed area
 			the_view->GetFont(&view_font);
 			invalid = TruncateText(column_index, column_width,&view_font);
-			((int32*)m_column_types.Items())[column_index] &= (CLVColFlagNeedsTruncation^0xFFFFFFFF);
+			((int64*)m_column_types.Items())[column_index] &= (CLVColFlagNeedsTruncation^0xFFFFFFFF);
 			if(invalid != BRect(-1.0,-1.0,-1.0,-1.0))
 			{
 				if(!right_justify)
@@ -454,7 +454,7 @@ void CLVEasyItem::ColumnWidthChanged(int32 column_index, float column_width, Col
 		}
 		else
 			//If it's not onscreen flag it for truncation the next time it's drawn
-			((int32*)m_column_types.Items())[column_index] |= CLVColFlagNeedsTruncation;
+			((int64*)m_column_types.Items())[column_index] |= CLVColFlagNeedsTruncation;
 	}
 	if(type == CLVColTruncateUserText)
 	{
@@ -504,13 +504,13 @@ void CLVEasyItem::FrameChanged(int32 column_index, BRect new_frame, ColumnListVi
 				BFont view_font;
 				the_view->GetFont(&view_font);
 				BRect invalid = TruncateText(column_index, new_frame.right-new_frame.left,&view_font);
-				((int32*)m_column_types.Items())[column_index] &= (CLVColFlagNeedsTruncation^0xFFFFFFFF);
+				((int64*)m_column_types.Items())[column_index] &= (CLVColFlagNeedsTruncation^0xFFFFFFFF);
 				if(invalid != BRect(-1.0,-1.0,-1.0,-1.0))
 					the_view->Invalidate(invalid);
 			}
 			else
 			//If it's not onscreen flag it for truncation the next time it's drawn
-				((int32*)m_column_types.Items())[column_index] |= CLVColFlagNeedsTruncation;
+				((int64*)m_column_types.Items())[column_index] |= CLVColFlagNeedsTruncation;
 		}
 }
 

@@ -782,6 +782,18 @@ MessageReceived(const MessageRef & msgRef)
                                  clientStr += " v";
                                  clientStr += vnum;
                               }
+                              else
+                              {
+                                 // Fall back to the classic BeShare "version" field, so clients that
+                                 // don't advertise VitViper-style version_name/version_num still show up.
+                                 const char * version;
+                                 if (pmsg->FindString("version", &version) == B_NO_ERROR)
+                                 {
+                                    // A bare numeric version means classic BeShare; prefix it accordingly.
+                                    if ((version[0] >= '0')&&(version[0] <= '9')) clientStr = "BeShare v";
+                                    clientStr += version;
+                                 }
+                              }
 
                               // See if this client is advertising that he can to the partial-md5-hash trick
                               bool sph = false;
