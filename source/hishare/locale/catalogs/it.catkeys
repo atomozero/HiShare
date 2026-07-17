@@ -1,0 +1,301 @@
+1	Italian	application/x-vnd.HiShare	2764403860
+Auto-away tag set to: 	ShareStrings		Tag di auto-allontanamento impostato come: 
+Server uptime	ShareStrings		Tempo online del server
+Color prefs by	ShareStrings		Color prefs by
+ is now 	ShareStrings		 è ora 
+Language %s selected.  Change will take effect after you restart HiShare.	ShareStrings		Lingua %s selezionata.  La modifica avrà effetto quando rilancerai HiShare.
+Ban User For	ShareStrings		Blocca utente per
+Can't download from user 	ShareStrings		Impossibile scaricare dall'utente 
+Scrolled Text Background	ShareStrings		Scrolled Text Background
+toggle custom coloring	ShareStrings		toggle custom coloring
+Bulgarian	ShareStrings		Bulgarian
+remove an alias	ShareStrings		remove an alias
+Esperanto	ShareStrings		Esperanto
+Finnish	ShareStrings		Finnish
+File Size	ShareStrings		Dimensione File
+Server memory usage	ShareStrings		Utilizzo memoria del server
+Restart Transfer	ShareStrings		Ricomincia Scaricamento
+Revert	ShareStrings		Revert
+Romanian	ShareStrings		Romanian
+Warning Messages	ShareStrings		Messaggi d'Avvertimento
+synonym for /action	ShareStrings		sinonimo per /action
+Your name has been changed to 	ShareStrings		Il tuo nome e' stato cambiato in 
+Auto Away	ShareStrings		Allontanati Automaticamente
+Disabled	ShareStrings		Disabilitato
+<name or session id> <text>	ShareStrings		<nome o id sessione> <testo>
+An Error Occurred.	ShareStrings		Si è verificato un errore.
+Switch to Page	ShareStrings		Passa alla Pagina
+Connecting to server...	ShareStrings		Collegamento al server...
+Connection established.	ShareStrings		Connessione stabilita.
+Server status requested.	ShareStrings		Richiesto stato del server.
+Clear Finished/Failed Transfers	ShareStrings		Elimina trasferimenti completi/errati
+bytes/second	ShareStrings		bytes/second
+Results Per Page	ShareStrings		Risultati per Pagina
+set custom window title	ShareStrings		set custom window title
+Chinese (Simplified)	ShareStrings		Chinese (Simplified)
+Unknown user 	ShareStrings		Utente ignoto 
+Private Messages	ShareStrings		Messaggi Privati
+Ignore pattern set to: 	ShareStrings		Ignora pattern impostato su: 
+Serbian	ShareStrings		Serbo
+Open Shared Folder	ShareStrings		Apri Cartella Condivisa
+Open Downloads Folder	ShareStrings		Apri Cartella Scaricamento
+set user status string	ShareStrings		assegna stringa per stato utente
+Current /ignore pattern is: 	ShareStrings		Corrente /ignore pattern è: 
+Error, couldn't create connect thread! (Try quitting HiShare, then Restarting Networking)	ShareStrings		Errore, impossibile creare thread di connessione! (Prova ad uscire da HiShare, e poi a far ripartire la rete)
+Max Simultaneous Uploads	ShareStrings		Max Caricamenti Simultanei
+Dutch	ShareStrings		Olandese
+Hours	ShareStrings		Ore
+Name	ShareStrings		Nome
+ping other clients	ShareStrings		Fai un ping su altri clients
+away	ShareStrings		via
+Queued (Remote machine too busy)	ShareStrings		In coda (Macchina remota sovraccarica)
+Max Simultaneous Downloads	ShareStrings		Max Scaricamenti Simultanei
+Rcvd: 	ShareStrings		Ric.: 
+Removing %lu upload bans	ShareStrings		Sto rimuovendo %lu blocchi per upload
+User Events	ShareStrings		Eventi Utente
+stop the current query	ShareStrings		interrompi la ricerca corrente
+[serverName]	ShareStrings		[nomeServer]
+Open Folder	ShareStrings		Apri Cartella
+File download session to 	ShareStrings		Sessione scaricamento file su 
+, because both of us are behind firewalls.	ShareStrings		, perché siamo entrambi dietro un firewall.
+Queued (Local machine too busy)	ShareStrings		In coda (Macchina locale sovraccarica)
+Connect to 	ShareStrings		Collegati a 
+Logging Enabled	ShareStrings		Log Abilitato
+font size in points	ShareStrings		font size in points
+Connecting...	ShareStrings		Collegamento...
+Force away state	ShareStrings		Forza auto allontanamento
+ - Connected to 	ShareStrings		 - Connesso a 
+send a private message	ShareStrings		invia un messaggio privato
+Paused Upload Progress	ShareStrings		Paused Upload Progress
+Watch pattern set to: 	ShareStrings		Pattern di osservazione impostato su: 
+Your status has been changed to: 	ShareStrings		Il tuo stato è stato cambiato in: 
+Couldn't start file-sharing server thread!  (Try Restarting Networking, then restarting HiShare)	ShareStrings		Impossibile iniziare thread di condivisione server!  (Prova a far ripartire la rete, poi a rilanciare HiShare)
+Beep When Mentioned	ShareStrings		Suona Quando Menzionato
+French	ShareStrings		Francese
+Move to Bottom	ShareStrings		Move to Bottom
+clear startup commands	ShareStrings		elimina comandi di lancio
+Forever	ShareStrings		Sempre
+, message \"	ShareStrings		, messaggio "
+Portuguese	ShareStrings		Portoghese
+User at IP %s banned for	ShareStrings		Utente con indirizzo IP %s bloccato per
+change your user name	ShareStrings		cambia il tuo nome utente
+[queryString]	ShareStrings		[stringaRicerca]
+Max Simultaneous Downloads Per User	ShareStrings		Max Scaricamenti Simultanei per Utente
+Error starting download--no accept port!	ShareStrings		Errore nell'iniziare lo scaricamento--nessuna porta accettata!
+Timestamps	ShareStrings		Mostra Tempi
+Sent: 	ShareStrings		Inv.: 
+set command for when transfers cease	ShareStrings		set command for when transfers cease
+Stopped Query	ShareStrings		Ricerca interrotta
+Error writing to file 	ShareStrings		Errore nella scrittura del file 
+Current /watch pattern is: 	ShareStrings		Pattern di osservazione corrente: 
+Selection	ShareStrings		Selection
+Stop Query	ShareStrings		Termina ricerca
+Error starting delayed connect--no transceiver thread!	ShareStrings		Errore nell'iniziare la connessione procrastinata--nessun thread di ricezione!
+Shortest Uploads First	ShareStrings		Shortest Uploads First
+Banned	ShareStrings		Banned
+Unknown	ShareStrings		Ignoto
+change the auto-away tag	ShareStrings		Cambia il tag di auto-allontanamento
+Korean	ShareStrings		Korean
+create an alias	ShareStrings		create an alias
+Name Said	ShareStrings		Name Said
+There are %i transfers in progress, are you sure you want to quit?	ShareStrings		Ci sono %i trasferimenti in corso, siete sicuri di voler uscire?
+Query:	ShareStrings		Ricerca:
+Move to Top	ShareStrings		Move to Top
+Error starting delayed connect!	ShareStrings		Errore nell'iniziare la connessione procrastinata!
+Log	ShareStrings		Log
+Local Nick	ShareStrings		Local Nick
+Modification Time	ShareStrings		Modificato il
+Retain File Paths	ShareStrings		Retain File Paths
+add startup command	ShareStrings		aggiungi comando di lancio
+Download Selected Files	ShareStrings		Scarica files selezionati
+show some miscellaneous info	ShareStrings		show some miscellaneous info
+Removed server: %s	ShareStrings		Removed server: %s
+false	ShareStrings		falso
+Recorded startup command: 	ShareStrings		Comando di lancio registrato: 
+Preparing to Download	ShareStrings		Preparazione allo scaricamento
+ - (%lu-%lu) of %lu results shown (	ShareStrings		 - (%lu-%lu) dei %lu risultati mostrati (
+Couldn't start ShareFileTransfer session to serve remote transfer request!  (Try Restarting Networking, then restarting HiShare)	ShareStrings		Impossibile iniziare sessione ShareFileTransfer per rispondere a richiesta di trasferimento remoto!  (Prova a far ripartire la rete, poi a rilanciare HiShare)
+Couldn't connect	ShareStrings		Impossibile connettersi
+/sec, 	ShareStrings		/sec, 
+Choose Colors	ShareStrings		Choose Colors
+command	ShareStrings		comando
+AutoPriv pattern set to: 	ShareStrings		Pattern AutoPriv impostato su: 
+Anonymous	ShareStrings		Anonimo
+Available irc-style commands:	ShareStrings		Comandi tipo IRC disponibili:
+User 	ShareStrings		Utente 
+Couldn't find font	ShareStrings		Couldn't find font
+until	ShareStrings		until
+<action>	ShareStrings		<azione>
+Load	ShareStrings		Carico
+Server version	ShareStrings		Versione del server
+Changed Query to	ShareStrings		Ricerca cambiata in
+Move Up	ShareStrings		Muovi Su
+Set max download rate (per transfer)	ShareStrings		Set max download rate (per transfer)
+Full User Queries	ShareStrings		Ricerche Utente Complete
+URL	ShareStrings		URL
+Auto-reconnect sequence terminated.	ShareStrings		Auto-reconnect sequence terminated.
+Text Background	ShareStrings		Text Background
+Client	ShareStrings		Client
+ (a.k.a. 	ShareStrings		 (ossia 
+tag	ShareStrings		tag
+Watch	ShareStrings		Osserva
+Removed alias	ShareStrings		Removed alias
+Private	ShareStrings		Private
+Restore Preset	ShareStrings		Ripristina Impostazioni
+You are no longer connected to the MUSCLE server.	ShareStrings		Non sei più connesso al server MUSCLE.
+Remove Selected	ShareStrings		Rimuovi selezione
+Halt Transfer	ShareStrings		Interrompi Scaricamento
+Path	ShareStrings		Path
+Language	ShareStrings		Lingua
+Set alias	ShareStrings		Set alias
+User Name:	ShareStrings		Nome utente:
+disconnect from the server	ShareStrings		disconnettiti dal server
+%.1fMB used (%.1fMB available)	ShareStrings		%.1fMB usati (%.1fMB disponibili)
+Italian	ShareStrings		Italiano
+show this help text	ShareStrings		mostra questo testo d'aiuto
+[font name]	ShareStrings		[font name]
+HiShare is listening on port %u.  Select Connect from the File menu to begin!	ShareStrings		HiShare sta ascoltando sulla porta %u.  Scegli Collegati dal menu File per iniziare!
+Connect to server	ShareStrings		Collegati al server
+HiShare v%s is now available for download.  You can upgrade at %s	ShareStrings		HiShare v%s is now available for download.  You can upgrade at %s
+Russian	ShareStrings		Russa
+Ping	ShareStrings		Ping
+Error	ShareStrings		Errore
+Files	ShareStrings		Files
+quit HiShare	ShareStrings		esci da HiShare
+Default	ShareStrings		Default
+Text	ShareStrings		Text
+Preparing to Upload	ShareStrings		Preparazione al caricamento
+Settings	ShareStrings		Impostazioni
+Font reset to default	ShareStrings		Font reset to default
+shell command	ShareStrings		shell command
+Awaiting callback...	ShareStrings		In attesa di risposta...
+I'm Firewalled	ShareStrings		Sono Dietro un Firewall
+Error, unknown command	ShareStrings		Errore, comando ignoto
+Added server: %s	ShareStrings		Added server: %s
+Clear Chat Log	ShareStrings		Cancella il Chat Log
+Kind	ShareStrings		Tipo
+Download complete	ShareStrings		Scaricamento completo
+Display	ShareStrings		Visualizza
+User #	ShareStrings		Utente #
+Font size reset to default	ShareStrings		Font size reset to default
+Turkish	ShareStrings		Turkish
+Action	ShareStrings		Azione
+ failed to initialize!	ShareStrings		 non è riuscita a partire!
+Startup commands cleared.	ShareStrings		Comandi di lancio rimossi.
+Max Simultaneous Uploads Per User	ShareStrings		Max Caricamenti Simultanei per Utente
+Error, no user specified!	ShareStrings		Errore, nessun utente specificato!
+Server status:	ShareStrings		Stato del server:
+Transferred this session:  %s down, %s up.	ShareStrings		Transferred this session:  %s down, %s up.
+set font	ShareStrings		set font
+ID	ShareStrings		ID
+Couldn't find 'shared' subdirectory, file sharing disabled!	ShareStrings		Impossibile trova la cartella 'shared', condivisione disabilitata!
+specify AutoPriv users	ShareStrings		specifica utenti AutoPriv
+idle command set to	ShareStrings		idle command set to
+Local session root	ShareStrings		Root della sessione locale
+System Uptime	ShareStrings		Tempo online del sistema
+by	ShareStrings		di
+Unknown data format!	ShareStrings		Formato dati ignoto!
+Request server status	ShareStrings		Richiedi stato del server
+Open Private Chat Window	ShareStrings		Apri Finestra Privata di Chat
+Ping returned in %Li milliseconds	ShareStrings		Il ping è ritornato in %Li millisecondi
+Limit Bandwidth	ShareStrings		Limit Bandwidth
+minutes	ShareStrings		minuti
+Will attempt auto-reconnect in %lu minutes.	ShareStrings		Will attempt auto-reconnect in %lu minutes.
+Status	ShareStrings		Stato
+ - %lu results shown (	ShareStrings		 - %lu risultati mostrati (
+Server:	ShareStrings		Server:
+clear the chat log	ShareStrings		cancella il chat log
+Max download rate is	ShareStrings		Max download rate is
+ is downloading 	ShareStrings		 sta scaricando 
+Ignore pattern removed.	ShareStrings		Ignora pattern rimosso.
+to	ShareStrings		a
+Open File	ShareStrings		Apri File
+Medium	ShareStrings		Medium
+ is now connected.	ShareStrings		 è ora connesso.
+\" not sent.	ShareStrings		" non inviato.
+Logging Disabled	ShareStrings		Log Disabilitato
+Download Progress	ShareStrings		Download Progress
+File download accept session for 	ShareStrings		Sessione di accettazione dello scaricamento per 
+No Limit	ShareStrings		Nessun Limite
+System	ShareStrings		Sistema
+execute shell command	ShareStrings		execute shell command
+Set max upload rate (per transfer)	ShareStrings		Set max upload rate (per transfer)
+Move Down	ShareStrings		Muovi Giù
+Error sharing screenshot	ShareStrings		Error sharing screenshot
+Login on Startup	ShareStrings		Collegati al Lancio
+Warning	ShareStrings		Attenzione
+weeks	ShareStrings		settimane
+Type /help for a list of available commands.	ShareStrings		Scrivi /help per la lista dei comandi disponibili.
+Low	ShareStrings		Low
+remove all upload bans	ShareStrings		elimina tutti i blocchi per upload
+, no connection information available.	ShareStrings		, nessuna informazione disponibile sulla connessione.
+Sent ping request to: 	ShareStrings		Manda una richiesta di ping a: 
+Upload Progress	ShareStrings		Upload Progress
+Error Messages	ShareStrings		Messaggi d'Errore
+Quit	ShareStrings		Esci
+specify users to watch	ShareStrings		specifica utenti da osservare
+ has finished downloading 	ShareStrings		 has finished downloading 
+Started Query	ShareStrings		Ricerca attivata
+High	ShareStrings		High
+Hungarian	ShareStrings		Hungarian
+Watch pattern removed.	ShareStrings		Pattern di osservazione eliminato.
+Japanese	ShareStrings		Japanese
+Examining Files...	ShareStrings		Sto esaminando i files...
+Save Preset	ShareStrings		Salva Impostazioni
+Query Changes	ShareStrings		Cambiamenti della Ricerca
+Don't Quit	ShareStrings		Non Uscire
+specify users to ignore	ShareStrings		specifica utenti da ignorare
+Connection to server failed.	ShareStrings		Connessione al server fallita.
+Executing shell command	ShareStrings		Executing shell command
+Attributes	ShareStrings		Attributi
+Swedish	ShareStrings		Svedese
+AutoClear Finished Downloads	ShareStrings		Elimina Automaticamente Scaricamenti Completati
+Chat	ShareStrings		Chat
+Border Areas	ShareStrings		Border Areas
+is now sharing a screenshot	ShareStrings		is now sharing a screenshot
+(Sharing %i files)	ShareStrings		(Sto condividendo %i files locali)
+Font size set to:	ShareStrings		Font size set to:
+connect to a server	ShareStrings		collegati al server
+German	ShareStrings		Tedesco
+true	ShareStrings		vero
+Remote Nick	ShareStrings		Remote Nick
+ - Connecting to 	ShareStrings		 - Collegamento a 
+from	ShareStrings		da
+start a new query	ShareStrings		inizia una nuova ricerca
+HiShare Private Chat Window	ShareStrings		HiShare Finestra Privata di Chat
+Info Messages	ShareStrings		Messaggi Informativi
+Custom window title is now	ShareStrings		Custom window title is now
+ has disconnected.	ShareStrings		 si è disconnesso.
+Upload Bandwidth	ShareStrings		Velocità di Caricamento
+AutoUpdate Server List	ShareStrings		AutoUpdate Server List
+do something	ShareStrings		fai qualcosa (azione)
+English	ShareStrings		Inglese
+Disconnect	ShareStrings		Disconnetti
+days	ShareStrings		giorni
+set font size	ShareStrings		set font size
+Open Logs Folder	ShareStrings		Apri Cartella Log
+About HiShare	ShareStrings		Informazioni su HiShare
+Uploads	ShareStrings		Caricamenti
+ is now known as 	ShareStrings		 è ora noto come 
+Spanish	ShareStrings		Spagnolo
+Download aborted	ShareStrings		Scaricamento interrotto
+Attempting auto-reconnect.	ShareStrings		Attempting auto-reconnect.
+Chat With:	ShareStrings		Chatta Con:
+Font set to	ShareStrings		Font set to
+File Sharing Enabled	ShareStrings		Condivisione files attiva
+<name>	ShareStrings		<nome>
+AutoPriv pattern removed.	ShareStrings		Pattern AutoPriv rimosso.
+<names or session ids>	ShareStrings		<nomi o ID sessioni>
+Current /autopriv pattern is: 	ShareStrings		Pattern /autopriv corrente: 
+Max upload rate is	ShareStrings		Max upload rate is
+[name and value]	ShareStrings		[name and value]
+Reset Layout	ShareStrings		Ripristina Impostazioni Finestra
+Norwegian	ShareStrings		Norvegese
+Data Compression	ShareStrings		Data Compression
+No target user specified in /msg	ShareStrings		Nessun utente specificato in /msg
+Can't download files from 	ShareStrings		Impossibile scaricare files da 
+logged in for	ShareStrings		connesso da
+<unknown type>	ShareStrings		<tipo ingnoto>
+Start Query	ShareStrings		Inizia ricerca
+File	ShareStrings		File
+share screenshot	ShareStrings		share screenshot

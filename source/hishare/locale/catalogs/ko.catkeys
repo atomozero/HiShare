@@ -1,0 +1,301 @@
+1	Korean	application/x-vnd.HiShare	2764403860
+Auto-away tag set to: 	ShareStrings		Auto-away tag set to: 
+Server uptime	ShareStrings		서버 운영시간
+Color prefs by	ShareStrings		Color prefs by
+ is now 	ShareStrings		 현재 접속 상태: 
+Language %s selected.  Change will take effect after you restart HiShare.	ShareStrings		언어가 %s 로 선택됨.  변경사항은 HiShare를 재 실행하셔야 적용됩니다.
+Ban User For	ShareStrings		Ban User For
+Can't download from user 	ShareStrings		사용자로 부터 내려받을 수 없음. 
+Scrolled Text Background	ShareStrings		Scrolled Text Background
+toggle custom coloring	ShareStrings		toggle custom coloring
+Bulgarian	ShareStrings		불가리아어
+remove an alias	ShareStrings		별칭 지우기
+Esperanto	ShareStrings		에스페란토
+Finnish	ShareStrings		Finnish
+File Size	ShareStrings		파일 크기
+Server memory usage	ShareStrings		서버 메모리사용 현황
+Restart Transfer	ShareStrings		전송 재시작
+Revert	ShareStrings		Revert
+Romanian	ShareStrings		Romanian
+Warning Messages	ShareStrings		경고 메세지
+synonym for /action	ShareStrings		synonym for /action
+Your name has been changed to 	ShareStrings		변경된 당신의 이름은 
+Auto Away	ShareStrings		자동으로 자리비움
+Disabled	ShareStrings		사용 불능
+<name or session id> <text>	ShareStrings		<이름 또는 세션 id> <문구>
+An Error Occurred.	ShareStrings		에러가 발생했음.
+Switch to Page	ShareStrings		페이지로 전환
+Connecting to server...	ShareStrings		서버에 접속중...
+Connection established.	ShareStrings		Connection established.
+Server status requested.	ShareStrings		서버 현황을 요청했음.
+Clear Finished/Failed Transfers	ShareStrings		완료/실패한 전송 삭제
+bytes/second	ShareStrings		bytes/second
+Results Per Page	ShareStrings		페이지당 결과
+set custom window title	ShareStrings		Custom 창제목 설정
+Chinese (Simplified)	ShareStrings		Chinese (Simplified)
+Unknown user 	ShareStrings		알수없는 사용자 
+Private Messages	ShareStrings		비공개 메세지
+Ignore pattern set to: 	ShareStrings		무시하기 형태 설정: 
+Serbian	ShareStrings		세르비아어
+Open Shared Folder	ShareStrings		공유폴더 열기
+Open Downloads Folder	ShareStrings		내려받기폴더 열기
+set user status string	ShareStrings		사용자 상태 문자 설정
+Current /ignore pattern is: 	ShareStrings		현재 /ignore 명령 패턴: 
+Error, couldn't create connect thread! (Try quitting HiShare, then Restarting Networking)	ShareStrings		에러, 연결 쓰레드를 생성할 수 없음! (HiShare를 종료하시오, 그런 후 네트워킹을 재시작하시오)
+Max Simultaneous Uploads	ShareStrings		동시에 보낼 수 있는 자료 수 제한
+Dutch	ShareStrings		독일어
+Hours	ShareStrings		시간
+Name	ShareStrings		이름
+ping other clients	ShareStrings		ping other clients
+away	ShareStrings		자리비움
+Queued (Remote machine too busy)	ShareStrings		대기 (상대방 컴퓨터에 작업이 너무 많음)
+Max Simultaneous Downloads	ShareStrings		동시에 받을 수 있는 자료 수 제한
+Rcvd: 	ShareStrings		받음: 
+Removing %lu upload bans	ShareStrings		Removing %lu upload bans
+User Events	ShareStrings		User Events
+stop the current query	ShareStrings		지금 쿼리 중지
+[serverName]	ShareStrings		[서버명]
+Open Folder	ShareStrings		폴더 열기
+File download session to 	ShareStrings		File download session to 
+, because both of us are behind firewalls.	ShareStrings		, because both of us are behind firewalls.
+Queued (Local machine too busy)	ShareStrings		대기 (당신의 컴퓨터에 작업이 너무 많음)
+Connect to 	ShareStrings		접속할 서버 
+Logging Enabled	ShareStrings		로깅 사용가능
+font size in points	ShareStrings		font size in points
+Connecting...	ShareStrings		접속중...
+Force away state	ShareStrings		Force away state
+ - Connected to 	ShareStrings		 - 에 접속했음 
+send a private message	ShareStrings		비공개 메세지 보내기
+Paused Upload Progress	ShareStrings		Paused Upload Progress
+Watch pattern set to: 	ShareStrings		지켜보기 형태 설정: 
+Your status has been changed to: 	ShareStrings		변경되어진 당신의 상태: 
+Couldn't start file-sharing server thread!  (Try Restarting Networking, then restarting HiShare)	ShareStrings		Couldn't start file-sharing server thread!  (네트워킹을 재시작한 후 HiShare를 다시 실행하시오)
+Beep When Mentioned	ShareStrings		언급되었을때 소리내기
+French	ShareStrings		프랑스어
+Move to Bottom	ShareStrings		맨아래로 이동
+clear startup commands	ShareStrings		시작시 명령 지우기
+Forever	ShareStrings		영원히
+, message \"	ShareStrings		, 메세지 "
+Portuguese	ShareStrings		포르투칼어
+User at IP %s banned for	ShareStrings		User at IP %s banned for
+change your user name	ShareStrings		당신의 이름을 변경
+[queryString]	ShareStrings		[queryString]
+Max Simultaneous Downloads Per User	ShareStrings		사용자별 동시에 받을수 있는 자료 수 제한
+Error starting download--no accept port!	ShareStrings		내려받기 시작중 에러--허가된 포트가 아님!
+Timestamps	ShareStrings		시간보기
+Sent: 	ShareStrings		보냄: 
+set command for when transfers cease	ShareStrings		set command for when transfers cease
+Stopped Query	ShareStrings		쿼리를 멈춤
+Error writing to file 	ShareStrings		파일을 쓰는중 에러
+Current /watch pattern is: 	ShareStrings		현재 /watch 명령 형태는: 
+Selection	ShareStrings		Selection
+Stop Query	ShareStrings		쿼리 중지
+Error starting delayed connect--no transceiver thread!	ShareStrings		지연 연결을 시작하는중 에러--송수신 쓰레드가 없음!
+Shortest Uploads First	ShareStrings		Shortest Uploads First
+Banned	ShareStrings		Banned
+Unknown	ShareStrings		모름
+change the auto-away tag	ShareStrings		change the auto-away tag
+Korean	ShareStrings		한국어
+create an alias	ShareStrings		별칭 생성
+Name Said	ShareStrings		Name Said
+There are %i transfers in progress, are you sure you want to quit?	ShareStrings		%i 전송이 진행중입니다, 정말 종료하길 원하십니까?
+Query:	ShareStrings		쿼리:
+Move to Top	ShareStrings		맨위로 이동
+Error starting delayed connect!	ShareStrings		지연 연결을 시작하는중 에러!
+Log	ShareStrings		로그
+Local Nick	ShareStrings		Local Nick
+Modification Time	ShareStrings		수정 시간
+Retain File Paths	ShareStrings		파일경로 유지
+add startup command	ShareStrings		시작시 명령 추가
+Download Selected Files	ShareStrings		선택된 파일 내려받기
+show some miscellaneous info	ShareStrings		show some miscellaneous info
+Removed server: %s	ShareStrings		제거된 서버: %s
+false	ShareStrings		거짓
+Recorded startup command: 	ShareStrings		기록된 시작시 명령: 
+Preparing to Download	ShareStrings		내려받기 준비중
+ - (%lu-%lu) of %lu results shown (	ShareStrings		 - (%lu-%lu) 의 %lu 결과 보기 (
+Couldn't start ShareFileTransfer session to serve remote transfer request!  (Try Restarting Networking, then restarting HiShare)	ShareStrings		Couldn't start ShareFileTransfer session to serve remote transfer request!  (네트워킹을 재시작한 후 HiShare를 다시 실행하시오)
+Couldn't connect	ShareStrings		접속할 수 없음
+/sec, 	ShareStrings		/초, 
+Choose Colors	ShareStrings		Choose Colors
+command	ShareStrings		명령
+AutoPriv pattern set to: 	ShareStrings		AutoPriv pattern set to: 
+Anonymous	ShareStrings		익명
+Available irc-style commands:	ShareStrings		irc-style 명령어 사용:
+User 	ShareStrings		사용자 
+Couldn't find font	ShareStrings		Couldn't find font
+until	ShareStrings		until
+<action>	ShareStrings		<행동>
+Load	ShareStrings		전송상태
+Server version	ShareStrings		서버 버전
+Changed Query to	ShareStrings		Changed Query to
+Move Up	ShareStrings		위로 이동
+Set max download rate (per transfer)	ShareStrings		Set max download rate (per transfer)
+Full User Queries	ShareStrings		모든 사용자 쿼리
+URL	ShareStrings		URL
+Auto-reconnect sequence terminated.	ShareStrings		Auto-reconnect sequence terminated.
+Text Background	ShareStrings		Text Background
+Client	ShareStrings		Client
+ (a.k.a. 	ShareStrings		 (이름. 
+tag	ShareStrings		tag
+Watch	ShareStrings		지켜보기
+Removed alias	ShareStrings		제거된 별칭
+Private	ShareStrings		Private
+Restore Preset	ShareStrings		Restore Preset
+You are no longer connected to the MUSCLE server.	ShareStrings		당신은 더이상 MUSCLE 서버에 연결되어 있지 않음.
+Remove Selected	ShareStrings		선택항목 제거
+Halt Transfer	ShareStrings		전송 중단
+Path	ShareStrings		경로
+Language	ShareStrings		언어
+Set alias	ShareStrings		별칭 설정
+User Name:	ShareStrings		사용자 이름:
+disconnect from the server	ShareStrings		서버로 부터 접속 중지
+%.1fMB used (%.1fMB available)	ShareStrings		%.1fMB used (%.1fMB available)
+Italian	ShareStrings		이태리어
+show this help text	ShareStrings		이것에 대한 도움말 보기
+[font name]	ShareStrings		[font name]
+HiShare is listening on port %u.  Select Connect from the File menu to begin!	ShareStrings		HiShare is listening on port %u.  시작하기 위해 파일메뉴의 접속할서버를 누르시오!
+Connect to server	ShareStrings		서버에 접속
+HiShare v%s is now available for download.  You can upgrade at %s	ShareStrings		HiShare v%s is now available for download.  You can upgrade at %s
+Russian	ShareStrings		러시아어
+Ping	ShareStrings		Ping
+Error	ShareStrings		에러
+Files	ShareStrings		파일
+quit HiShare	ShareStrings		HiShare 종료
+Default	ShareStrings		Default
+Text	ShareStrings		Text
+Preparing to Upload	ShareStrings		자료보내기 준비중
+Settings	ShareStrings		설정
+Font reset to default	ShareStrings		Font reset to default
+shell command	ShareStrings		쉘 명령어
+Awaiting callback...	ShareStrings		응답을 기다리는중...
+I'm Firewalled	ShareStrings		방화벽 사용중
+Error, unknown command	ShareStrings		에러, 모르는 명령어
+Added server: %s	ShareStrings		추가된 서버: %s
+Clear Chat Log	ShareStrings		채팅로그 지우기
+Kind	ShareStrings		유형
+Download complete	ShareStrings		내려받기 완료
+Display	ShareStrings		보기
+User #	ShareStrings		사용자 #
+Font size reset to default	ShareStrings		기본사항으로 폰트크기 재설정
+Turkish	ShareStrings		Turkish
+Action	ShareStrings		행동
+ failed to initialize!	ShareStrings		 failed to initialize!
+Startup commands cleared.	ShareStrings		시작시 명령을 지웠음.
+Max Simultaneous Uploads Per User	ShareStrings		사용자별 동시에 보낼수 있는 자료 수 제한
+Error, no user specified!	ShareStrings		에러, 기재된 사용자 없음!
+Server status:	ShareStrings		서버 상태:
+Transferred this session:  %s down, %s up.	ShareStrings		Transferred this session:  %s down, %s up.
+set font	ShareStrings		set font
+ID	ShareStrings		ID
+Couldn't find 'shared' subdirectory, file sharing disabled!	ShareStrings		공유된 하위디렉토리를 찾을 수 없음, 파일을 공유하지 않음!
+specify AutoPriv users	ShareStrings		specify AutoPriv users
+idle command set to	ShareStrings		idle command set to
+Local session root	ShareStrings		Local session root
+System Uptime	ShareStrings		시스템 운영시간
+by	ShareStrings		by
+Unknown data format!	ShareStrings		알수없는 데이타 형태!
+Request server status	ShareStrings		서버 현황 요청
+Open Private Chat Window	ShareStrings		비공개 채팅창 열기
+Ping returned in %Li milliseconds	ShareStrings		Ping returned in %Li milliseconds
+Limit Bandwidth	ShareStrings		Limit Bandwidth
+minutes	ShareStrings		분
+Will attempt auto-reconnect in %lu minutes.	ShareStrings		Will attempt auto-reconnect in %lu minutes.
+Status	ShareStrings		상태
+ - %lu results shown (	ShareStrings		 - %lu 결과 보기 (
+Server:	ShareStrings		서버:
+clear the chat log	ShareStrings		채팅로그를 삭제
+Max download rate is	ShareStrings		Max download rate is
+ is downloading 	ShareStrings		번이 자료 내려받는중 
+Ignore pattern removed.	ShareStrings		무시하기 형태 지우기.
+to	ShareStrings		수신
+Open File	ShareStrings		파일 열기
+Medium	ShareStrings		Medium
+ is now connected.	ShareStrings		 번이 지금 접속했음.
+\" not sent.	ShareStrings		" 보내지 않음
+Logging Disabled	ShareStrings		로깅 사용불능
+Download Progress	ShareStrings		Download Progress
+File download accept session for 	ShareStrings		File download accept session for 
+No Limit	ShareStrings		제한 없음
+System	ShareStrings		시스템
+execute shell command	ShareStrings		쉘 명령어 실행
+Set max upload rate (per transfer)	ShareStrings		Set max upload rate (per transfer)
+Move Down	ShareStrings		아래로 이동
+Error sharing screenshot	ShareStrings		Error sharing screenshot
+Login on Startup	ShareStrings		시작시 자동 로그인
+Warning	ShareStrings		경고
+weeks	ShareStrings		주
+Type /help for a list of available commands.	ShareStrings		사용가능한 명령어 목록을 보기위해 /help를 치시오.
+Low	ShareStrings		Low
+remove all upload bans	ShareStrings		remove all upload bans
+, no connection information available.	ShareStrings		, 이용가능한 접속 정보가 없음.
+Sent ping request to: 	ShareStrings		Sent ping request to: 
+Upload Progress	ShareStrings		Upload Progress
+Error Messages	ShareStrings		에러 메세지
+Quit	ShareStrings		종료
+specify users to watch	ShareStrings		지켜보기위한 사용자 등록
+ has finished downloading 	ShareStrings		 has finished downloading 
+Started Query	ShareStrings		Started Query
+High	ShareStrings		High
+Hungarian	ShareStrings		Hungarian
+Watch pattern removed.	ShareStrings		지켜보기 형태 지우기.
+Japanese	ShareStrings		Japanese
+Examining Files...	ShareStrings		파일 검사중...
+Save Preset	ShareStrings		Save Preset
+Query Changes	ShareStrings		쿼리 변경
+Don't Quit	ShareStrings		종료하지 마세요
+specify users to ignore	ShareStrings		무시할 사용자 등록
+Connection to server failed.	ShareStrings		서버에 접속 실패.
+Executing shell command	ShareStrings		쉘 명령어 실행중
+Attributes	ShareStrings		속성
+Swedish	ShareStrings		스웨덴어
+AutoClear Finished Downloads	ShareStrings		내려받기 종료시 리스트 자동 삭제
+Chat	ShareStrings		대화
+Border Areas	ShareStrings		Border Areas
+is now sharing a screenshot	ShareStrings		is now sharing a screenshot
+(Sharing %i files)	ShareStrings		(당신 컴퓨터의 %i 개 파일을 공유중)
+Font size set to:	ShareStrings		글꼴크기 설정:
+connect to a server	ShareStrings		서버에 접속
+German	ShareStrings		독일
+true	ShareStrings		참
+Remote Nick	ShareStrings		Remote Nick
+ - Connecting to 	ShareStrings		 - 에 접속중 
+from	ShareStrings		발신
+start a new query	ShareStrings		새 쿼리 시작
+HiShare Private Chat Window	ShareStrings		HiShare 비공개 채팅창
+Info Messages	ShareStrings		정보 메세지
+Custom window title is now	ShareStrings		Custom 창제목 is now
+ has disconnected.	ShareStrings		 번이 접속을 끊었음.
+Upload Bandwidth	ShareStrings		전송 대역폭
+AutoUpdate Server List	ShareStrings		서버목록 자동갱신
+do something	ShareStrings		do something
+English	ShareStrings		영어
+Disconnect	ShareStrings		접속중지
+days	ShareStrings		일
+set font size	ShareStrings		글꼴크기 설정
+Open Logs Folder	ShareStrings		로그폴더 열기
+About HiShare	ShareStrings		HiShare에 대해
+Uploads	ShareStrings		자료보내기
+ is now known as 	ShareStrings		 번의 이름: 
+Spanish	ShareStrings		스페인어
+Download aborted	ShareStrings		내려받기 실행중기
+Attempting auto-reconnect.	ShareStrings		Attempting auto-reconnect.
+Chat With:	ShareStrings		채팅 상대:
+Font set to	ShareStrings		Font set to
+File Sharing Enabled	ShareStrings		파일공유 사용가능
+<name>	ShareStrings		<이름>
+AutoPriv pattern removed.	ShareStrings		AutoPriv pattern removed.
+<names or session ids>	ShareStrings		<이름 또는 세션 ids>
+Current /autopriv pattern is: 	ShareStrings		Current /autopriv pattern is: 
+Max upload rate is	ShareStrings		Max upload rate is
+[name and value]	ShareStrings		[name and value]
+Reset Layout	ShareStrings		창배치 재정리
+Norwegian	ShareStrings		노르웨이어
+Data Compression	ShareStrings		Data Compression
+No target user specified in /msg	ShareStrings		/msg명령안에 기재된 사용자가 없음
+Can't download files from 	ShareStrings		Can't download files from 
+logged in for	ShareStrings		logged in for
+<unknown type>	ShareStrings		<알수없는 타입>
+Start Query	ShareStrings		쿼리 시작
+File	ShareStrings		파일
+share screenshot	ShareStrings		share screenshot

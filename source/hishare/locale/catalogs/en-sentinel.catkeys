@@ -1,0 +1,301 @@
+1	English	application/x-vnd.Sugoi-BeShare	1214514274
+Auto-away tag set to: 	ShareStrings		Auto-away tag set to: 
+Server uptime	ShareStrings		Server uptime
+Color prefs by	ShareStrings		Color prefs by
+ is now 	ShareStrings		 is now 
+Ban User For	ShareStrings		Ban User For
+Can't download from user 	ShareStrings		Can't download from user 
+Scrolled Text Background	ShareStrings		Scrolled Text Background
+toggle custom coloring	ShareStrings		toggle custom coloring
+Bulgarian	ShareStrings		Bulgarian
+remove an alias	ShareStrings		remove an alias
+Esperanto	ShareStrings		Esperanto
+BeShare v%s is now available for download.  You can upgrade at %s	ShareStrings		BeShare v%s is now available for download.  You can upgrade at %s
+Finnish	ShareStrings		Finnish
+File Size	ShareStrings		File Size
+Server memory usage	ShareStrings		Server memory usage
+Restart Transfer	ShareStrings		Restart Transfer
+Revert	ShareStrings		Revert
+Romanian	ShareStrings		Romanian
+Warning Messages	ShareStrings		Warning Messages
+synonym for /action	ShareStrings		synonym for /action
+Your name has been changed to 	ShareStrings		Your name has been changed to 
+Auto Away	ShareStrings		Auto Away
+Disabled	ShareStrings		Disabled
+<name or session id> <text>	ShareStrings		<name or session id> <text>
+An Error Occurred.	ShareStrings		An Error Occurred.
+Switch to Page	ShareStrings		Switch to Page
+Connecting to server...	ShareStrings		Connecting to server...
+Connection established.	ShareStrings		Connection established.
+Server status requested.	ShareStrings		Server status requested.
+Couldn't start ShareFileTransfer session to serve remote transfer request!  (Try Restarting Networking, then restarting BeShare)	ShareStrings		Couldn't start ShareFileTransfer session to serve remote transfer request!  (Try Restarting Networking, then restarting BeShare)
+Clear Finished/Failed Transfers	ShareStrings		Clear Finished/Failed Transfers
+bytes/second	ShareStrings		bytes/second
+Results Per Page	ShareStrings		Results Per Page
+set custom window title	ShareStrings		set custom window title
+Chinese (Simplified)	ShareStrings		Chinese (Simplified)
+Unknown user 	ShareStrings		Unknown user 
+Private Messages	ShareStrings		Private Messages
+Ignore pattern set to: 	ShareStrings		Ignore pattern set to: 
+Serbian	ShareStrings		Serbian
+Open Shared Folder	ShareStrings		Open Shared Folder
+Open Downloads Folder	ShareStrings		Open Downloads Folder
+set user status string	ShareStrings		set user status string
+Current /ignore pattern is: 	ShareStrings		Current /ignore pattern is: 
+Max Simultaneous Uploads	ShareStrings		Max Simultaneous Uploads
+Dutch	ShareStrings		Dutch
+Hours	ShareStrings		Hours
+Name	ShareStrings		Name
+ping other clients	ShareStrings		ping other clients
+away	ShareStrings		away
+Queued (Remote machine too busy)	ShareStrings		Queued (Remote machine too busy)
+Max Simultaneous Downloads	ShareStrings		Max Simultaneous Downloads
+Rcvd: 	ShareStrings		Rcvd: 
+Removing %lu upload bans	ShareStrings		Removing %lu upload bans
+User Events	ShareStrings		User Events
+stop the current query	ShareStrings		stop the current query
+[serverName]	ShareStrings		[serverName]
+Open Folder	ShareStrings		Open Folder
+File download session to 	ShareStrings		File download session to 
+, because both of us are behind firewalls.	ShareStrings		, because both of us are behind firewalls.
+Queued (Local machine too busy)	ShareStrings		Queued (Local machine too busy)
+Connect to 	ShareStrings		Connect to 
+Logging Enabled	ShareStrings		Logging Enabled
+font size in points	ShareStrings		font size in points
+Connecting...	ShareStrings		Connecting...
+BeShare is listening on port %u.  Select Connect from the File menu to begin!	ShareStrings		BeShare is listening on port %u.  Select Connect from the File menu to begin!
+Force away state	ShareStrings		Force away state
+ - Connected to 	ShareStrings		 - «CK»Connected to 
+send a private message	ShareStrings		send a private message
+Paused Upload Progress	ShareStrings		Paused Upload Progress
+Watch pattern set to: 	ShareStrings		Watch pattern set to: 
+Your status has been changed to: 	ShareStrings		Your status has been changed to: 
+Beep When Mentioned	ShareStrings		Beep When Mentioned
+French	ShareStrings		French
+Move to Bottom	ShareStrings		Move to Bottom
+clear startup commands	ShareStrings		clear startup commands
+Forever	ShareStrings		Forever
+, message \"	ShareStrings		, message "
+Portuguese	ShareStrings		Portuguese
+User at IP %s banned for	ShareStrings		User at IP %s banned for
+change your user name	ShareStrings		change your user name
+quit BeShare	ShareStrings		quit BeShare
+[queryString]	ShareStrings		[queryString]
+Max Simultaneous Downloads Per User	ShareStrings		Max Simultaneous Downloads Per User
+Error starting download--no accept port!	ShareStrings		Error starting download--no accept port!
+Timestamps	ShareStrings		Timestamps
+Sent: 	ShareStrings		Sent: 
+set command for when transfers cease	ShareStrings		set command for when transfers cease
+Stopped Query	ShareStrings		Stopped Query
+Error writing to file 	ShareStrings		Error writing to file 
+Current /watch pattern is: 	ShareStrings		Current /watch pattern is: 
+Selection	ShareStrings		Selection
+Stop Query	ShareStrings		Stop Query
+Error starting delayed connect--no transceiver thread!	ShareStrings		Error starting delayed connect--no transceiver thread!
+Shortest Uploads First	ShareStrings		Shortest Uploads First
+Banned	ShareStrings		Banned
+Unknown	ShareStrings		Unknown
+change the auto-away tag	ShareStrings		change the auto-away tag
+Korean	ShareStrings		Korean
+create an alias	ShareStrings		create an alias
+Name Said	ShareStrings		Name Said
+There are %i transfers in progress, are you sure you want to quit?	ShareStrings		There are %i transfers in progress, are you sure you want to quit?
+Query:	ShareStrings		Query:
+Move to Top	ShareStrings		Move to Top
+Error starting delayed connect!	ShareStrings		Error starting delayed connect!
+Log	ShareStrings		Log
+Local Nick	ShareStrings		Local Nick
+Modification Time	ShareStrings		Modification Time
+Retain File Paths	ShareStrings		Retain File Paths
+add startup command	ShareStrings		add startup command
+Download Selected Files	ShareStrings		Download Selected Files
+show some miscellaneous info	ShareStrings		show some miscellaneous info
+Removed server: %s	ShareStrings		Removed server: %s
+false	ShareStrings		false
+Recorded startup command: 	ShareStrings		Recorded startup command: 
+Preparing to Download	ShareStrings		Preparing to Download
+ - (%lu-%lu) of %lu results shown (	ShareStrings		 - (%lu-%lu) of %lu results shown (
+Couldn't connect	ShareStrings		Couldn't connect
+/sec, 	ShareStrings		/sec, 
+Choose Colors	ShareStrings		Choose Colors
+command	ShareStrings		command
+AutoPriv pattern set to: 	ShareStrings		AutoPriv pattern set to: 
+Anonymous	ShareStrings		Anonymous
+Available irc-style commands:	ShareStrings		Available irc-style commands:
+User 	ShareStrings		User 
+Couldn't find font	ShareStrings		Couldn't find font
+until	ShareStrings		until
+<action>	ShareStrings		<action>
+Load	ShareStrings		Load
+BeShare Private Chat Window	ShareStrings		BeShare Private Chat Window
+Server version	ShareStrings		Server version
+Changed Query to	ShareStrings		Changed Query to
+Move Up	ShareStrings		Move Up
+Set max download rate (per transfer)	ShareStrings		Set max download rate (per transfer)
+Full User Queries	ShareStrings		Full User Queries
+URL	ShareStrings		URL
+Auto-reconnect sequence terminated.	ShareStrings		Auto-reconnect sequence terminated.
+Text Background	ShareStrings		Text Background
+Client	ShareStrings		Client
+ (a.k.a. 	ShareStrings		 (a.k.a. 
+tag	ShareStrings		tag
+Watch	ShareStrings		Watch
+Removed alias	ShareStrings		Removed alias
+Private	ShareStrings		Private
+Restore Preset	ShareStrings		Restore Preset
+You are no longer connected to the MUSCLE server.	ShareStrings		You are no longer connected to the MUSCLE server.
+Remove Selected	ShareStrings		Remove Selected
+Halt Transfer	ShareStrings		Halt Transfer
+Path	ShareStrings		Path
+Language	ShareStrings		Language
+Set alias	ShareStrings		Set alias
+User Name:	ShareStrings		User Name:
+disconnect from the server	ShareStrings		disconnect from the server
+%.1fMB used (%.1fMB available)	ShareStrings		%.1fMB used (%.1fMB available)
+Italian	ShareStrings		Italian
+show this help text	ShareStrings		show this help text
+[font name]	ShareStrings		[font name]
+Connect to server	ShareStrings		Connect to server
+Russian	ShareStrings		Russian
+Ping	ShareStrings		Ping
+Error	ShareStrings		Error
+Files	ShareStrings		Files
+Default	ShareStrings		Default
+Text	ShareStrings		Text
+Preparing to Upload	ShareStrings		Preparing to Upload
+Settings	ShareStrings		Settings
+Font reset to default	ShareStrings		Font reset to default
+shell command	ShareStrings		shell command
+Awaiting callback...	ShareStrings		Awaiting callback...
+I'm Firewalled	ShareStrings		I'm Firewalled
+Error, unknown command	ShareStrings		Error, unknown command
+Added server: %s	ShareStrings		Added server: %s
+Clear Chat Log	ShareStrings		Clear Chat Log
+Error, couldn't create connect thread! (Try quitting BeShare, then Restarting Networking)	ShareStrings		Error, couldn't create connect thread! (Try quitting BeShare, then Restarting Networking)
+Kind	ShareStrings		Kind
+Download complete	ShareStrings		Download complete
+Display	ShareStrings		Display
+User #	ShareStrings		User #
+Font size reset to default	ShareStrings		Font size reset to default
+Turkish	ShareStrings		Turkish
+Action	ShareStrings		Action
+ failed to initialize!	ShareStrings		 failed to initialize!
+Startup commands cleared.	ShareStrings		Startup commands cleared.
+Max Simultaneous Uploads Per User	ShareStrings		Max Simultaneous Uploads Per User
+Error, no user specified!	ShareStrings		Error, no user specified!
+Server status:	ShareStrings		Server status:
+Transferred this session:  %s down, %s up.	ShareStrings		Transferred this session:  %s down, %s up.
+About BeShare	ShareStrings		About BeShare
+set font	ShareStrings		set font
+ID	ShareStrings		ID
+Couldn't find 'shared' subdirectory, file sharing disabled!	ShareStrings		Couldn't find 'shared' subdirectory, file sharing disabled!
+specify AutoPriv users	ShareStrings		specify AutoPriv users
+idle command set to	ShareStrings		idle command set to
+Local session root	ShareStrings		Local session root
+System Uptime	ShareStrings		System Uptime
+by	ShareStrings		by
+Unknown data format!	ShareStrings		Unknown data format!
+Request server status	ShareStrings		Request server status
+Open Private Chat Window	ShareStrings		Open Private Chat Window
+Ping returned in %Li milliseconds	ShareStrings		Ping returned in %Li milliseconds
+Limit Bandwidth	ShareStrings		Limit Bandwidth
+minutes	ShareStrings		minutes
+Will attempt auto-reconnect in %lu minutes.	ShareStrings		Will attempt auto-reconnect in %lu minutes.
+Status	ShareStrings		Status
+ - %lu results shown (	ShareStrings		 - %lu results shown (
+Server:	ShareStrings		Server:
+clear the chat log	ShareStrings		clear the chat log
+Max download rate is	ShareStrings		Max download rate is
+ is downloading 	ShareStrings		 is downloading 
+Ignore pattern removed.	ShareStrings		Ignore pattern removed.
+to	ShareStrings		to
+Open File	ShareStrings		Open File
+Medium	ShareStrings		Medium
+ is now connected.	ShareStrings		 is now connected.
+\" not sent.	ShareStrings		" not sent.
+Logging Disabled	ShareStrings		Logging Disabled
+Download Progress	ShareStrings		Download Progress
+File download accept session for 	ShareStrings		File download accept session for 
+No Limit	ShareStrings		No Limit
+System	ShareStrings		System
+execute shell command	ShareStrings		execute shell command
+Set max upload rate (per transfer)	ShareStrings		Set max upload rate (per transfer)
+Move Down	ShareStrings		Move Down
+Error sharing screenshot	ShareStrings		Error sharing screenshot
+Login on Startup	ShareStrings		Login on Startup
+Warning	ShareStrings		Warning
+weeks	ShareStrings		weeks
+Type /help for a list of available commands.	ShareStrings		Type /help for a list of available commands.
+Low	ShareStrings		Low
+Language %s selected.  Change will take effect after you restart BeShare.	ShareStrings		Language %s selected.  Change will take effect after you restart BeShare.
+remove all upload bans	ShareStrings		remove all upload bans
+, no connection information available.	ShareStrings		, no connection information available.
+Sent ping request to: 	ShareStrings		Sent ping request to: 
+Upload Progress	ShareStrings		Upload Progress
+Error Messages	ShareStrings		Error Messages
+Quit	ShareStrings		Quit
+specify users to watch	ShareStrings		specify users to watch
+ has finished downloading 	ShareStrings		 has finished downloading 
+Started Query	ShareStrings		Started Query
+High	ShareStrings		High
+Hungarian	ShareStrings		Hungarian
+Watch pattern removed.	ShareStrings		Watch pattern removed.
+Japanese	ShareStrings		Japanese
+Examining Files...	ShareStrings		Examining Files...
+Save Preset	ShareStrings		Save Preset
+Query Changes	ShareStrings		Query Changes
+Don't Quit	ShareStrings		Don't Quit
+specify users to ignore	ShareStrings		specify users to ignore
+Connection to server failed.	ShareStrings		Connection to server failed.
+Executing shell command	ShareStrings		Executing shell command
+Attributes	ShareStrings		Attributes
+Swedish	ShareStrings		Swedish
+AutoClear Finished Downloads	ShareStrings		AutoClear Finished Downloads
+Chat	ShareStrings		Chat
+Border Areas	ShareStrings		Border Areas
+is now sharing a screenshot	ShareStrings		is now sharing a screenshot
+(Sharing %i files)	ShareStrings		(Sharing %i files)
+Font size set to:	ShareStrings		Font size set to:
+connect to a server	ShareStrings		connect to a server
+German	ShareStrings		German
+true	ShareStrings		true
+Remote Nick	ShareStrings		Remote Nick
+ - Connecting to 	ShareStrings		 - Connecting to 
+from	ShareStrings		from
+start a new query	ShareStrings		start a new query
+Info Messages	ShareStrings		Info Messages
+Custom window title is now	ShareStrings		Custom window title is now
+ has disconnected.	ShareStrings		 has disconnected.
+Upload Bandwidth	ShareStrings		Upload Bandwidth
+AutoUpdate Server List	ShareStrings		AutoUpdate Server List
+do something	ShareStrings		do something
+English	ShareStrings		English
+Disconnect	ShareStrings		Disconnect
+days	ShareStrings		days
+set font size	ShareStrings		set font size
+Open Logs Folder	ShareStrings		Open Logs Folder
+Uploads	ShareStrings		Uploads
+ is now known as 	ShareStrings		 is now known as 
+Spanish	ShareStrings		Spanish
+Download aborted	ShareStrings		Download aborted
+Attempting auto-reconnect.	ShareStrings		Attempting auto-reconnect.
+Chat With:	ShareStrings		Chat With:
+Font set to	ShareStrings		Font set to
+File Sharing Enabled	ShareStrings		File Sharing Enabled
+<name>	ShareStrings		<name>
+AutoPriv pattern removed.	ShareStrings		AutoPriv pattern removed.
+<names or session ids>	ShareStrings		<names or session ids>
+Current /autopriv pattern is: 	ShareStrings		Current /autopriv pattern is: 
+Max upload rate is	ShareStrings		Max upload rate is
+[name and value]	ShareStrings		[name and value]
+Reset Layout	ShareStrings		Reset Layout
+Norwegian	ShareStrings		Norwegian
+Data Compression	ShareStrings		Data Compression
+No target user specified in /msg	ShareStrings		No target user specified in /msg
+Can't download files from 	ShareStrings		Can't download files from 
+logged in for	ShareStrings		logged in for
+<unknown type>	ShareStrings		<unknown type>
+Couldn't start file-sharing server thread!  (Try Restarting Networking, then restarting BeShare)	ShareStrings		Couldn't start file-sharing server thread!  (Try Restarting Networking, then restarting BeShare)
+Start Query	ShareStrings		Start Query
+File	ShareStrings		File
+share screenshot	ShareStrings		share screenshot

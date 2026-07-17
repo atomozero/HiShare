@@ -1,0 +1,301 @@
+1	Hungarian	application/x-vnd.HiShare	2764403860
+Auto-away tag set to: 	ShareStrings		Az 'Auto-away' ('Elment / Itt van') átállítva: 
+Server uptime	ShareStrings		Szerverüzemidõ
+Color prefs by	ShareStrings		Színbeállítások
+ is now 	ShareStrings		 jelenleg 
+Language %s selected.  Change will take effect after you restart HiShare.	ShareStrings		A %s nyelv lett kiválasztva. A változásokhoz újra kell indítani a HiShare-t.
+Ban User For	ShareStrings		Felhasználó kitiltása
+Can't download from user 	ShareStrings		Nem tudok letölteni tõle: 
+Scrolled Text Background	ShareStrings		Görgetett szöveg háttere
+toggle custom coloring	ShareStrings		Átkapcsolás saját színekre
+Bulgarian	ShareStrings		Bolgár
+remove an alias	ShareStrings		Az álnév eltávolítása
+Esperanto	ShareStrings		Eszperantó
+Finnish	ShareStrings		Finnish
+File Size	ShareStrings		Fájl méret
+Server memory usage	ShareStrings		Szervermemória használat
+Restart Transfer	ShareStrings		Átvitel újraindítása
+Revert	ShareStrings		Vissza
+Romanian	ShareStrings		Román
+Warning Messages	ShareStrings		Figyelmeztetõ üzenet
+synonym for /action	ShareStrings		szinonima az /action parancshoz
+Your name has been changed to 	ShareStrings		A nevedet erre változtattad: 
+Auto Away	ShareStrings		'Auto Away' beállítása ('Elment / Itt van')
+Disabled	ShareStrings		Letiltva
+<name or session id> <text>	ShareStrings		<név vagy folyamat id> <szöveg>
+An Error Occurred.	ShareStrings		Le lett állítva a letöltés, vagy valami hiba történt...
+Switch to Page	ShareStrings		Lapozás
+Connecting to server...	ShareStrings		Csatlakozás a szerverhez...
+Connection established.	ShareStrings		Csatlakozás elfogadva.
+Server status requested.	ShareStrings		Szerverállapot kérése
+Clear Finished/Failed Transfers	ShareStrings		Befejezett és sikertelen átvitelek törlése
+bytes/second	ShareStrings		bájt/másodperc
+Results Per Page	ShareStrings		Keresési eredmény oldalanként
+set custom window title	ShareStrings		A megszokott ablakfejléc beállíítása
+Chinese (Simplified)	ShareStrings		Kínai
+Unknown user 	ShareStrings		Ismeretlen felhasználó
+Private Messages	ShareStrings		Privát üzenet
+Ignore pattern set to: 	ShareStrings		Ignore pattern set to: 
+Serbian	ShareStrings		Szerb
+Open Shared Folder	ShareStrings		Megosztott könyvtár ('shared') megnyitása
+Open Downloads Folder	ShareStrings		Letöltött fájlok könyvtára
+set user status string	ShareStrings		felhasználó állapotának beállítása
+Current /ignore pattern is: 	ShareStrings		Current /ignore pattern is: 
+Error, couldn't create connect thread! (Try quitting HiShare, then Restarting Networking)	ShareStrings		Hiba, nem lehet kapcsolódni. Próbálkozz azzal, hogy kilépsz a HiShare programból és újraindítod a hálózatot
+Max Simultaneous Uploads	ShareStrings		Max. egyidejû fájlküldés
+Dutch	ShareStrings		Holland
+Hours	ShareStrings		óra
+Name	ShareStrings		Név
+ping other clients	ShareStrings		Többi felhasználó jelzése
+away	ShareStrings		nincs itt
+Queued (Remote machine too busy)	ShareStrings		Sorbanállás (A távoli gép túlterhelt)
+Max Simultaneous Downloads	ShareStrings		Max. egyidejû letöltés
+Rcvd: 	ShareStrings		Fogadás: 
+Removing %lu upload bans	ShareStrings		%lu feltöltési tiltásának megszüntetése
+User Events	ShareStrings		Felhasználói események
+stop the current query	ShareStrings		jelenlegi keresés megállítása
+[serverName]	ShareStrings		[szervernév]
+Open Folder	ShareStrings		Könyvtár megnyitása
+File download session to 	ShareStrings		Letöltési szakasz: 
+, because both of us are behind firewalls.	ShareStrings		, mert mindegyikünk tûzfalat használ
+Queued (Local machine too busy)	ShareStrings		Sorbanállás (A géped túlterhelt)
+Connect to 	ShareStrings		Csatlakozás:
+Logging Enabled	ShareStrings		Naplózás engedélyezve
+font size in points	ShareStrings		betûméret pontokban
+Connecting...	ShareStrings		Csatlakozás...
+Force away state	ShareStrings		Az 'Auto-away' ('Elment / Itt van') beállítása tetszőleges szövegre pl.: /away alszom
+ - Connected to 	ShareStrings		Csatlakozva:
+send a private message	ShareStrings		küld egy privát üzenetet
+Paused Upload Progress	ShareStrings		Küldési folyamat megállítása (Pause)
+Watch pattern set to: 	ShareStrings		Figyelés beállítva: 
+Your status has been changed to: 	ShareStrings		Az állapotod erre változott: 
+Couldn't start file-sharing server thread!  (Try Restarting Networking, then restarting HiShare)	ShareStrings		Nem lehet indítani a fájlmegosztást! (Próbálkozz azzal, hogy kilépsz a HiShare programból és újraindítod a hálózatot)
+Beep When Mentioned	ShareStrings		Hangjelzés, amikor engem érintõ dolog van
+French	ShareStrings		Francia
+Move to Bottom	ShareStrings		Lista végére helyezés
+clear startup commands	ShareStrings		indítási parancs törlése
+Forever	ShareStrings		Véglegesen
+, message \"	ShareStrings		, az üzenet "
+Portuguese	ShareStrings		Portugál
+User at IP %s banned for	ShareStrings		%s IP -jû felhasználó kitiltva.
+change your user name	ShareStrings		neved megváltoztatása
+[queryString]	ShareStrings		[keresendõ szó]
+Max Simultaneous Downloads Per User	ShareStrings		Max. egyidejû letöltés felhasználónként
+Error starting download--no accept port!	ShareStrings		Letöltési hiba, nincs elfogadva a port.
+Timestamps	ShareStrings		Idõegység
+Sent: 	ShareStrings		Küldés: 
+set command for when transfers cease	ShareStrings		Parancsmegadás, amikor az átvitel megszûnik
+Stopped Query	ShareStrings		Keresés megállítva
+Error writing to file 	ShareStrings		Hiba a fájl írásakor
+Current /watch pattern is: 	ShareStrings		Jelenleg figyelve: 
+Selection	ShareStrings		Kijelölés
+Stop Query	ShareStrings		Keresést leállít
+Error starting delayed connect--no transceiver thread!	ShareStrings		Indítási hiba, késleltetett csatlakozás, nincs adó-vevõ lánc
+Shortest Uploads First	ShareStrings		Shortest Uploads First
+Banned	ShareStrings		Kijelzés
+Unknown	ShareStrings		Ismeretlen
+change the auto-away tag	ShareStrings		Az 'auto-away' ('Elment / Itt van') változtatása
+Korean	ShareStrings		Koreai
+create an alias	ShareStrings		egy álnevet alkot
+Name Said	ShareStrings		Kimondott név
+There are %i transfers in progress, are you sure you want to quit?	ShareStrings		Most %i átvitel van folyamatban. Kilépéskor ezek megszakadnak. Biztos ki akarsz lépni ?
+Query:	ShareStrings		Keresés.
+Move to Top	ShareStrings		Lista elejére helyezés
+Error starting delayed connect!	ShareStrings		Indítási hiba, késleltetett csatlakozás,
+Log	ShareStrings		Naplózás
+Local Nick	ShareStrings		Saját becenév
+Modification Time	ShareStrings		Módosítva
+Retain File Paths	ShareStrings		File elérési útvonalának megjegyzése
+add startup command	ShareStrings		indítási parancs hozzáadása
+Download Selected Files	ShareStrings		Kijelölt fájlok letöltése
+show some miscellaneous info	ShareStrings		mutat mindenféle vegyes információt
+Removed server: %s	ShareStrings		Szerver eltávolítása: %s
+false	ShareStrings		hamis
+Recorded startup command: 	ShareStrings		indítási parancs felvétele
+Preparing to Download	ShareStrings		Felkészülés a letöltéshez
+ - (%lu-%lu) of %lu results shown (	ShareStrings		 - (%lu-%lu) of %lu találat van (
+Couldn't start ShareFileTransfer session to serve remote transfer request!  (Try Restarting Networking, then restarting HiShare)	ShareStrings		Nem lehet elindítani a megosztott fájlok szakaszainak átvitelét a távoli géprõl. (Próbálkozz azzal, hogy kilépsz a HiShare programból és újraindítod a hálózatot)
+Couldn't connect	ShareStrings		Nem lehet csatlakozni
+/sec, 	ShareStrings		/sec. 
+Choose Colors	ShareStrings		Színek kiválasztása
+command	ShareStrings		parancs
+AutoPriv pattern set to: 	ShareStrings		Automatikus magánbeszélgetés beállítva: 
+Anonymous	ShareStrings		Névtelen
+Available irc-style commands:	ShareStrings		Elérhetõ IRC-stílusú parancsok: 
+User 	ShareStrings		Felhasználó 
+Couldn't find font	ShareStrings		Couldn't find font
+until	ShareStrings		ameddig
+<action>	ShareStrings		<akció>
+Load	ShareStrings		Betöltés
+Server version	ShareStrings		Szerver verzió
+Changed Query to	ShareStrings		Keresés változtatása: 
+Move Up	ShareStrings		Feljebb rak
+Set max download rate (per transfer)	ShareStrings		Max. letöltési arány beállítása (átvitelenként)
+Full User Queries	ShareStrings		Keresés mindenkinél egyszerre
+URL	ShareStrings		URL
+Auto-reconnect sequence terminated.	ShareStrings		Megszakításkor újracsatlakozás.
+Text Background	ShareStrings		Szöveg háttere
+Client	ShareStrings		Kliens
+ (a.k.a. 	ShareStrings		 (--név: 
+tag	ShareStrings		cimke
+Watch	ShareStrings		Figyelés beállítása : 
+Removed alias	ShareStrings		Álnév eltávolítása
+Private	ShareStrings		Privát
+Restore Preset	ShareStrings		Beállítások (-preset) visszaállítása
+You are no longer connected to the MUSCLE server.	ShareStrings		Nem sokáig voltál csatlakozva a MUSCLE szerverhez...
+Remove Selected	ShareStrings		Kijelöltek eltávolítása
+Halt Transfer	ShareStrings		Átvitel megállítása
+Path	ShareStrings		Útvonal
+Language	ShareStrings		Nyelv
+Set alias	ShareStrings		Álnéven beállít
+User Name:	ShareStrings		Felhasználónév:
+disconnect from the server	ShareStrings		Csatlakozás bontása
+%.1fMB used (%.1fMB available)	ShareStrings		%.1fMB felhasznált (%.1fMB rendelkezésre áll)
+Italian	ShareStrings		Olasz
+show this help text	ShareStrings		ennek a súgó szövegnek a mutatása
+[font name]	ShareStrings		[font name]
+HiShare is listening on port %u.  Select Connect from the File menu to begin!	ShareStrings		HiShare kilistázza a  %u portot. A továbbiakban (ha nincs beállítva az azonnali csatlakozás) válaszd a Fájl menüben a 'Csatlakozás' parancsot!
+Connect to server	ShareStrings		Csatlakozás a szerverhez
+HiShare v%s is now available for download.  You can upgrade at %s	ShareStrings		HiShare v%s most elérhetõ a letöltéshez. Innen frissítheted: %s
+Russian	ShareStrings		Orosz
+Ping	ShareStrings		Ping
+Error	ShareStrings		Hiba
+Files	ShareStrings		Fájlok
+quit HiShare	ShareStrings		Kilépés a programból
+Default	ShareStrings		Alapértelmezett
+Text	ShareStrings		Szöveg
+Preparing to Upload	ShareStrings		Felkészülés a feltöltéshez
+Settings	ShareStrings		Beállítások
+Font reset to default	ShareStrings		Font reset to default
+shell command	ShareStrings		Shell parancs
+Awaiting callback...	ShareStrings		Várakozás a visszajelzésre...
+I'm Firewalled	ShareStrings		Tûzfalazás
+Error, unknown command	ShareStrings		Hiba, ismeretlen parancs
+Added server: %s	ShareStrings		Szerver hozzásadása: %s
+Clear Chat Log	ShareStrings		Társalgási napló törlése
+Kind	ShareStrings		Típus
+Download complete	ShareStrings		Letöltés teljesítve.
+Display	ShareStrings		Megjelenítés
+User #	ShareStrings		Felhasználó # 
+Font size reset to default	ShareStrings		Betûméret alapértelmezettre állítása
+Turkish	ShareStrings		Turkish
+Action	ShareStrings		Akció
+ failed to initialize!	ShareStrings		 sikertelen inicializálás
+Startup commands cleared.	ShareStrings		Indítási parancs törölve.
+Max Simultaneous Uploads Per User	ShareStrings		Max. egyidejû fájlküldés felhasználónként
+Error, no user specified!	ShareStrings		Hiba, nincs megadva felhasználó
+Server status:	ShareStrings		Szerver állapot
+Transferred this session:  %s down, %s up.	ShareStrings		Az átviteli folyamat:  %s lent, %s fent.
+set font	ShareStrings		set font
+ID	ShareStrings		ID
+Couldn't find 'shared' subdirectory, file sharing disabled!	ShareStrings		Nem található a 'shared' alkönyvtár, a fájlmegosztás így letiltásra kerül.
+specify AutoPriv users	ShareStrings		Automatikus magánbeszélgetésre kijelölt felhasználók
+idle command set to	ShareStrings		üresjárati parancs beállítása
+Local session root	ShareStrings		Helyi fõ munkafolyamat
+System Uptime	ShareStrings		Rendszerüzemidõ
+by	ShareStrings		by
+Unknown data format!	ShareStrings		Ismeretlen adatformátum
+Request server status	ShareStrings		Kért szerverállapot
+Open Private Chat Window	ShareStrings		Privát társalgó ablak megnyitása
+Ping returned in %Li milliseconds	ShareStrings		Visszajelzés %Li ezredmásodpercenként
+Limit Bandwidth	ShareStrings		Sávszélesség határa
+minutes	ShareStrings		perc
+Will attempt auto-reconnect in %lu minutes.	ShareStrings		%lu perc múlva megint megpróbálunk csatlakozni.
+Status	ShareStrings		Állapot
+ - %lu results shown (	ShareStrings		 - %lu darab keresési eredmény  (
+Server:	ShareStrings		Szerver:
+clear the chat log	ShareStrings		társalgási napló törlése
+Max download rate is	ShareStrings		Max. letöltési arány: 
+ is downloading 	ShareStrings		 letöltést indít: 
+Ignore pattern removed.	ShareStrings		Ignore pattern removed.
+to	ShareStrings		Cél: 
+Open File	ShareStrings		Fájl megnyitása
+Medium	ShareStrings		Közepes
+ is now connected.	ShareStrings		 jelenleg kapcsolatban van.
+\" not sent.	ShareStrings		" nem lett elküldve.
+Logging Disabled	ShareStrings		Naplózás letiltva
+Download Progress	ShareStrings		Letöltési folyamat
+File download accept session for 	ShareStrings		File letöltés elfogadva ehhez a szakaszhoz: 
+No Limit	ShareStrings		Határok nélkül
+System	ShareStrings		Rendszer
+execute shell command	ShareStrings		Shell parancs indítása
+Set max upload rate (per transfer)	ShareStrings		Max. feltöltési arány beállítása (átvitelenként)
+Move Down	ShareStrings		Lejjebb rak
+Error sharing screenshot	ShareStrings		Hiba a megosztott képernyőmentésben
+Login on Startup	ShareStrings		Bejelentkezés a programindításkor
+Warning	ShareStrings		Figyelmeztetés
+weeks	ShareStrings		hét
+Type /help for a list of available commands.	ShareStrings		Írd le:  /help  --és kapsz egy listát az elérhetõ parancsokról 
+Low	ShareStrings		Kicsiny
+remove all upload bans	ShareStrings		minden feltöltési tiltás megszüntetése
+, no connection information available.	ShareStrings		, nincs a kapcsolatról hozzáférhetõ információ
+Sent ping request to: 	ShareStrings		Kért jelzés küldése: 
+Upload Progress	ShareStrings		Küldési folyamat
+Error Messages	ShareStrings		Hibaüzenet
+Quit	ShareStrings		Kilépés
+specify users to watch	ShareStrings		megnevezett felhasználók figyelése
+ has finished downloading 	ShareStrings		 ezt a letöltést befejezte: 
+Started Query	ShareStrings		Keresés indítása
+High	ShareStrings		Tömény
+Hungarian	ShareStrings		Magyar
+Watch pattern removed.	ShareStrings		Figyelés megszüntetve.
+Japanese	ShareStrings		Japanese
+Examining Files...	ShareStrings		File vizsgálata...
+Save Preset	ShareStrings		Beállítások (-preset) mentése
+Query Changes	ShareStrings		Keresés módosítása
+Don't Quit	ShareStrings		Nem akarok kilépni
+specify users to ignore	ShareStrings		felhasználók jellemzõi figyelmen kívül hagyva
+Connection to server failed.	ShareStrings		A szerverhez történõ csatlakozás problémába ütközött...
+Executing shell command	ShareStrings		Shell parancs indítása
+Attributes	ShareStrings		Tulajdonságok
+Swedish	ShareStrings		Svéd
+AutoClear Finished Downloads	ShareStrings		Befejezett letöltések törlése a listából
+Chat	ShareStrings		Társalgás
+Border Areas	ShareStrings		Keret területe
+is now sharing a screenshot	ShareStrings		a képernyőmentés megosztva 
+(Sharing %i files)	ShareStrings		(Megosztva %i helyi fájl)
+Font size set to:	ShareStrings		Betûméret átállítva :
+connect to a server	ShareStrings		Csatlakozás egy szerverhez
+German	ShareStrings		Német
+true	ShareStrings		létezõ
+Remote Nick	ShareStrings		A távoli személy neve
+ - Connecting to 	ShareStrings		 - Csatlakozás :
+from	ShareStrings		Forrás: 
+start a new query	ShareStrings		egy új keresés indítása
+HiShare Private Chat Window	ShareStrings		HiShare társalgó ablak
+Info Messages	ShareStrings		Információközlés
+Custom window title is now	ShareStrings		A megszokott ablakfejléc jelenleg 
+ has disconnected.	ShareStrings		 kapcsolatot bontott.
+Upload Bandwidth	ShareStrings		Feltöltési sávszélesség
+AutoUpdate Server List	ShareStrings		Szerverlista automatikus frissítése
+do something	ShareStrings		csinálni valamit
+English	ShareStrings		Angol
+Disconnect	ShareStrings		Kapcsolatbontás
+days	ShareStrings		nap
+set font size	ShareStrings		betûméret megállapítása
+Open Logs Folder	ShareStrings		A naplókönyvtár megnyitása
+About HiShare	ShareStrings		HiShare névjegy
+Uploads	ShareStrings		Feltöltés
+ is now known as 	ShareStrings		 ezen a néven ismert:  
+Spanish	ShareStrings		Spanyol
+Download aborted	ShareStrings		Letöltés megszakítva.
+Attempting auto-reconnect.	ShareStrings		Kísérlet az újracsatlakozásra..
+Chat With:	ShareStrings		Társalgás vele :
+Font set to	ShareStrings		Font set to
+File Sharing Enabled	ShareStrings		Fájlmegosztás engedélyezve
+<name>	ShareStrings		<név>
+AutoPriv pattern removed.	ShareStrings		Automatikus magánbeszélgetés eltávolítva.
+<names or session ids>	ShareStrings		<név vagy folyamat ids>
+Current /autopriv pattern is: 	ShareStrings		Automatikus magánbeszélgetésre kijelölve: 
+Max upload rate is	ShareStrings		Max. feltöltési arány: 
+[name and value]	ShareStrings		[név és érték]
+Reset Layout	ShareStrings		Alapértelmezett beállítások
+Norwegian	ShareStrings		Norvég
+Data Compression	ShareStrings		Adat tömörítése
+No target user specified in /msg	ShareStrings		Nincs meghatározott felhasználói feladat /msg
+Can't download files from 	ShareStrings		Nem lehet letölteni a fájlokat innen: 
+logged in for	ShareStrings		Naplózva :
+<unknown type>	ShareStrings		<ismeretlen típus>
+Start Query	ShareStrings		Keresés indítása
+File	ShareStrings		Fájl
+share screenshot	ShareStrings		képernyőmentés megosztása

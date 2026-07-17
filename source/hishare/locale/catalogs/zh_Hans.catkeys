@@ -1,0 +1,301 @@
+1	Chinese	application/x-vnd.HiShare	2764403860
+Auto-away tag set to: 	ShareStrings		自动离开标签设置为： 
+Server uptime	ShareStrings		服务器开启时间
+Color prefs by	ShareStrings		toggle custom coloring
+ is now 	ShareStrings		 现在为 
+Language %s selected.  Change will take effect after you restart HiShare.	ShareStrings		%s 语言已选择，将在重新启动 HiShare 后生效。
+Ban User For	ShareStrings		禁用用户
+Can't download from user 	ShareStrings		无法下载于 
+Scrolled Text Background	ShareStrings		已显示文字背景
+toggle custom coloring	ShareStrings		自定义颜色
+Bulgarian	ShareStrings		保加利亚语
+remove an alias	ShareStrings		删除一个别名
+Esperanto	ShareStrings		世界语
+Finnish	ShareStrings		Finnish
+File Size	ShareStrings		文件大小
+Server memory usage	ShareStrings		服务器内存占用
+Restart Transfer	ShareStrings		重新传送
+Revert	ShareStrings		恢复
+Romanian	ShareStrings		罗马语
+Warning Messages	ShareStrings		警告消息
+synonym for /action	ShareStrings		与 /action 相同
+Your name has been changed to 	ShareStrings		你的昵称已改变为： 
+Auto Away	ShareStrings		自动离开
+Disabled	ShareStrings		禁用
+<name or session id> <text>	ShareStrings		<昵称或对话序列号> <文字>
+An Error Occurred.	ShareStrings		未知错误
+Switch to Page	ShareStrings		切换到页
+Connecting to server...	ShareStrings		服务器连接中...
+Connection established.	ShareStrings		连接成功。
+Server status requested.	ShareStrings		服务器状态请求.
+Clear Finished/Failed Transfers	ShareStrings		清空已完成或错误下载任务
+bytes/second	ShareStrings		比特/秒
+Results Per Page	ShareStrings		每页显示数量
+set custom window title	ShareStrings		自定义窗口标题栏
+Chinese (Simplified)	ShareStrings		简体中文
+Unknown user 	ShareStrings		未知用户 
+Private Messages	ShareStrings		密聊信息
+Ignore pattern set to: 	ShareStrings		忽略列表设置为： 
+Serbian	ShareStrings		赛尔维亚语
+Open Shared Folder	ShareStrings		打开共享文件夹
+Open Downloads Folder	ShareStrings		打开下载文件夹
+set user status string	ShareStrings		设置用户状态
+Current /ignore pattern is: 	ShareStrings		当前 /ignore 列表为： 
+Error, couldn't create connect thread! (Try quitting HiShare, then Restarting Networking)	ShareStrings		错误！无法创建连接线程（请尝试关闭 HiShare，并重新启动网络服务）！
+Max Simultaneous Uploads	ShareStrings		每用户最大同时上传数量
+Dutch	ShareStrings		荷兰语
+Hours	ShareStrings		小时
+Name	ShareStrings		名称
+ping other clients	ShareStrings		Ping - 测试数据包发送到其它计算机的延迟时间
+away	ShareStrings		离开
+Queued (Remote machine too busy)	ShareStrings		序列等待中（远程计算机过忙）
+Max Simultaneous Downloads	ShareStrings		每用户最大同时下载数量
+Rcvd: 	ShareStrings		接收： 
+Removing %lu upload bans	ShareStrings		删除 %lu 上传禁令
+User Events	ShareStrings		用户事件
+stop the current query	ShareStrings		停止当前查询
+[serverName]	ShareStrings		[服务器名]
+Open Folder	ShareStrings		打开文件夹
+File download session to 	ShareStrings		文件下载对话到 
+, because both of us are behind firewalls.	ShareStrings		， 因为我们两个都在防火墙后面。
+Queued (Local machine too busy)	ShareStrings		序列等待中（本地计算机过忙）
+Connect to 	ShareStrings		连接到 
+Logging Enabled	ShareStrings		开启登陆
+font size in points	ShareStrings		字体大小（点距）
+Connecting...	ShareStrings		连接中...
+Force away state	ShareStrings		离开状态
+ - Connected to 	ShareStrings		 - 连接到 
+send a private message	ShareStrings		发送密聊信息
+Paused Upload Progress	ShareStrings		暂停上载
+Watch pattern set to: 	ShareStrings		监视列表设置为：
+Your status has been changed to: 	ShareStrings		你的状态改变为: 
+Couldn't start file-sharing server thread!  (Try Restarting Networking, then restarting HiShare)	ShareStrings		无法开启共享服务器线程！ （请重新启动网络服务并重新启动 HiShare）
+Beep When Mentioned	ShareStrings		被呼叫时提示
+French	ShareStrings		法语
+Move to Bottom	ShareStrings		移动到最底层
+clear startup commands	ShareStrings		删除启动命令
+Forever	ShareStrings		永远
+, message \"	ShareStrings		, 消息 "
+Portuguese	ShareStrings		葡萄牙语
+User at IP %s banned for	ShareStrings		IP 地址为 %s 的用户已被禁用
+change your user name	ShareStrings		改变用户名
+[queryString]	ShareStrings		[搜索条件]
+Max Simultaneous Downloads Per User	ShareStrings		最大下载速率
+Error starting download--no accept port!	ShareStrings		错误！开始下载于未验证端口！
+Timestamps	ShareStrings		时间戳
+Sent: 	ShareStrings		发送： 
+set command for when transfers cease	ShareStrings		当传输停止时运行
+Stopped Query	ShareStrings		已停止查询
+Error writing to file 	ShareStrings		写文件出错 
+Current /watch pattern is: 	ShareStrings		当前 /watch 列表为 
+Selection	ShareStrings		选择
+Stop Query	ShareStrings		停止查找
+Error starting delayed connect--no transceiver thread!	ShareStrings		错误！开始下载于延时连接 — 无收发线程！
+Shortest Uploads First	ShareStrings		Shortest Uploads First
+Banned	ShareStrings		已禁用
+Unknown	ShareStrings		未知
+change the auto-away tag	ShareStrings		改变“自动离开”标签
+Korean	ShareStrings		韩文
+create an alias	ShareStrings		建立一个别名
+Name Said	ShareStrings		被呼唤昵称
+There are %i transfers in progress, are you sure you want to quit?	ShareStrings		还有 %i 个传输任务正在进行中，真的要退出吗?？
+Query:	ShareStrings		查询名称:
+Move to Top	ShareStrings		移动到最顶层
+Error starting delayed connect!	ShareStrings		错误！开始下载于延时连接！
+Log	ShareStrings		日志
+Local Nick	ShareStrings		本机昵称
+Modification Time	ShareStrings		修改时间
+Retain File Paths	ShareStrings		保留文件完整路径
+add startup command	ShareStrings		添加启动命令
+Download Selected Files	ShareStrings		下载所选择文件
+show some miscellaneous info	ShareStrings		显示其它信息
+Removed server: %s	ShareStrings		已删除服务器： %s
+false	ShareStrings		否
+Recorded startup command: 	ShareStrings		已记录启动命令: 
+Preparing to Download	ShareStrings		准备下载中
+ - (%lu-%lu) of %lu results shown (	ShareStrings		 - (%lu-%lu) of %lu results shown (
+Couldn't start ShareFileTransfer session to serve remote transfer request!  (Try Restarting Networking, then restarting HiShare)	ShareStrings		无法发送文件共享传输对话请求到远程服务器！（请尝试在重新启动网络服务后重新启动 HiShare）
+Couldn't connect	ShareStrings		无法连接
+/sec, 	ShareStrings		/秒, 
+Choose Colors	ShareStrings		选择颜色
+command	ShareStrings		命令
+AutoPriv pattern set to: 	ShareStrings		自动优先列表设置为： 
+Anonymous	ShareStrings		匿名
+Available irc-style commands:	ShareStrings		可用的 IRC 样式命令：
+User 	ShareStrings		用户 
+Couldn't find font	ShareStrings		Couldn't find font
+until	ShareStrings		直到
+<action>	ShareStrings		<动作>
+Load	ShareStrings		读取
+Server version	ShareStrings		服务器版本
+Changed Query to	ShareStrings		改变查询参数为
+Move Up	ShareStrings		向上移动
+Set max download rate (per transfer)	ShareStrings		每连接最高下载速率
+Full User Queries	ShareStrings		完全匹配查询条件
+URL	ShareStrings		超链接
+Auto-reconnect sequence terminated.	ShareStrings		自动重新连接被中断。
+Text Background	ShareStrings		文字背景
+Client	ShareStrings		客户端
+ (a.k.a. 	ShareStrings		 (a.k.a. 
+tag	ShareStrings		状态
+Watch	ShareStrings		监视
+Removed alias	ShareStrings		删除别名
+Private	ShareStrings		私聊
+Restore Preset	ShareStrings		读取属性配制
+You are no longer connected to the MUSCLE server.	ShareStrings		你已经从 MUSCLE 服务器断开。
+Remove Selected	ShareStrings		删除下载任务
+Halt Transfer	ShareStrings		停止传送
+Path	ShareStrings		路径
+Language	ShareStrings		语言
+Set alias	ShareStrings		设置别名
+User Name:	ShareStrings		用户名:
+disconnect from the server	ShareStrings		从该服务器断开
+%.1fMB used (%.1fMB available)	ShareStrings		%.1fMB 已使用 (%.1fMB 可用)
+Italian	ShareStrings		意大利语
+show this help text	ShareStrings		显示本帮助文档
+[font name]	ShareStrings		[font name]
+HiShare is listening on port %u.  Select Connect from the File menu to begin!	ShareStrings		HiShare 正在监停 %u 端口。 请点击“文件”菜单中的“连接”开始。
+Connect to server	ShareStrings		连接到服务器
+HiShare v%s is now available for download.  You can upgrade at %s	ShareStrings		HiShare v%s 已经可以下载了，你可以从 %s 升级。
+Russian	ShareStrings		俄语
+Ping	ShareStrings		Ping
+Error	ShareStrings		错误
+Files	ShareStrings		文件
+quit HiShare	ShareStrings		退出 HiShare
+Default	ShareStrings		默认值
+Text	ShareStrings		文字
+Preparing to Upload	ShareStrings		准备上传中
+Settings	ShareStrings		设置
+Font reset to default	ShareStrings		Font reset to default
+shell command	ShareStrings		终端命令
+Awaiting callback...	ShareStrings		等待回馈中...
+I'm Firewalled	ShareStrings		我在防火墙后
+Error, unknown command	ShareStrings		错误, 未知命令
+Added server: %s	ShareStrings		已添加服务器： %s
+Clear Chat Log	ShareStrings		清空聊天记录
+Kind	ShareStrings		类型
+Download complete	ShareStrings		下载完毕
+Display	ShareStrings		显示
+User #	ShareStrings		用户 #
+Font size reset to default	ShareStrings		重置字体大小为默认值
+Turkish	ShareStrings		Turkish
+Action	ShareStrings		动作
+ failed to initialize!	ShareStrings		 初使化出错！
+Startup commands cleared.	ShareStrings		启动命令已清除。
+Max Simultaneous Uploads Per User	ShareStrings		最大上传速率
+Error, no user specified!	ShareStrings		错误，未指定用户！
+Server status:	ShareStrings		服务器状态:
+Transferred this session:  %s down, %s up.	ShareStrings		该传输对话状态： %s 已下载， %s 已上传。
+set font	ShareStrings		set font
+ID	ShareStrings		序列号
+Couldn't find 'shared' subdirectory, file sharing disabled!	ShareStrings		shared 共享目录不存在，文件共享功能将被禁用！
+specify AutoPriv users	ShareStrings		指定自动优先用户
+idle command set to	ShareStrings		空闲命令设置为：
+Local session root	ShareStrings		本地对话管理员
+System Uptime	ShareStrings		系统开启时间
+by	ShareStrings		by
+Unknown data format!	ShareStrings		未知数据格式!
+Request server status	ShareStrings		请求服务器状态
+Open Private Chat Window	ShareStrings		打开密聊窗口
+Ping returned in %Li milliseconds	ShareStrings		网络延时为 %Li 毫秒
+Limit Bandwidth	ShareStrings		限制带宽
+minutes	ShareStrings		分钟
+Will attempt auto-reconnect in %lu minutes.	ShareStrings		于 %lu 分钟后尝试重新连接。
+Status	ShareStrings		状态
+ - %lu results shown (	ShareStrings		 - %lu 个搜索结果 (
+Server:	ShareStrings		服务器:
+clear the chat log	ShareStrings		清空聊天记录
+Max download rate is	ShareStrings		最高下载速率
+ is downloading 	ShareStrings		 下载中 
+Ignore pattern removed.	ShareStrings		忽略列表已删除。
+to	ShareStrings		到
+Open File	ShareStrings		打开文件
+Medium	ShareStrings		中
+ is now connected.	ShareStrings		 已连接。
+\" not sent.	ShareStrings		" 未发送。
+Logging Disabled	ShareStrings		禁用登陆
+Download Progress	ShareStrings		下载进程
+File download accept session for 	ShareStrings		允许文件下载对话给 
+No Limit	ShareStrings		不限制
+System	ShareStrings		系统
+execute shell command	ShareStrings		运行终端命令
+Set max upload rate (per transfer)	ShareStrings		每连接最高上载速率
+Move Down	ShareStrings		向下移动
+Error sharing screenshot	ShareStrings		共享屏幕截图时出错
+Login on Startup	ShareStrings		启动时登陆
+Warning	ShareStrings		警告
+weeks	ShareStrings		周
+Type /help for a list of available commands.	ShareStrings		输入 /help 列出所有命令。
+Low	ShareStrings		低
+remove all upload bans	ShareStrings		删除所有上传禁令
+, no connection information available.	ShareStrings		, 无可用连接信息.
+Sent ping request to: 	ShareStrings		发送 Ping 请求给: 
+Upload Progress	ShareStrings		上载进程
+Error Messages	ShareStrings		错误消息
+Quit	ShareStrings		退出
+specify users to watch	ShareStrings		指定监视用户
+ has finished downloading 	ShareStrings		 已经下载完毕 
+Started Query	ShareStrings		开始查询
+High	ShareStrings		高
+Hungarian	ShareStrings		匈牙利语
+Watch pattern removed.	ShareStrings		监视列表已删除。
+Japanese	ShareStrings		Japanese
+Examining Files...	ShareStrings		检查文件...
+Save Preset	ShareStrings		保存属性配制
+Query Changes	ShareStrings		查询条件改变
+Don't Quit	ShareStrings		不要退出！
+specify users to ignore	ShareStrings		指定忽略用户
+Connection to server failed.	ShareStrings		连接到服务器出错
+Executing shell command	ShareStrings		运行终端命令
+Attributes	ShareStrings		属性
+Swedish	ShareStrings		瑞典语
+AutoClear Finished Downloads	ShareStrings		自动清除已下载列表
+Chat	ShareStrings		聊天
+Border Areas	ShareStrings		边框区
+is now sharing a screenshot	ShareStrings		正在共享屏幕截图
+(Sharing %i files)	ShareStrings		（已共享出 %i 个本地文件）
+Font size set to:	ShareStrings		字体大小设置为：
+connect to a server	ShareStrings		连接到一个服务器
+German	ShareStrings		德语
+true	ShareStrings		是
+Remote Nick	ShareStrings		远程帐号昵称
+ - Connecting to 	ShareStrings		 - 连接到 
+from	ShareStrings		从
+start a new query	ShareStrings		开始一个新的查询
+HiShare Private Chat Window	ShareStrings		HiShare 密聊窗口
+Info Messages	ShareStrings		信息消息
+Custom window title is now	ShareStrings		自定义窗口标题栏为
+ has disconnected.	ShareStrings		 已断开。
+Upload Bandwidth	ShareStrings		本机网络带宽
+AutoUpdate Server List	ShareStrings		自动更新服务器列表
+do something	ShareStrings		做一些动作
+English	ShareStrings		英语
+Disconnect	ShareStrings		断开
+days	ShareStrings		天
+set font size	ShareStrings		设置字体大小
+Open Logs Folder	ShareStrings		打开日志文件夹
+About HiShare	ShareStrings		关于 HiShare
+Uploads	ShareStrings		上载
+ is now known as 	ShareStrings		 为 
+Spanish	ShareStrings		西班牙语
+Download aborted	ShareStrings		中断下载
+Attempting auto-reconnect.	ShareStrings		尝试重新连接中。
+Chat With:	ShareStrings		聊天对象：
+Font set to	ShareStrings		Font set to
+File Sharing Enabled	ShareStrings		开启文件共享
+<name>	ShareStrings		<昵称>
+AutoPriv pattern removed.	ShareStrings		自动优先列表已经删除。
+<names or session ids>	ShareStrings		<昵称或对话序列号>
+Current /autopriv pattern is: 	ShareStrings		当前 /autopriv 列表为： 
+Max upload rate is	ShareStrings		最高上载速率
+[name and value]	ShareStrings		[名称及值]
+Reset Layout	ShareStrings		重置布局
+Norwegian	ShareStrings		挪威语
+Data Compression	ShareStrings		数据压缩
+No target user specified in /msg	ShareStrings		/msg 中为指定对方帐号
+Can't download files from 	ShareStrings		无法下载文件从 
+logged in for	ShareStrings		已登陆为
+<unknown type>	ShareStrings		<未知类型>
+Start Query	ShareStrings		开始查找
+File	ShareStrings		文件
+share screenshot	ShareStrings		制作屏幕截图并共享

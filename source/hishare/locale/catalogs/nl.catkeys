@@ -1,0 +1,301 @@
+1	Dutch	application/x-vnd.HiShare	2764403860
+Auto-away tag set to: 	ShareStrings		Automatisch-weg etiket ingesteld op: 
+Server uptime	ShareStrings		Server leeftijd
+Color prefs by	ShareStrings		Kleur voorkeuren bij
+ is now 	ShareStrings		 is nu 
+Language %s selected.  Change will take effect after you restart HiShare.	ShareStrings		Taal %s geselekteerd. De veranderingen vinden plaats na het herstarten van HiShare.
+Ban User For	ShareStrings		Weiger Gebruiker Voor
+Can't download from user 	ShareStrings		Kan niet binnenhalen van de gebruiker 
+Scrolled Text Background	ShareStrings		Ander Tekst Achtergrond
+toggle custom coloring	ShareStrings		Schakel aangepaste kleuren
+Bulgarian	ShareStrings		bulgaars
+remove an alias	ShareStrings		Verwijder een alias
+Esperanto	ShareStrings		Esperanto
+Finnish	ShareStrings		Finnish
+File Size	ShareStrings		Bestands Grootte
+Server memory usage	ShareStrings		Server geheugen gebruik
+Restart Transfer	ShareStrings		Herstart Binnenhalen
+Revert	ShareStrings		Herstel
+Romanian	ShareStrings		Roemeens
+Warning Messages	ShareStrings		Alarm Berichten
+synonym for /action	ShareStrings		synoniem voor /action
+Your name has been changed to 	ShareStrings		Je naam is veranderd in 
+Auto Away	ShareStrings		Automatisch Weg
+Disabled	ShareStrings		Uitgeschakeld
+<name or session id> <text>	ShareStrings		<naam of sessie_Nr> <Tekst>
+An Error Occurred.	ShareStrings		Er is een fout opgetreden.
+Switch to Page	ShareStrings		Ga naar Pagina
+Connecting to server...	ShareStrings		Verbinden met server...
+Connection established.	ShareStrings		Verbinding opgebouwd.
+Server status requested.	ShareStrings		Server status verzocht.
+Clear Finished/Failed Transfers	ShareStrings		Maak beeindigde/mislukte Transmissies schoon
+bytes/second	ShareStrings		bytes/seconde
+Results Per Page	ShareStrings		Resultaten Per Pagina
+set custom window title	ShareStrings		 Stel een andere verster titel in
+Chinese (Simplified)	ShareStrings		Chinees
+Unknown user 	ShareStrings		Onbekende gebruiker 
+Private Messages	ShareStrings		Prive Berichten
+Ignore pattern set to: 	ShareStrings		Negeer patroon staat op: 
+Serbian	ShareStrings		Servisch
+Open Shared Folder	ShareStrings		Open Gedeelde Folder
+Open Downloads Folder	ShareStrings		Open Inkomende Folder
+set user status string	ShareStrings		Stel gebruikers gegevens regel in
+Current /ignore pattern is: 	ShareStrings		Huidige /ignore patroon is:
+Error, couldn't create connect thread! (Try quitting HiShare, then Restarting Networking)	ShareStrings		Fout, kan geen verbindings draad vinden!
+Max Simultaneous Uploads	ShareStrings		Max Simultane Uploads
+Dutch	ShareStrings		Nederlands
+Hours	ShareStrings		Uren
+Name	ShareStrings		Naam
+ping other clients	ShareStrings		ping andere partij
+away	ShareStrings		weg
+Queued (Remote machine too busy)	ShareStrings		Pauze (Andere machine heeft het te druk)
+Max Simultaneous Downloads	ShareStrings		Max Simultane Downloads
+Rcvd: 	ShareStrings		Ontvangen: 
+Removing %lu upload bans	ShareStrings		Verwijder %lu uitgaande weigeringen
+User Events	ShareStrings		Gebruikers Gebeurtenissen
+stop the current query	ShareStrings		stop de huidige zoekaktie
+[serverName]	ShareStrings		[servernaam]
+Open Folder	ShareStrings		Open Map
+File download session to 	ShareStrings		Bestands verzoek sessie naar
+, because both of us are behind firewalls.	ShareStrings		, omdat wij beiden achter een firewall zitten.
+Queued (Local machine too busy)	ShareStrings		Pauze (Lokale machine heeft het te druk)
+Connect to 	ShareStrings		Verbind met 
+Logging Enabled	ShareStrings		Logboek Aan
+font size in points	ShareStrings		lettergrootte in punten
+Connecting...	ShareStrings		Verbinden...
+Force away state	ShareStrings		Forceer weg status.
+ - Connected to 	ShareStrings		 - Verbonden met 
+send a private message	ShareStrings		zend een prive bericht
+Paused Upload Progress	ShareStrings		Gepauzeerde upload voortgang
+Watch pattern set to: 	ShareStrings		kijk patroon gezet op:
+Your status has been changed to: 	ShareStrings		Uw status is veranderd naar: 
+Couldn't start file-sharing server thread!  (Try Restarting Networking, then restarting HiShare)	ShareStrings		Kan geen BestandsDelingServerDraad vinden!
+Beep When Mentioned	ShareStrings		Geef Geluid Wanneer u Genoemd Word
+French	ShareStrings		Frans
+Move to Bottom	ShareStrings		Verplaats naar onderaan
+clear startup commands	ShareStrings		maak opstart commando's schoon
+Forever	ShareStrings		Permanent
+, message \"	ShareStrings		, bericht "
+Portuguese	ShareStrings		Portugees
+User at IP %s banned for	ShareStrings		Gebruiker op IP %s is geweigerd voor
+change your user name	ShareStrings		verander je gebruikersnaam
+[queryString]	ShareStrings		[zoekregel]
+Max Simultaneous Downloads Per User	ShareStrings		Max Simultane Downloads per Gebruiker
+Error starting download--no accept port!	ShareStrings		Fout bij het binnenhalen bestand--geen acceptatie poort!
+Timestamps	ShareStrings		Toon Tijd
+Sent: 	ShareStrings		Zend: 
+set command for when transfers cease	ShareStrings		zet op overleden download opdrachten
+Stopped Query	ShareStrings		Zoek opdracht gestopt
+Error writing to file 	ShareStrings		Fout tijdens schrijf operatie 
+Current /watch pattern is: 	ShareStrings		Huidige /kijk patroon is: 
+Selection	ShareStrings		Selectie
+Stop Query	ShareStrings		Stop Zoek
+Error starting delayed connect--no transceiver thread!	ShareStrings		Fout bij vertraagde verbinding--geen transceiver draad!
+Shortest Uploads First	ShareStrings		Shortest Uploads First
+Banned	ShareStrings		Verbannen
+Unknown	ShareStrings		onbekend
+change the auto-away tag	ShareStrings		verander het atomatisch-weg etiket
+Korean	ShareStrings		Koreaans
+create an alias	ShareStrings		creeer een alias
+Name Said	ShareStrings		Naam Gesproken
+There are %i transfers in progress, are you sure you want to quit?	ShareStrings		Er zijn %i transacties gaande, weet u zeker dat u wilt stoppen?
+Query:	ShareStrings		Zoek:
+Move to Top	ShareStrings		Verplaats naar Top
+Error starting delayed connect!	ShareStrings		Fout bij vertraagde verbinding!
+Log	ShareStrings		Log
+Local Nick	ShareStrings		Nick Locaal
+Modification Time	ShareStrings		Veranderd
+Retain File Paths	ShareStrings		behoud bestands locaties
+add startup command	ShareStrings		voeg opstart commando toe
+Download Selected Files	ShareStrings		Haal geselecteerde bestanden op
+show some miscellaneous info	ShareStrings		Toon informatie
+Removed server: %s	ShareStrings		verwijderde server: %s
+false	ShareStrings		onecht
+Recorded startup command: 	ShareStrings		Opgenomen opstart commando: 
+Preparing to Download	ShareStrings		Opmaken voor binnenhalen
+ - (%lu-%lu) of %lu results shown (	ShareStrings		 - (%lu-%lu) van %lu toont resultaten (
+Couldn't start ShareFileTransfer session to serve remote transfer request!  (Try Restarting Networking, then restarting HiShare)	ShareStrings		Kan geen GedeeldeBestandsOverdracht sessie starten voor extern overdracht verzoek!
+Couldn't connect	ShareStrings		Kon niet verbinden
+/sec, 	ShareStrings		/sec, 
+Choose Colors	ShareStrings		Kleuren Keus
+command	ShareStrings		commando
+AutoPriv pattern set to: 	ShareStrings		AutoPriv patroon gezet op: 
+Anonymous	ShareStrings		Anoniem
+Available irc-style commands:	ShareStrings		Beschikbare irc-stijl commandos:
+User 	ShareStrings		Gebruiker 
+Couldn't find font	ShareStrings		Couldn't find font
+until	ShareStrings		tot
+<action>	ShareStrings		<aktie>
+Load	ShareStrings		Bezetting
+Server version	ShareStrings		Server Versie
+Changed Query to	ShareStrings		Zoek opdracht veranderd in
+Move Up	ShareStrings		Omhoog
+Set max download rate (per transfer)	ShareStrings		instellen max. inkomende bandbreedte  (per transfer)
+Full User Queries	ShareStrings		Volledige Gebruiker Zoekopdrachten
+URL	ShareStrings		URL
+Auto-reconnect sequence terminated.	ShareStrings		Auto-verbind opdracht beeindigd.
+Text Background	ShareStrings		Tekst Achtergrond
+Client	ShareStrings		Client
+ (a.k.a. 	ShareStrings		 (o.b.a 
+tag	ShareStrings		etiket
+Watch	ShareStrings		Kijk
+Removed alias	ShareStrings		verwijderede alias
+Private	ShareStrings		Prive
+Restore Preset	ShareStrings		Herstel Instelling
+You are no longer connected to the MUSCLE server.	ShareStrings		U bent niet langer verbonden met de MUSCLE server.
+Remove Selected	ShareStrings		Verwijder Selectie
+Halt Transfer	ShareStrings		Stop Binnenhalen
+Path	ShareStrings		locatie
+Language	ShareStrings		Taal
+Set alias	ShareStrings		Stel alias in
+User Name:	ShareStrings		Gebruikers Naam:
+disconnect from the server	ShareStrings		verbreek met de huidige server
+%.1fMB used (%.1fMB available)	ShareStrings		%. 1fMB gebruikt (%. 1fMB beschikbaar)
+Italian	ShareStrings		Italians
+show this help text	ShareStrings		geeft deze helptekst weer
+[font name]	ShareStrings		[font name]
+HiShare is listening on port %u.  Select Connect from the File menu to begin!	ShareStrings		HiShare luistert op poort %i. Selecteer verbinden in het bestands menu om te beginnen!
+Connect to server	ShareStrings		Verbinden met server
+HiShare v%s is now available for download.  You can upgrade at %s	ShareStrings		HiShare v%s is nu verkrijgbaar, u kunt opwaarderen op %s
+Russian	ShareStrings		Russe
+Ping	ShareStrings		Ping
+Error	ShareStrings		fout
+Files	ShareStrings		Aantal
+quit HiShare	ShareStrings		einde HiShare
+Default	ShareStrings		Standaard
+Text	ShareStrings		Tekst
+Preparing to Upload	ShareStrings		Opmaken voor sturen
+Settings	ShareStrings		Instellingen
+Font reset to default	ShareStrings		Font reset to default
+shell command	ShareStrings		shell opdracht
+Awaiting callback...	ShareStrings		Wacht op terugbel bevestiging...
+I'm Firewalled	ShareStrings		Ik Ben Afgeschermd
+Error, unknown command	ShareStrings		Fout, onbekende opdracht
+Added server: %s	ShareStrings		Toegevoegde server: %s
+Clear Chat Log	ShareStrings		Maak Chat Log Schoon
+Kind	ShareStrings		Soort
+Download complete	ShareStrings		Binnenhalen klaar
+Display	ShareStrings		Toon
+User #	ShareStrings		gebruiker #
+Font size reset to default	ShareStrings		lettergrootte op standaard
+Turkish	ShareStrings		Turkish
+Action	ShareStrings		Aktie
+ failed to initialize!	ShareStrings		 fout in initialisatie!
+Startup commands cleared.	ShareStrings		Opstart commando's opgeschoond.
+Max Simultaneous Uploads Per User	ShareStrings		Max Simultane Uploads per Gebruiker
+Error, no user specified!	ShareStrings		Fout, Geen Gebruiker Geselecteerd
+Server status:	ShareStrings		Server status:
+Transferred this session:  %s down, %s up.	ShareStrings		Overdracht deze sessie:  %s down, %s up.
+set font	ShareStrings		set font
+ID	ShareStrings		Nr
+Couldn't find 'shared' subdirectory, file sharing disabled!	ShareStrings		Kan geen 'gedeelde' bestanden vinden in de shared folder, Delen niet geactiveerd!
+specify AutoPriv users	ShareStrings		Specificeer Autopriv Gebruikers
+idle command set to	ShareStrings		idle opdracht ingesteld op
+Local session root	ShareStrings		Lokale sessie root
+System Uptime	ShareStrings		Systeem Leeftijd
+by	ShareStrings		door
+Unknown data format!	ShareStrings		Gegevens formaat onbekend!
+Request server status	ShareStrings		Verzoek server status
+Open Private Chat Window	ShareStrings		Open Prive Venster
+Ping returned in %Li milliseconds	ShareStrings		Ping antwoord in %Li Milliseconden
+Limit Bandwidth	ShareStrings		Beperk bandbreedte
+minutes	ShareStrings		minuten
+Will attempt auto-reconnect in %lu minutes.	ShareStrings		Probeert automatisch  opnieuw te verbinden in %lu minuten
+Status	ShareStrings		Status
+ - %lu results shown (	ShareStrings		 - toont %lu resultaten (
+Server:	ShareStrings		Server:
+clear the chat log	ShareStrings		maak praat venster schoon
+Max download rate is	ShareStrings		Max. inkomende bandbreedte is
+ is downloading 	ShareStrings		 is aan het binnenhalen 
+Ignore pattern removed.	ShareStrings		Negeer patroon verwijderd.
+to	ShareStrings		naar
+Open File	ShareStrings		Open Bestand
+Medium	ShareStrings		Gemiddeld
+ is now connected.	ShareStrings		 is nu verbonden.
+\" not sent.	ShareStrings		" niet verzonden.
+Logging Disabled	ShareStrings		Logboek Uit
+Download Progress	ShareStrings		Download voortgang
+File download accept session for 	ShareStrings		Bestand binnenhalen acceptatie voor 
+No Limit	ShareStrings		Onbegrensd
+System	ShareStrings		Systeem
+execute shell command	ShareStrings		voer shell opdracht uit
+Set max upload rate (per transfer)	ShareStrings		instellen max. uitgaande bandbreedte  (per transfer)
+Move Down	ShareStrings		Omlaag
+Error sharing screenshot	ShareStrings		Fout met delen schermdump
+Login on Startup	ShareStrings		Verbind bij Starten
+Warning	ShareStrings		Waarschuwing
+weeks	ShareStrings		weken
+Type /help for a list of available commands.	ShareStrings		Gebruik /help voor een lijst van beschikbare opdrachten.
+Low	ShareStrings		Laag
+remove all upload bans	ShareStrings		Verwijder alle uitgaande weigeringen
+, no connection information available.	ShareStrings		, geen verbindings informatie beschikbaar.
+Sent ping request to: 	ShareStrings		Zend ping verzoek naar: 
+Upload Progress	ShareStrings		Upload voortgang
+Error Messages	ShareStrings		Fout Berichten
+Quit	ShareStrings		Einde
+specify users to watch	ShareStrings		specifeer gebruikers om te kijken
+ has finished downloading 	ShareStrings		 is klaar met binnenhalen 
+Started Query	ShareStrings		Zoek opdracht gestart
+High	ShareStrings		Hoog
+Hungarian	ShareStrings		Hongaars
+Watch pattern removed.	ShareStrings		Kijk patroon verwijderd.
+Japanese	ShareStrings		Japanese
+Examining Files...	ShareStrings		Onderzoekt bestanden
+Save Preset	ShareStrings		Bewaar Instelling
+Query Changes	ShareStrings		Veranderde Zoekopdracht
+Don't Quit	ShareStrings		Niet Stoppen
+specify users to ignore	ShareStrings		selecteer de te negeren gebruikers
+Connection to server failed.	ShareStrings		Verbinding met server is mislukt.
+Executing shell command	ShareStrings		shell opdracht uitgevoerd
+Attributes	ShareStrings		Attributen
+Swedish	ShareStrings		Zweeds
+AutoClear Finished Downloads	ShareStrings		AutoBeeindigde Downloads Schoon
+Chat	ShareStrings		Praat
+Border Areas	ShareStrings		Boord Gebied
+is now sharing a screenshot	ShareStrings		deelt een schermdump nu
+(Sharing %i files)	ShareStrings		(Delen van %i lokale bestanden)
+Font size set to:	ShareStrings		lettergrootte ingesteld op:
+connect to a server	ShareStrings		verbind met een server
+German	ShareStrings		Duits
+true	ShareStrings		waar
+Remote Nick	ShareStrings		Nick Afgelegen
+ - Connecting to 	ShareStrings		 - Verbinden met 
+from	ShareStrings		van
+start a new query	ShareStrings		start een nieuwe zoek aktie
+HiShare Private Chat Window	ShareStrings		HiShare Prive Venster
+Info Messages	ShareStrings		Berichten Info
+Custom window title is now	ShareStrings		andere venster titel is nu
+ has disconnected.	ShareStrings		 heeft verbroken.
+Upload Bandwidth	ShareStrings		Uitgaande Bandbreedte
+AutoUpdate Server List	ShareStrings		Automatisch bijwerken van server lijst
+do something	ShareStrings		Doe iets
+English	ShareStrings		Engels
+Disconnect	ShareStrings		Verbreken
+days	ShareStrings		dagen
+set font size	ShareStrings		lettergrootte instellen
+Open Logs Folder	ShareStrings		Open Logboek Map
+About HiShare	ShareStrings		Over HiShare
+Uploads	ShareStrings		Inkomend
+ is now known as 	ShareStrings		 heeft nu de naam 
+Spanish	ShareStrings		Spaans
+Download aborted	ShareStrings		Binnenhalen geannuleerd
+Attempting auto-reconnect.	ShareStrings		Probeert opnieuw te verbinden.
+Chat With:	ShareStrings		Praat Met:
+Font set to	ShareStrings		Font set to
+File Sharing Enabled	ShareStrings		Delen Bestanden Aktief
+<name>	ShareStrings		<eigennaam>
+AutoPriv pattern removed.	ShareStrings		Autopriv patroon verwijderd
+<names or session ids>	ShareStrings		<namen of sessie nummers>
+Current /autopriv pattern is: 	ShareStrings		Huidige /autopriv patroon is :
+Max upload rate is	ShareStrings		Max. uitgaande bandbreedte is
+[name and value]	ShareStrings		Naam en waarde
+Reset Layout	ShareStrings		Herstel Venster
+Norwegian	ShareStrings		Noors
+Data Compression	ShareStrings		Data compressie
+No target user specified in /msg	ShareStrings		Geen gebruikersnaam geselecteerd in /msg
+Can't download files from 	ShareStrings		Kan niet binnenhalen van 
+logged in for	ShareStrings		ingelogd voor
+<unknown type>	ShareStrings		<onbekende soort>
+Start Query	ShareStrings		Start Zoek
+File	ShareStrings		Bestand
+share screenshot	ShareStrings		Deel schermdump

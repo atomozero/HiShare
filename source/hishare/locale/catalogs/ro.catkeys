@@ -1,0 +1,301 @@
+1	Romanian	application/x-vnd.HiShare	2764403860
+Auto-away tag set to: 	ShareStrings		Eticheta Auto-away setata la: 
+Server uptime	ShareStrings		Uptime server
+Color prefs by	ShareStrings		Preferinte de culoare de catre
+ is now 	ShareStrings		 este acum 
+Language %s selected.  Change will take effect after you restart HiShare.	ShareStrings		Limba %s selectata.  Schimbarile vor avea efect la repornirea HiShare.
+Ban User For	ShareStrings		Restrictioneza User Pentru
+Can't download from user 	ShareStrings		Nu pot copia de la user-ul 
+Scrolled Text Background	ShareStrings		Text de Background cu Scroll
+toggle custom coloring	ShareStrings		activeaza culorile normale
+Bulgarian	ShareStrings		Bulgara
+remove an alias	ShareStrings		sterge un alias
+Esperanto	ShareStrings		Esperanto
+Finnish	ShareStrings		Finnish
+File Size	ShareStrings		Marime Fisier
+Server memory usage	ShareStrings		Memoria folosita a serverului
+Restart Transfer	ShareStrings		Reporneste Transferul
+Revert	ShareStrings		Revert
+Romanian	ShareStrings		Romana
+Warning Messages	ShareStrings		Mesaje de Activare
+synonym for /action	ShareStrings		sinonim pentru /actiune
+Your name has been changed to 	ShareStrings		Numele tau a fost schimbat in 
+Auto Away	ShareStrings		Auto Away
+Disabled	ShareStrings		Dezactivat
+<name or session id> <text>	ShareStrings		<nume sau id sesiune> <text>
+An Error Occurred.	ShareStrings		O Eroare A Avut Loc.
+Switch to Page	ShareStrings		Comuteaza la Pagina
+Connecting to server...	ShareStrings		Conectare la server...
+Connection established.	ShareStrings		Conexiune facuta.
+Server status requested.	ShareStrings		Starea serverului ceruta.
+Clear Finished/Failed Transfers	ShareStrings		Inlatura Transferurile Terminate/Esuate
+bytes/second	ShareStrings		bytes/secunda
+Results Per Page	ShareStrings		Rezultate pe Pagina
+set custom window title	ShareStrings		Seteaza Titlul Normal De Fereastra
+Chinese (Simplified)	ShareStrings		Chinese (Simplified)
+Unknown user 	ShareStrings		Utilizator necunoscut 
+Private Messages	ShareStrings		Mesaje Private
+Ignore pattern set to: 	ShareStrings		Model Ignore setat la: 
+Serbian	ShareStrings		Sarba
+Open Shared Folder	ShareStrings		Deschide Directorul Shared
+Open Downloads Folder	ShareStrings		Dschide Directorul Downloads
+set user status string	ShareStrings		seteaza linia de statut al utilizatorului
+Current /ignore pattern is: 	ShareStrings		Modelul actual de /ignora este: 
+Error, couldn't create connect thread! (Try quitting HiShare, then Restarting Networking)	ShareStrings		Eroare, nu s-a putut crea thread conexiune! (Incearca sa iesi din HiShare, dupa care Reporneste Networking)
+Max Simultaneous Uploads	ShareStrings		Max de Upload-uri Simultane
+Dutch	ShareStrings		Daneza
+Hours	ShareStrings		Ore
+Name	ShareStrings		Nume
+ping other clients	ShareStrings		ping catre alti clienti
+away	ShareStrings		away
+Queued (Remote machine too busy)	ShareStrings		Queued (Statia remote prea ocupata)
+Max Simultaneous Downloads	ShareStrings		Max de Download-uri Simultane
+Rcvd: 	ShareStrings		Prim: 
+Removing %lu upload bans	ShareStrings		Inlatur restrictia de ulpoad %lu
+User Events	ShareStrings		Evenimente User
+stop the current query	ShareStrings		opreste cautarea curenta
+[serverName]	ShareStrings		[numeServer]
+Open Folder	ShareStrings		Deschide Director
+File download session to 	ShareStrings		File download session to 
+, because both of us are behind firewalls.	ShareStrings		, pentru ca amandoi suntem dupa firewalls.
+Queued (Local machine too busy)	ShareStrings		Queued (Statia locala prea ocupata)
+Connect to 	ShareStrings		Conecteaza la 
+Logging Enabled	ShareStrings		Logarea Activata
+font size in points	ShareStrings		marimea fontului in puncte
+Connecting...	ShareStrings		Conectare...
+Force away state	ShareStrings		Forteaza starea de away
+ - Connected to 	ShareStrings		 - Conectat la 
+send a private message	ShareStrings		trimite un mesaj privat
+Paused Upload Progress	ShareStrings		Progres Upload in Pauza
+Watch pattern set to: 	ShareStrings		Model de urmarire setat la: 
+Your status has been changed to: 	ShareStrings		Statutul tau a fost schimbat in: 
+Couldn't start file-sharing server thread!  (Try Restarting Networking, then restarting HiShare)	ShareStrings		Nu am putut porni thread-ul de server file-sharing!  (Incearca sa Repornesti Networking si apoi HiShare)
+Beep When Mentioned	ShareStrings		Beep Cand Esti Amintit
+French	ShareStrings		Franceza
+Move to Bottom	ShareStrings		Muta Jos
+clear startup commands	ShareStrings		sterge comenzile de startup
+Forever	ShareStrings		Pentru Totdeauna
+, message \"	ShareStrings		, mesaj "
+Portuguese	ShareStrings		Portugheza
+User at IP %s banned for	ShareStrings		Userul de la IP-ul %s restrictionat pentru
+change your user name	ShareStrings		schimbare nume utilizator
+[queryString]	ShareStrings		[campQuery]
+Max Simultaneous Downloads Per User	ShareStrings		Max de Download-uri Simultane per Utilizator
+Error starting download--no accept port!	ShareStrings		Eroare incepand download-ul--port neacceptat!
+Timestamps	ShareStrings		Timestamps
+Sent: 	ShareStrings		Trim: 
+set command for when transfers cease	ShareStrings		seteaza comanda cand transferurile inceteaza
+Stopped Query	ShareStrings		Cautare Oprita
+Error writing to file 	ShareStrings		Eroare incercand sa scriu fisierul 
+Current /watch pattern is: 	ShareStrings		Modelul curent de /urmarire este: 
+Selection	ShareStrings		Selectie
+Stop Query	ShareStrings		Opreste Cautarea
+Error starting delayed connect--no transceiver thread!	ShareStrings		Eroare pornind conectare intarziata--nici un thread transceiver!
+Shortest Uploads First	ShareStrings		Shortest Uploads First
+Banned	ShareStrings		Banned
+Unknown	ShareStrings		Necunoscut
+change the auto-away tag	ShareStrings		schimba eticheta de auto-away
+Korean	ShareStrings		Koreana
+create an alias	ShareStrings		creaza un alias
+Name Said	ShareStrings		Nume Spus
+There are %i transfers in progress, are you sure you want to quit?	ShareStrings		There are %i transfers in progress, are you sure you want to quit?
+Query:	ShareStrings		Cautare:
+Move to Top	ShareStrings		Muta Sus
+Error starting delayed connect!	ShareStrings		Eroare pornind conectare intarziata!
+Log	ShareStrings		Log
+Local Nick	ShareStrings		Nick Local
+Modification Time	ShareStrings		Timp de Modificare
+Retain File Paths	ShareStrings		Retine Caile Fisierelor
+add startup command	ShareStrings		adauga comanda de startup
+Download Selected Files	ShareStrings		Download Fisiere Selectate
+show some miscellaneous info	ShareStrings		show some miscellaneous info
+Removed server: %s	ShareStrings		Sters server: %s
+false	ShareStrings		fals
+Recorded startup command: 	ShareStrings		Comanda startup inregistrata: 
+Preparing to Download	ShareStrings		Ma pregatesc sa dau Download
+ - (%lu-%lu) of %lu results shown (	ShareStrings		 - (%lu-%lu) din %lu rezultate afisate (
+Couldn't start ShareFileTransfer session to serve remote transfer request!  (Try Restarting Networking, then restarting HiShare)	ShareStrings		Nu s-a putut porni sesiunea de ShareFileTransfer pentru a servi transferului cerut!  (Incearca sa Repornesti Networking, dupa care lanseaza HiShare)
+Couldn't connect	ShareStrings		Nu am putut efectua conectarea
+/sec, 	ShareStrings		/sec, 
+Choose Colors	ShareStrings		Alege Culori
+command	ShareStrings		comanda
+AutoPriv pattern set to: 	ShareStrings		Model AutoPriv setat la: 
+Anonymous	ShareStrings		Anonim
+Available irc-style commands:	ShareStrings		Comenzi de tip irc disponibile:
+User 	ShareStrings		Utilizator 
+Couldn't find font	ShareStrings		Couldn't find font
+until	ShareStrings		until
+<action>	ShareStrings		<actiune>
+Load	ShareStrings		Incarca
+Server version	ShareStrings		Versiune server
+Changed Query to	ShareStrings		Schimbat Cautare in
+Move Up	ShareStrings		Misca Ssu
+Set max download rate (per transfer)	ShareStrings		Seteaza rata maxima de download-uri (per transfer)
+Full User Queries	ShareStrings		Cautari Intregi Utilizator
+URL	ShareStrings		URL
+Auto-reconnect sequence terminated.	ShareStrings		Secventa de auto-reconectare terminata.
+Text Background	ShareStrings		Text de Background
+Client	ShareStrings		Client
+ (a.k.a. 	ShareStrings		 (alias 
+tag	ShareStrings		eticheta
+Watch	ShareStrings		Urmareste
+Removed alias	ShareStrings		Alias Inlaturat
+Private	ShareStrings		Privat
+Restore Preset	ShareStrings		Restore Presetari
+You are no longer connected to the MUSCLE server.	ShareStrings		Nu mai esti conectat la serverul MUSCLE.
+Remove Selected	ShareStrings		Inlatura Selectarea
+Halt Transfer	ShareStrings		Opreste Transfer
+Path	ShareStrings		Cale
+Language	ShareStrings		Limba
+Set alias	ShareStrings		Seteaza alias
+User Name:	ShareStrings		Nume Utilizator:
+disconnect from the server	ShareStrings		deconecatre de la server
+%.1fMB used (%.1fMB available)	ShareStrings		%.1fMB folositi (%.1fMB disponibili)
+Italian	ShareStrings		Italiana
+show this help text	ShareStrings		arata acest text de ajutor
+[font name]	ShareStrings		[font name]
+HiShare is listening on port %u.  Select Connect from the File menu to begin!	ShareStrings		HiShare asculta pe portul %u.  Selecteaza Conectare de la meniul Fisier ca sa incepi!
+Connect to server	ShareStrings		Conectare la server
+HiShare v%s is now available for download.  You can upgrade at %s	ShareStrings		HiShare v%s este disponibil pentru download.  Poti face un upgrade la %s
+Russian	ShareStrings		Rusa
+Ping	ShareStrings		Ping
+Error	ShareStrings		Eroare
+Files	ShareStrings		Fisiere
+quit HiShare	ShareStrings		iesire HiShare
+Default	ShareStrings		Normal
+Text	ShareStrings		Text
+Preparing to Upload	ShareStrings		Ma pregatesc sa dau Upload
+Settings	ShareStrings		Setari
+Font reset to default	ShareStrings		Font reset to default
+shell command	ShareStrings		comanda shell
+Awaiting callback...	ShareStrings		Awaiting callback...
+I'm Firewalled	ShareStrings		Sunt cu Firewall
+Error, unknown command	ShareStrings		Eroare, comanda necunoscuta
+Added server: %s	ShareStrings		Adaugat server: %s
+Clear Chat Log	ShareStrings		Sterge Log-ul de Chat
+Kind	ShareStrings		Tip
+Download complete	ShareStrings		Download complet
+Display	ShareStrings		Display
+User #	ShareStrings		Utilizator #
+Font size reset to default	ShareStrings		Marimea fontului resetata la default
+Turkish	ShareStrings		Turkish
+Action	ShareStrings		Actiune
+ failed to initialize!	ShareStrings		 a esuat sa se initializeze!
+Startup commands cleared.	ShareStrings		Comenzile startup sterse.
+Max Simultaneous Uploads Per User	ShareStrings		Maximul de Upload-uri Simultane Per Utilizator
+Error, no user specified!	ShareStrings		Eroare, nici un utilizator specificat!
+Server status:	ShareStrings		Stare server:
+Transferred this session:  %s down, %s up.	ShareStrings		Transferred this session:  %s down, %s up.
+set font	ShareStrings		set font
+ID	ShareStrings		ID
+Couldn't find 'shared' subdirectory, file sharing disabled!	ShareStrings		Nu am putut gasi subdirectorul 'shared', sharing dezactivat!
+specify AutoPriv users	ShareStrings		Specifica Useri AutoPriv
+idle command set to	ShareStrings		comanda idle setata la
+Local session root	ShareStrings		Sesiunea locala root
+System Uptime	ShareStrings		Uptime Sistem
+by	ShareStrings		de
+Unknown data format!	ShareStrings		Format necunoscut!
+Request server status	ShareStrings		Cere Statutul Serverului
+Open Private Chat Window	ShareStrings		Deschide Fereastra Privata de Chat
+Ping returned in %Li milliseconds	ShareStrings		Ping inapoiat in %Li milisecunde
+Limit Bandwidth	ShareStrings		Limita Latime de Banda
+minutes	ShareStrings		minute
+Will attempt auto-reconnect in %lu minutes.	ShareStrings		Voi incerca auto-reconectarea in %lu minute.
+Status	ShareStrings		Status
+ - %lu results shown (	ShareStrings		 - %lu rezultate afisate (
+Server:	ShareStrings		Server:
+clear the chat log	ShareStrings		sterge log-ul de chat
+Max download rate is	ShareStrings		Rata maxima de download-uri este de
+ is downloading 	ShareStrings		 se copiaza 
+Ignore pattern removed.	ShareStrings		Model Ignore inlaturat.
+to	ShareStrings		catre
+Open File	ShareStrings		Deschide Fisier
+Medium	ShareStrings		Medium
+ is now connected.	ShareStrings		 este acum conectat.
+\" not sent.	ShareStrings		" netrimis.
+Logging Disabled	ShareStrings		Logarea Deactivata
+Download Progress	ShareStrings		Progres Download
+File download accept session for 	ShareStrings		File download accept session for 
+No Limit	ShareStrings		Fara Limita
+System	ShareStrings		Sistem
+execute shell command	ShareStrings		executa comanda shell
+Set max upload rate (per transfer)	ShareStrings		Seteaza rata maxima de upload-uri (per transfer)
+Move Down	ShareStrings		Misca Jos
+Error sharing screenshot	ShareStrings		Error sharing screenshot
+Login on Startup	ShareStrings		Logare la Startup
+Warning	ShareStrings		Atentie
+weeks	ShareStrings		saptamani
+Type /help for a list of available commands.	ShareStrings		Scrie /help pentru o lista de comenzi disponibile.
+Low	ShareStrings		Low
+remove all upload bans	ShareStrings		inlatura toate restrictiile de upload
+, no connection information available.	ShareStrings		, nu exista nici o informatie despre conexiune.
+Sent ping request to: 	ShareStrings		Seteaza cerere ping request catre: 
+Upload Progress	ShareStrings		Progres Upload
+Error Messages	ShareStrings		Mesaje de Eroare
+Quit	ShareStrings		Iesire
+specify users to watch	ShareStrings		specifica useri de urmarit
+ has finished downloading 	ShareStrings		 has finished downloading 
+Started Query	ShareStrings		Cautare Pornita
+High	ShareStrings		High
+Hungarian	ShareStrings		Maghiara
+Watch pattern removed.	ShareStrings		Model de urmarire inlaturat.
+Japanese	ShareStrings		Japanese
+Examining Files...	ShareStrings		Examinare Fisiere...
+Save Preset	ShareStrings		Salveaza Presetari
+Query Changes	ShareStrings		Schimbari la Cautari
+Don't Quit	ShareStrings		Nu Pleca
+specify users to ignore	ShareStrings		specifica utilizatori de ignorat
+Connection to server failed.	ShareStrings		Conexiunea la server failed.
+Executing shell command	ShareStrings		execut comanda shell
+Attributes	ShareStrings		Atribute
+Swedish	ShareStrings		Suedeza
+AutoClear Finished Downloads	ShareStrings		AutoSterge Download-uri Finalizate
+Chat	ShareStrings		Chat
+Border Areas	ShareStrings		Zone Margini
+is now sharing a screenshot	ShareStrings		is now sharing a screenshot
+(Sharing %i files)	ShareStrings		(Sharing %i fisiere locale)
+Font size set to:	ShareStrings		Marimea fontului setata la:
+connect to a server	ShareStrings		conectare la un server
+German	ShareStrings		Germana
+true	ShareStrings		adevarat
+Remote Nick	ShareStrings		Nick Remote
+ - Connecting to 	ShareStrings		 - Conectare la 
+from	ShareStrings		de la
+start a new query	ShareStrings		cautare noua
+HiShare Private Chat Window	ShareStrings		Fereastra Privata de Chat HiShare
+Info Messages	ShareStrings		Mesaje de Informare
+Custom window title is now	ShareStrings		Titlu de Fereastra Normal Este Acum
+ has disconnected.	ShareStrings		 s-a deconectat.
+Upload Bandwidth	ShareStrings		Latime de banda pentru Upload
+AutoUpdate Server List	ShareStrings		Updateaza Automat Lista de Servere
+do something	ShareStrings		fa ceva
+English	ShareStrings		Engleza
+Disconnect	ShareStrings		Deconectare
+days	ShareStrings		zile
+set font size	ShareStrings		seteaza marimea fontului
+Open Logs Folder	ShareStrings		Deschide fisierul de Log-uri
+About HiShare	ShareStrings		Despre HiShare
+Uploads	ShareStrings		Upload-uri
+ is now known as 	ShareStrings		 este acum cunoscut ca si 
+Spanish	ShareStrings		Spaniola
+Download aborted	ShareStrings		Download anulat
+Attempting auto-reconnect.	ShareStrings		Incerc auto-reconectarea.
+Chat With:	ShareStrings		Vorbeste cu:
+Font set to	ShareStrings		Font set to
+File Sharing Enabled	ShareStrings		File Sharing Enabled
+<name>	ShareStrings		<nume>
+AutoPriv pattern removed.	ShareStrings		Model AutoPriv Inlaturat.
+<names or session ids>	ShareStrings		<nume sau id-uri de sesiune>
+Current /autopriv pattern is: 	ShareStrings		Modelul Curent /autopriv este: 
+Max upload rate is	ShareStrings		Rata maxima de upload-uri este de
+[name and value]	ShareStrings		[nume si valoare]
+Reset Layout	ShareStrings		Reseteaza Layout-ul
+Norwegian	ShareStrings		Norvegiana
+Data Compression	ShareStrings		Data Compression
+No target user specified in /msg	ShareStrings		Nici un utilizator-tinta specificat in /msg
+Can't download files from 	ShareStrings		Nu pot copia fisiere de la 
+logged in for	ShareStrings		logat de
+<unknown type>	ShareStrings		<tip necunoscut>
+Start Query	ShareStrings		Porneste Cautarea
+File	ShareStrings		Fisier
+share screenshot	ShareStrings		share screenshot

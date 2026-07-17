@@ -1,0 +1,8 @@
+This archive holds the complete sources needed to build
+BeShare 3.03, including the MUSCLE 3.20 library sources.
+The latter have been slightly tweaked for Haiku's needs,
+but are still compatible with BeOS.
+
+To build, simply cd to the 'source/beshare' directory, and type "make".
+You can also do "make debug" and "make clean".
+Works for PowerPC 32 bit CPUs, Intel 32 bit and 64 bit, BeOS and Haiku OS.

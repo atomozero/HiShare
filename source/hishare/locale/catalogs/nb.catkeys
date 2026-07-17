@@ -1,0 +1,301 @@
+1	Norwegian	application/x-vnd.HiShare	2764403860
+Auto-away tag set to: 	ShareStrings		Meldinga som kjem opp når du er borte er no: 
+Server uptime	ShareStrings		Tenaren har vore i drift
+Color prefs by	ShareStrings		Fargeinnstillingar av
+ is now 	ShareStrings		 er 
+Language %s selected.  Change will take effect after you restart HiShare.	ShareStrings		Språket %s er valt.  Endringane vil synast når du startar HiShare på nytt att.
+Ban User For	ShareStrings		Steng ute brukar i
+Can't download from user 	ShareStrings		Kan ikkje lasta ned frå brukar 
+Scrolled Text Background	ShareStrings		Opprulla tekstbakgrunn
+toggle custom coloring	ShareStrings		Slå på eige fargeval
+Bulgarian	ShareStrings		Bulgarsk
+remove an alias	ShareStrings		fjern eit alias
+Esperanto	ShareStrings		Esperanto
+Finnish	ShareStrings		Finnish
+File Size	ShareStrings		Storleik
+Server memory usage	ShareStrings		Minnebruk hjå tenaren
+Restart Transfer	ShareStrings		Start nedlasting på nytt
+Revert	ShareStrings		Gjer om fargeendringar
+Romanian	ShareStrings		Rumensk
+Warning Messages	ShareStrings		Åtvaringar
+synonym for /action	ShareStrings		synonym for /action
+Your name has been changed to 	ShareStrings		Namnet ditt er endra til 
+Auto Away	ShareStrings		Autovarsling om fråver
+Disabled	ShareStrings		Avslegen
+<name or session id> <text>	ShareStrings		<namn eller brukarnummer> <tekst>
+An Error Occurred.	ShareStrings		Det vart ein feil.
+Switch to Page	ShareStrings		Byt til side
+Connecting to server...	ShareStrings		Koplar til tenar...
+Connection established.	ShareStrings		Har sett opp tilkopling.
+Server status requested.	ShareStrings		Spør etter tenarstatus.
+Clear Finished/Failed Transfers	ShareStrings		Slett ferdige/feilslegne nedlastingar
+bytes/second	ShareStrings		bitar i sekundet
+Results Per Page	ShareStrings		Resultat for kvar side
+set custom window title	ShareStrings		Gje vindauget ein eigen tittel
+Chinese (Simplified)	ShareStrings		Kinesisk
+Unknown user 	ShareStrings		Ukjend brukar 
+Private Messages	ShareStrings		Private meldingar
+Ignore pattern set to: 	ShareStrings		Oversjå-filteret er sett til: 
+Serbian	ShareStrings		Serbisk
+Open Shared Folder	ShareStrings		Opna Shared-mappa
+Open Downloads Folder	ShareStrings		Opna Downloads-mappa
+set user status string	ShareStrings		endrar brukarstatusen
+Current /ignore pattern is: 	ShareStrings		Noverande /ignore-mønster er: 
+Error, couldn't create connect thread! (Try quitting HiShare, then Restarting Networking)	ShareStrings		Feil, kan ikkje laga tilkoplingstråd! (Prøv å avslutta HiShare og starta Netverkstenester på nytt)
+Max Simultaneous Uploads	ShareStrings		Flest opplastingar samstundes
+Dutch	ShareStrings		Nederlandsk
+Hours	ShareStrings		Timar
+Name	ShareStrings		Namn
+ping other clients	ShareStrings		ping andre brukarar
+away	ShareStrings		borte
+Queued (Remote machine too busy)	ShareStrings		I kø (vertsmaskina er oppteken)
+Max Simultaneous Downloads	ShareStrings		Flest nedlastingar samstundes
+Rcvd: 	ShareStrings		Motteke: 
+Removing %lu upload bans	ShareStrings		Fjernar %lu opplastingsstengsel
+User Events	ShareStrings		Brukarhendingar
+stop the current query	ShareStrings		stogg den aktive førespurnaden
+[serverName]	ShareStrings		[tenarNamn]
+Open Folder	ShareStrings		Opna mappa
+File download session to 	ShareStrings		Filnedlasting for 
+, because both of us are behind firewalls.	ShareStrings		, fordi me er bak brannmurar båe to.
+Queued (Local machine too busy)	ShareStrings		I kø (maskina di er oppteken)
+Connect to 	ShareStrings		Kopla til 
+Logging Enabled	ShareStrings		Logging på
+font size in points	ShareStrings		skriftstorleik i punkt
+Connecting...	ShareStrings		Koplar til...
+Force away state	ShareStrings		Bruk fråversmelding uansett
+ - Connected to 	ShareStrings		 - Kopla til 
+send a private message	ShareStrings		send ei privat melding
+Paused Upload Progress	ShareStrings		Stogga opplasting
+Watch pattern set to: 	ShareStrings		Fylgjefilteret er sett til: 
+Your status has been changed to: 	ShareStrings		Statusen din erendra til: 
+Couldn't start file-sharing server thread!  (Try Restarting Networking, then restarting HiShare)	ShareStrings		Kan ikkje starta tenartråd for fildeling!  (Prøv å starta Netverkstenester på nytt, så HiShare)
+Beep When Mentioned	ShareStrings		Pip når nemnd
+French	ShareStrings		Fransk
+Move to Bottom	ShareStrings		Flytt nedst
+clear startup commands	ShareStrings		slett oppstartskommandoane
+Forever	ShareStrings		For alltid
+, message \"	ShareStrings		, melding "
+Portuguese	ShareStrings		Portugisisk
+User at IP %s banned for	ShareStrings		Brukaren med IP %s er stengt ute i
+change your user name	ShareStrings		endra brukarnamnet ditt
+[queryString]	ShareStrings		[søkjeStreng]
+Max Simultaneous Downloads Per User	ShareStrings		Flest samstundes nedlastingar for kvar brukar
+Error starting download--no accept port!	ShareStrings		Kan ikkje lasta ned--ingen mottakarport!
+Timestamps	ShareStrings		Tidsstempel
+Sent: 	ShareStrings		Sendt: 
+set command for when transfers cease	ShareStrings		set kommandoar til bruk når overføringane er avslutta (ledig-kommandoar)
+Stopped Query	ShareStrings		Stogga førespurnad
+Error writing to file 	ShareStrings		Feil ved filskriving 
+Current /watch pattern is: 	ShareStrings		Fylgjefilteret /watch er no: 
+Selection	ShareStrings		Vald tekst
+Stop Query	ShareStrings		Stogg førespurnad
+Error starting delayed connect--no transceiver thread!	ShareStrings		Kan ikkje starta forseinka tilkopling--ingen overføringstråd!
+Shortest Uploads First	ShareStrings		Shortest Uploads First
+Banned	ShareStrings		Bannsett
+Unknown	ShareStrings		Ukjent
+change the auto-away tag	ShareStrings		endrar meldinga som kjem opp automatisk når du er borte
+Korean	ShareStrings		Koreansk
+create an alias	ShareStrings		lag eit alias
+Name Said	ShareStrings		Når andre skriv namnet ditt
+There are %i transfers in progress, are you sure you want to quit?	ShareStrings		Der er %i overføringar no, er du viss på at du vil avslutta?
+Query:	ShareStrings		Førespurnad:
+Move to Top	ShareStrings		Flytt øvst
+Error starting delayed connect!	ShareStrings		Kan ikkje starta forseinka tilkopling!
+Log	ShareStrings		Logg
+Local Nick	ShareStrings		Kallenamnet ditt
+Modification Time	ShareStrings		Siste endring
+Retain File Paths	ShareStrings		Bruk filplasseringane
+add startup command	ShareStrings		legg til ein oppstartskommando
+Download Selected Files	ShareStrings		Last ned desse filene
+show some miscellaneous info	ShareStrings		vis ymse informasjon
+Removed server: %s	ShareStrings		Har fjerna tenar: %s
+false	ShareStrings		usann
+Recorded startup command: 	ShareStrings		Har lagt til oppstartskommando: 
+Preparing to Download	ShareStrings		Gjer klar til å lasta ned
+ - (%lu-%lu) of %lu results shown (	ShareStrings		 - (%lu-%lu) av %lu synte resultat (
+Couldn't start ShareFileTransfer session to serve remote transfer request!  (Try Restarting Networking, then restarting HiShare)	ShareStrings		Kan ikkje starta ShareFileTransfer-omgang for å svara på førespurnad frå ein annan brukar!  (Prøv å starta Netverkstenester på nytt, så HiShare)
+Couldn't connect	ShareStrings		Kunne ikkje kopla til
+/sec, 	ShareStrings		/sek, 
+Choose Colors	ShareStrings		Vel farger
+command	ShareStrings		kommando
+AutoPriv pattern set to: 	ShareStrings		AutoPriv-mønsteret er sett til: 
+Anonymous	ShareStrings		Anonym
+Available irc-style commands:	ShareStrings		Kommandoar i irc-stil som finst:
+User 	ShareStrings		Brukar 
+Couldn't find font	ShareStrings		Couldn't find font
+until	ShareStrings		til
+<action>	ShareStrings		<handling>
+Load	ShareStrings		Last
+Server version	ShareStrings		Tenarversjon
+Changed Query to	ShareStrings		Endra førespurnad til
+Move Up	ShareStrings		Flytt opp
+Set max download rate (per transfer)	ShareStrings		Set fast største nedlastingsfart (per overføring)
+Full User Queries	ShareStrings		Fulle brukarførespurnader
+URL	ShareStrings		Netadresse
+Auto-reconnect sequence terminated.	ShareStrings		Auto-oppkopling er avbroten 
+Text Background	ShareStrings		Tekstbakgrunn
+Client	ShareStrings		Klient
+ (a.k.a. 	ShareStrings		 (kjend som 
+tag	ShareStrings		melding
+Watch	ShareStrings		Fylg med
+Removed alias	ShareStrings		Fjerna alias
+Private	ShareStrings		Private meldingar
+Restore Preset	ShareStrings		Hent fram att innstilling
+You are no longer connected to the MUSCLE server.	ShareStrings		Du er ikkje lenger kopla til MUSCLE-tenaren.
+Remove Selected	ShareStrings		Slett utvalde
+Halt Transfer	ShareStrings		Stogg nedlasting
+Path	ShareStrings		Filplassering
+Language	ShareStrings		Språk
+Set alias	ShareStrings		Bruk alias
+User Name:	ShareStrings		Brukarnamn:
+disconnect from the server	ShareStrings		kopla frå tenaren
+%.1fMB used (%.1fMB available)	ShareStrings		%.1fMB  brukt (%.1fMB tilgjengeleg)
+Italian	ShareStrings		Italiensk
+show this help text	ShareStrings		syn meg denne hjelpeteksten
+[font name]	ShareStrings		[font name]
+HiShare is listening on port %u.  Select Connect from the File menu to begin!	ShareStrings		HiShare lyttar på port %u.  Vel Kopla til frå Fil-menyen for å byrja!
+Connect to server	ShareStrings		Kopla til tenar
+HiShare v%s is now available for download.  You can upgrade at %s	ShareStrings		No kan du få HiShare v%s. Du kan laste han ned frå %s.
+Russian	ShareStrings		Russisk
+Ping	ShareStrings		Ping
+Error	ShareStrings		Feil
+Files	ShareStrings		Filer
+quit HiShare	ShareStrings		avslutt HiShare
+Default	ShareStrings		Vanleg innstilling
+Text	ShareStrings		Tekst
+Preparing to Upload	ShareStrings		Gjer klar til å senda
+Settings	ShareStrings		Innstillingar
+Font reset to default	ShareStrings		Font reset to default
+shell command	ShareStrings		skall-kommando
+Awaiting callback...	ShareStrings		Ventar på svar...
+I'm Firewalled	ShareStrings		Eg er bak ein brannmur
+Error, unknown command	ShareStrings		Feil, ukjend kommando
+Added server: %s	ShareStrings		Har lagt til tenar: %s
+Clear Chat Log	ShareStrings		Slett pratelogg
+Kind	ShareStrings		Type
+Download complete	ShareStrings		Nedlasting ferdig
+Display	ShareStrings		Syn
+User #	ShareStrings		Brukar #
+Font size reset to default	ShareStrings		Har sett skrifta til vanleg storleik
+Turkish	ShareStrings		Turkish
+Action	ShareStrings		Handling
+ failed to initialize!	ShareStrings		 vart feil
+Startup commands cleared.	ShareStrings		Oppstartskommandoane er sletta.
+Max Simultaneous Uploads Per User	ShareStrings		Flest samstundes opplastingar for kvar brukar
+Error, no user specified!	ShareStrings		Feil, du har ikkje valt brukar!
+Server status:	ShareStrings		Tenarstatus:
+Transferred this session:  %s down, %s up.	ShareStrings		Overført denne økta:  %s ned, %s opp. 
+set font	ShareStrings		set font
+ID	ShareStrings		Nummer
+Couldn't find 'shared' subdirectory, file sharing disabled!	ShareStrings		Kan ikkje finna 'shared'-mappa, fildeling er avslegen!
+specify AutoPriv users	ShareStrings		oppgje AutoPriv-brukarar
+idle command set to	ShareStrings		ledig-kommandoen er sett til
+Local session root	ShareStrings		Tenar-rota åt klienten din denne omgangen
+System Uptime	ShareStrings		Maskina di har vore i drift
+by	ShareStrings		av
+Unknown data format!	ShareStrings		Ukjent dataformat!
+Request server status	ShareStrings		Spør etter tenarstatus
+Open Private Chat Window	ShareStrings		Opna privat praterute
+Ping returned in %Li milliseconds	ShareStrings		Ping kom att på %Li millisekund
+Limit Bandwidth	ShareStrings		Avgrens bandbreidda
+minutes	ShareStrings		minutt
+Will attempt auto-reconnect in %lu minutes.	ShareStrings		Skal prøva å kopla opp att om %lu minutt 
+Status	ShareStrings		Status
+ - %lu results shown (	ShareStrings		 - %lu resultat synte (
+Server:	ShareStrings		Tenar:
+clear the chat log	ShareStrings		slett prateloggen
+Max download rate is	ShareStrings		Største nedlastingsfart er
+ is downloading 	ShareStrings		 lastar ned 
+Ignore pattern removed.	ShareStrings		Ta bort oversjå-filter.
+to	ShareStrings		til
+Open File	ShareStrings		Opna fil
+Medium	ShareStrings		Middels
+ is now connected.	ShareStrings		 er no tilkopla.
+\" not sent.	ShareStrings		" ikkje sendt.
+Logging Disabled	ShareStrings		Logging av
+Download Progress	ShareStrings		Nedlasting
+File download accept session for 	ShareStrings		Godkjenninga av filnedlasting for 
+No Limit	ShareStrings		Ikkje nokor grense
+System	ShareStrings		System
+execute shell command	ShareStrings		utfør skall-kommando
+Set max upload rate (per transfer)	ShareStrings		Set fast største opplastingsfart (per overføring)
+Move Down	ShareStrings		Flytt ned
+Error sharing screenshot	ShareStrings		Feil: Greidde ikkje å dela skjermbilete
+Login on Startup	ShareStrings		Logg inn ved oppstart
+Warning	ShareStrings		Åtvaring
+weeks	ShareStrings		veker
+Type /help for a list of available commands.	ShareStrings		Skriv /help for eit oversyn over mogelege kommandoar.
+Low	ShareStrings		Låg
+remove all upload bans	ShareStrings		fjern alle opplastingsstengsel
+, no connection information available.	ShareStrings		, det finst ikkje opplysningar om tilkoplinga.
+Sent ping request to: 	ShareStrings		Sent ping-førespurnad til: 
+Upload Progress	ShareStrings		Opplasting
+Error Messages	ShareStrings		Feilmeldingar
+Quit	ShareStrings		Avslutt
+specify users to watch	ShareStrings		Skriv inn kva brukarar du vil fylgja med
+ has finished downloading 	ShareStrings		 har lasta ned 
+Started Query	ShareStrings		Starta førespurnad
+High	ShareStrings		Hog
+Hungarian	ShareStrings		Ungarsk
+Watch pattern removed.	ShareStrings		Fylgjefilteret er fjerna.
+Japanese	ShareStrings		Japanese
+Examining Files...	ShareStrings		Undersøkjer filer...
+Save Preset	ShareStrings		Lagra innstilling
+Query Changes	ShareStrings		Endringar i førespurnader
+Don't Quit	ShareStrings		Ikkje avslutt
+specify users to ignore	ShareStrings		sjå bort frå brukarar
+Connection to server failed.	ShareStrings		Greidde ikkje å kopla til tenar.
+Executing shell command	ShareStrings		Utfører skall-kommando
+Attributes	ShareStrings		Eigenskapar
+Swedish	ShareStrings		Svensk
+AutoClear Finished Downloads	ShareStrings		AutoSlett ferdige nedlastingar
+Chat	ShareStrings		Prat
+Border Areas	ShareStrings		Rammeareal
+is now sharing a screenshot	ShareStrings		Deler no eit skjermbilete
+(Sharing %i files)	ShareStrings		(Deler %i filer på maskina di)
+Font size set to:	ShareStrings		Skriftstorleiken er no:
+connect to a server	ShareStrings		kopla til ein tenar
+German	ShareStrings		Tysk
+true	ShareStrings		sann
+Remote Nick	ShareStrings		Andre sine kallenamn
+ - Connecting to 	ShareStrings		 - Koplar til 
+from	ShareStrings		frå
+start a new query	ShareStrings		start ein ny førespurnad
+HiShare Private Chat Window	ShareStrings		HiShare privat praterute
+Info Messages	ShareStrings		Info-meldingar
+Custom window title is now	ShareStrings		Vindaugstittelen er no
+ has disconnected.	ShareStrings		 har kopla frå.
+Upload Bandwidth	ShareStrings		Opplastingsbandbreidd
+AutoUpdate Server List	ShareStrings		Auto-oppdater tenarlista
+do something	ShareStrings		gjer noko
+English	ShareStrings		Engelsk
+Disconnect	ShareStrings		Kopla frå
+days	ShareStrings		dagar
+set font size	ShareStrings		set skriftstorleik
+Open Logs Folder	ShareStrings		Opna loggmappa
+About HiShare	ShareStrings		Om HiShare
+Uploads	ShareStrings		Opplastingar
+ is now known as 	ShareStrings		 er no kjend som 
+Spanish	ShareStrings		Spansk
+Download aborted	ShareStrings		Nedlasting avbrote
+Attempting auto-reconnect.	ShareStrings		Prøver å kopla opp att 
+Chat With:	ShareStrings		Prat med:
+Font set to	ShareStrings		Font set to
+File Sharing Enabled	ShareStrings		Fildeling på
+<name>	ShareStrings		<namn>
+AutoPriv pattern removed.	ShareStrings		Har fjerna AutoPriv-mønsteret.
+<names or session ids>	ShareStrings		<namn eller brukarnummer>
+Current /autopriv pattern is: 	ShareStrings		Det noverande /autopriv-mønsteret er: 
+Max upload rate is	ShareStrings		Største opplastingsfart er
+[name and value]	ShareStrings		[namn og verdi]
+Reset Layout	ShareStrings		Start omatt oppsett
+Norwegian	ShareStrings		Norsk (nynorsk)
+Data Compression	ShareStrings		Datakomprimering
+No target user specified in /msg	ShareStrings		Ingen målbrukar gjeven i /msg
+Can't download files from 	ShareStrings		Kan ikkje lasta ned filer frå 
+logged in for	ShareStrings		Du har vore logga på i
+<unknown type>	ShareStrings		<ukjend type>
+Start Query	ShareStrings		Finn!
+File	ShareStrings		Fil
+share screenshot	ShareStrings		Del skjermbilete

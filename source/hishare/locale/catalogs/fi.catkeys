@@ -1,0 +1,301 @@
+1	Finnish	application/x-vnd.HiShare	2764403860
+Auto-away tag set to: 	ShareStrings		Auto poissa -tagi on nyt: 
+Server uptime	ShareStrings		Palvelimen ylhäälläoloaika
+Color prefs by	ShareStrings		Väri asetukset teki
+ is now 	ShareStrings		 on nyt 
+Language %s selected.  Change will take effect after you restart HiShare.	ShareStrings		Kieleksi on valittu %s.  Muutos tapahtuu kun käynnistät HiSharen uudelleen.
+Ban User For	ShareStrings		Käyttäjän Banni aika
+Can't download from user 	ShareStrings		Ei voida ladata käyttäjältä 
+Scrolled Text Background	ShareStrings		Rullatun Tekstin Tausta
+toggle custom coloring	ShareStrings		määrittele muutetut värit
+Bulgarian	ShareStrings		Bulgaria
+remove an alias	ShareStrings		poista alias
+Esperanto	ShareStrings		Esperanto
+Finnish	ShareStrings		Suomi
+File Size	ShareStrings		Tiedoston Koko
+Server memory usage	ShareStrings		Palvelimen muistin käyttö
+Restart Transfer	ShareStrings		Jatka Siirtoa
+Revert	ShareStrings		Palauta
+Romanian	ShareStrings		Romania
+Warning Messages	ShareStrings		Varoitus Viestit
+synonym for /action	ShareStrings		synonyymi komennolle /action
+Your name has been changed to 	ShareStrings		Nimesi on muutettu muotoon 
+Auto Away	ShareStrings		Auto Poissa
+Disabled	ShareStrings		Poissa käytöstä
+<name or session id> <text>	ShareStrings		<nimi tai sessio id> <teksti>
+An Error Occurred.	ShareStrings		Tapahtui Virhe.
+Switch to Page	ShareStrings		Siirry Sivulle
+Connecting to server...	ShareStrings		Yhdistetään palvelimeen...
+Connection established.	ShareStrings		Yhteys muodostettu.
+Server status requested.	ShareStrings		Palvelimen tilaraportti pyydetty.
+Clear Finished/Failed Transfers	ShareStrings		Tyhjennä Valmiit / Epäonnistuneet Siirrot
+bytes/second	ShareStrings		tavua/sekunti
+Results Per Page	ShareStrings		Tuloksia Per Sivu
+set custom window title	ShareStrings		aseta muutettu ikkunan otsikko
+Chinese (Simplified)	ShareStrings		Kiina (yksinkertaistettu)
+Unknown user 	ShareStrings		Tuntematon käyttäjä 
+Private Messages	ShareStrings		Yksityisviestit
+Ignore pattern set to: 	ShareStrings		Huomiotta jätetään: 
+Serbian	ShareStrings		Serbia
+Open Shared Folder	ShareStrings		Avaa Jakokansio
+Open Downloads Folder	ShareStrings		Avaa Latauskansio
+set user status string	ShareStrings		aseta käyttäjä merkkijono
+Current /ignore pattern is: 	ShareStrings		Nykyinen /ignore asetus on: 
+Error, couldn't create connect thread! (Try quitting HiShare, then Restarting Networking)	ShareStrings		Virhe, säiettä ei voitu yhdistää! (Kokeile sammuttaa HiShare ja käynnistää Networking uudelleen)
+Max Simultaneous Uploads	ShareStrings		Max Yhtäaikaiset Lähetykset
+Dutch	ShareStrings		Hollanti
+Hours	ShareStrings		Tuntia
+Name	ShareStrings		Nimi
+ping other clients	ShareStrings		pingaa muita yhteysohjelmia
+away	ShareStrings		away
+Queued (Remote machine too busy)	ShareStrings		Jonossa (Etäkone kiireinen)
+Max Simultaneous Downloads	ShareStrings		Max Yhtäaikaiset Lataukset
+Rcvd: 	ShareStrings		Vastaanotettu: 
+Removing %lu upload bans	ShareStrings		Poistetaan %lu lähetys bannia
+User Events	ShareStrings		Käyttäjä Tapahtumat
+stop the current query	ShareStrings		pysäytä nykyinen haku
+[serverName]	ShareStrings		[palvelinnimi]
+Open Folder	ShareStrings		Avaa Hakemisto
+File download session to 	ShareStrings		Tiedoston latauksen hyväksymissessio 
+, because both of us are behind firewalls.	ShareStrings		, koska molemmat ovat palomuurin takana.
+Queued (Local machine too busy)	ShareStrings		Jonossa (Paikalliskone kiireinen)
+Connect to 	ShareStrings		Yhdistä kohteeseen 
+Logging Enabled	ShareStrings		Logi Päällä
+font size in points	ShareStrings		fontin koko pisteinä
+Connecting...	ShareStrings		Yhdistetään...
+Force away state	ShareStrings		Pakota poissa tila
+ - Connected to 	ShareStrings		 - Yhdistetty kohteeseen 
+send a private message	ShareStrings		lähetä yksityisviesti
+Paused Upload Progress	ShareStrings		Pysäytetyn Lähetyksen Edistyminen
+Watch pattern set to: 	ShareStrings		Tarkkailulistalla ovat: 
+Your status has been changed to: 	ShareStrings		Tilaksesi on muutettu: 
+Couldn't start file-sharing server thread!  (Try Restarting Networking, then restarting HiShare)	ShareStrings		Tiedostonjaon palvelinsäiettä ei voitu käynnistää!  (Yritä käynnistää Networking uudelleen ja sitten uudelleenkäynnistää HiShare)
+Beep When Mentioned	ShareStrings		Äänimerkki Mainittaessa
+French	ShareStrings		Ranska
+Move to Bottom	ShareStrings		Siirrä Alimmaksi
+clear startup commands	ShareStrings		tyhjennä aloituskomento
+Forever	ShareStrings		Pysyvästi
+, message \"	ShareStrings		, viesti "
+Portuguese	ShareStrings		Portugali
+User at IP %s banned for	ShareStrings		Käyttäjä IP:llä %s bannattu ajaksi
+change your user name	ShareStrings		vaihda käyttäjänimesi
+[queryString]	ShareStrings		[haku merkkijono]
+Max Simultaneous Downloads Per User	ShareStrings		Max Yhtäaikaista Latausta Per Käyttäjä
+Error starting download--no accept port!	ShareStrings		Virhe latauksen alussa--ei hyväksyttyä porttia!
+Timestamps	ShareStrings		Aikaleimat
+Sent: 	ShareStrings		Lähetetty: 
+set command for when transfers cease	ShareStrings		aseta komento kun siirto lakkaa
+Stopped Query	ShareStrings		Haku Pysäytetty
+Error writing to file 	ShareStrings		Virhe tiedostoon kirjoitettaessa 
+Current /watch pattern is: 	ShareStrings		Nykyinen /watch asetus on: 
+Selection	ShareStrings		Valinta
+Stop Query	ShareStrings		Pysäytä Haku
+Error starting delayed connect--no transceiver thread!	ShareStrings		Virhe aloitettaessa viivästettyä yhteyttä--ei vastaanotto säiettä!
+Shortest Uploads First	ShareStrings		Lyhin Lähetys Ensin
+Banned	ShareStrings		Bannattu
+Unknown	ShareStrings		Tuntematon
+change the auto-away tag	ShareStrings		muuta auto poissa -tagi
+Korean	ShareStrings		Korea
+create an alias	ShareStrings		luo alias
+Name Said	ShareStrings		Nimi Sanottu
+There are %i transfers in progress, are you sure you want to quit?	ShareStrings		Sinulla on %i siirtoa meneillään, haluatko varmasti lopettaa?
+Query:	ShareStrings		Haku:
+Move to Top	ShareStrings		Siirrä Ylimmäksi
+Error starting delayed connect!	ShareStrings		Virhe aloitettaessa viivästettyä yhteyttä!
+Log	ShareStrings		Logi
+Local Nick	ShareStrings		Paikallinen Nick
+Modification Time	ShareStrings		Muutosaika
+Retain File Paths	ShareStrings		Säilytä Tiedostopolut
+add startup command	ShareStrings		lisää aloituskomento
+Download Selected Files	ShareStrings		Lataa Valitut Tiedostot
+show some miscellaneous info	ShareStrings		näytä sekalaista tietoa
+Removed server: %s	ShareStrings		Poistettu palvelin: %s
+false	ShareStrings		epätosi
+Recorded startup command: 	ShareStrings		Nauhoitettu aloituskomento: 
+Preparing to Download	ShareStrings		Valmistellaan Latausta
+ - (%lu-%lu) of %lu results shown (	ShareStrings		 - (%lu-%lu)  %lu tuloksesta näkyvissä (
+Couldn't start ShareFileTransfer session to serve remote transfer request!  (Try Restarting Networking, then restarting HiShare)	ShareStrings		ShareFileTransfer-sessiopalvelua ei voitu aloittaa etäsiirtopyyntöä varten!  (Yritä käynnistää Networking uudelleen ja sitten uudelleenkäynnistää HiShare)
+Couldn't connect	ShareStrings		Yhdistäminen epäonnistui
+/sec, 	ShareStrings		/sec, 
+Choose Colors	ShareStrings		Valitse Värit
+command	ShareStrings		komento
+AutoPriv pattern set to: 	ShareStrings		AutoPriv asetettu muotoon: 
+Anonymous	ShareStrings		Nimetön
+Available irc-style commands:	ShareStrings		Käytettävissä olevat irc-tyylin komennot:
+User 	ShareStrings		Käyttäjä 
+Couldn't find font	ShareStrings		Fonttia ei löytynyt
+until	ShareStrings		asti
+<action>	ShareStrings		<toiminta>
+Load	ShareStrings		Lataa
+Server version	ShareStrings		Palvelimen versio
+Changed Query to	ShareStrings		Haku Muutettu
+Move Up	ShareStrings		Siirrä Ylös
+Set max download rate (per transfer)	ShareStrings		Aseta max latausvauhti (per siirto)
+Full User Queries	ShareStrings		Täysi Käyttäjä Haku
+URL	ShareStrings		URL
+Auto-reconnect sequence terminated.	ShareStrings		Automaattinen uudelleenyhdistäminen lopetettu.
+Text Background	ShareStrings		Tekstin Tausta
+Client	ShareStrings		Client
+ (a.k.a. 	ShareStrings		 (eli 
+tag	ShareStrings		tagi
+Watch	ShareStrings		Tarkkaile
+Removed alias	ShareStrings		Poistettu alias
+Private	ShareStrings		Yksityinen
+Restore Preset	ShareStrings		Palauta Määrittelyt
+You are no longer connected to the MUSCLE server.	ShareStrings		Et ole enää yhteydessä MUSCLE-palvelimeen.
+Remove Selected	ShareStrings		Poista Valittu
+Halt Transfer	ShareStrings		Pysäytä Siirto
+Path	ShareStrings		Polku
+Language	ShareStrings		Kieli
+Set alias	ShareStrings		Aseta alias
+User Name:	ShareStrings		Käyttäjänimi:
+disconnect from the server	ShareStrings		katkaise yhteys palvelimeen
+%.1fMB used (%.1fMB available)	ShareStrings		%.1fMB käytetty (%.1fMB saatavilla)
+Italian	ShareStrings		Italia
+show this help text	ShareStrings		näytä tämä ohje
+[font name]	ShareStrings		[fontin nimi]
+HiShare is listening on port %u.  Select Connect from the File menu to begin!	ShareStrings		HiShare kuuntelee porttia %u.  Valitse Yhdistä Tiedosto-valikosta aloittaaksesi!
+Connect to server	ShareStrings		Yhdistä palvelimelle
+HiShare v%s is now available for download.  You can upgrade at %s	ShareStrings		HiShare v%s on nyt ladattavissa.  Voit päivittää osoitteessa %s
+Russian	ShareStrings		Venäjä
+Ping	ShareStrings		Ping
+Error	ShareStrings		Virhe
+Files	ShareStrings		Tiedostoja
+quit HiShare	ShareStrings		lopeta HiShare
+Default	ShareStrings		Oletus
+Text	ShareStrings		Teksti
+Preparing to Upload	ShareStrings		Valmistellaan Lähetystä
+Settings	ShareStrings		Asetukset
+Font reset to default	ShareStrings		Fontti palautettu oletusasetuksiin
+shell command	ShareStrings		shell-komento
+Awaiting callback...	ShareStrings		Odotetaan vastausta...
+I'm Firewalled	ShareStrings		Käytän Palomuuria
+Error, unknown command	ShareStrings		Virhe, tuntematon komento
+Added server: %s	ShareStrings		Lisätty palvelin: %s
+Clear Chat Log	ShareStrings		Tyhjennä Keskustelu Logi
+Kind	ShareStrings		Tyyppi
+Download complete	ShareStrings		Lataus valmis
+Display	ShareStrings		Näytä
+User #	ShareStrings		Käyttäjä #
+Font size reset to default	ShareStrings		Fontin koko palautettu oletusarvoon
+Turkish	ShareStrings		Turkki
+Action	ShareStrings		Toiminta
+ failed to initialize!	ShareStrings		 alustus epäonnistui!
+Startup commands cleared.	ShareStrings		Aloituskomennot tyhjennetty.
+Max Simultaneous Uploads Per User	ShareStrings		Max Yhtäaikaista Lähetystä Per Käyttäjä
+Error, no user specified!	ShareStrings		Virhe, käyttäjää ei määritelty!
+Server status:	ShareStrings		Palvelimen tilaraportti:
+Transferred this session:  %s down, %s up.	ShareStrings		Siirretty tässä sessiossa:  %s sisään, %s ulos.
+set font	ShareStrings		aseta fontti
+ID	ShareStrings		ID
+Couldn't find 'shared' subdirectory, file sharing disabled!	ShareStrings		'shared' alihakemistoa ei löytynyt, tiedostonjako poistettu käytöstä!
+specify AutoPriv users	ShareStrings		määrittele AutoPriv käyttäjät
+idle command set to	ShareStrings		idle-komento asetettu muotoon
+Local session root	ShareStrings		Paikallinen sessio juuri
+System Uptime	ShareStrings		Järjestelmän ylhäälläoloaika
+by	ShareStrings		teki
+Unknown data format!	ShareStrings		Tuntematon data muoto!
+Request server status	ShareStrings		Pyydä palvelimen tilaraporttia
+Open Private Chat Window	ShareStrings		Avaa Yksityisviestit Ikkuna
+Ping returned in %Li milliseconds	ShareStrings		Ping palasi %Li millisekunnissa
+Limit Bandwidth	ShareStrings		Rajoita Kaista
+minutes	ShareStrings		minuuttia
+Will attempt auto-reconnect in %lu minutes.	ShareStrings		Automaattista uudelleenyhdistämistä yritetään %lu minuutin kuluttua.
+Status	ShareStrings		Tila
+ - %lu results shown (	ShareStrings		 - %lu tulosta näytetään (
+Server:	ShareStrings		Palvelin:
+clear the chat log	ShareStrings		tyhjennä keskustelulogi
+Max download rate is	ShareStrings		Max latausvauhti on
+ is downloading 	ShareStrings		 lataa 
+Ignore pattern removed.	ShareStrings		Huomiotta jätetään asetus poistettu.
+to	ShareStrings		kohteelle
+Open File	ShareStrings		Avaa Tedosto
+Medium	ShareStrings		Keskisuuri
+ is now connected.	ShareStrings		 on nyt yhdistetty.
+\" not sent.	ShareStrings		" ei ole lähetetty.
+Logging Disabled	ShareStrings		Logi Pois Päältä
+Download Progress	ShareStrings		Latauksen Edistyminen
+File download accept session for 	ShareStrings		Tiedoston latauksen hyväksymissessio kohteelle
+No Limit	ShareStrings		Ei Rajoitusta
+System	ShareStrings		Järjestelmä
+execute shell command	ShareStrings		suorita shell-komento
+Set max upload rate (per transfer)	ShareStrings		Aseta max lähetysvauhti (per siirto)
+Move Down	ShareStrings		Siirrä Alas
+Error sharing screenshot	ShareStrings		Virhe jaettaessa ruudunkaappausta
+Login on Startup	ShareStrings		Kirjaudu Käynnistyksessä
+Warning	ShareStrings		Varoitus
+weeks	ShareStrings		viikkoa
+Type /help for a list of available commands.	ShareStrings		Kirjoita /help saadaksesi komentolistan.
+Low	ShareStrings		Pieni
+remove all upload bans	ShareStrings		poista kaikki lähetys bannit
+, no connection information available.	ShareStrings		, yhteystietoa ei ole saatavilla.
+Sent ping request to: 	ShareStrings		Lähetään ping käyttäjälle: 
+Upload Progress	ShareStrings		Lähetyksen Edistyminen
+Error Messages	ShareStrings		Virhe Viestit
+Quit	ShareStrings		Lopeta
+specify users to watch	ShareStrings		määrittele käyttäjä tarkkailtavaksi
+ has finished downloading 	ShareStrings		 on lopettanut latauksen 
+Started Query	ShareStrings		Haku Aloitettu
+High	ShareStrings		Suuri
+Hungarian	ShareStrings		Unkari
+Watch pattern removed.	ShareStrings		Tarkkailulista poistettu.
+Japanese	ShareStrings		Japani
+Examining Files...	ShareStrings		Tutkitaan Tiedostoja...
+Save Preset	ShareStrings		Tallenna Määrittelyt
+Query Changes	ShareStrings		Hae Muutoksia
+Don't Quit	ShareStrings		Älä Lopeta
+specify users to ignore	ShareStrings		määrittele käyttäjät joita ei huomioida
+Connection to server failed.	ShareStrings		Yhteys palvelimeen epäonnistui.
+Executing shell command	ShareStrings		Suoritetaan shell-komento
+Attributes	ShareStrings		Attribuutit
+Swedish	ShareStrings		Ruotsi
+AutoClear Finished Downloads	ShareStrings		Tyhjennä Valmiit Lataukset Automaattisesti
+Chat	ShareStrings		Keskustelu
+Border Areas	ShareStrings		Reuna-alueet
+is now sharing a screenshot	ShareStrings		jakaa nyt ruudunkaappauksen
+(Sharing %i files)	ShareStrings		(Jaossa %i tiedostoa)
+Font size set to:	ShareStrings		Fontin kooksi asetettu:
+connect to a server	ShareStrings		yhdistä palvelimeen
+German	ShareStrings		Saksa
+true	ShareStrings		tosi
+Remote Nick	ShareStrings		Etä Nick
+ - Connecting to 	ShareStrings		 - Yhdistetään kohteeseen 
+from	ShareStrings		kohteesta
+start a new query	ShareStrings		aloita uusi haku
+HiShare Private Chat Window	ShareStrings		HiSharen Yksityisviestit Ikkuna
+Info Messages	ShareStrings		Info Viestit
+Custom window title is now	ShareStrings		Muutettu Ikkunan otsikko on nyt
+ has disconnected.	ShareStrings		 on katkaissut yhteyden.
+Upload Bandwidth	ShareStrings		Lähetyskaista
+AutoUpdate Server List	ShareStrings		Päivitä Palvelinlista Automaattisesti
+do something	ShareStrings		tee jotain
+English	ShareStrings		Englanti
+Disconnect	ShareStrings		Katkaise yhteys
+days	ShareStrings		päivää
+set font size	ShareStrings		aseta fontin koko
+Open Logs Folder	ShareStrings		Avaa Logi Kansio
+About HiShare	ShareStrings		Tietoja HiSharesta
+Uploads	ShareStrings		Lähetykset
+ is now known as 	ShareStrings		 on nyt nimeltään 
+Spanish	ShareStrings		Espanja
+Download aborted	ShareStrings		Lataus peruutettu
+Attempting auto-reconnect.	ShareStrings		Yritetään automaattista uudelleenyhdistämistä.
+Chat With:	ShareStrings		Keskustele seuraavien henkilöiden kanssa:
+Font set to	ShareStrings		Fontiksi asetettu
+File Sharing Enabled	ShareStrings		Tiedostonjako Päällä
+<name>	ShareStrings		<nimi>
+AutoPriv pattern removed.	ShareStrings		AutoPriv asetus poistettu.
+<names or session ids>	ShareStrings		<nimet or sessio id:t>
+Current /autopriv pattern is: 	ShareStrings		Nykyinen /autopriv asetus on: 
+Max upload rate is	ShareStrings		Max lähetysvauhti on
+[name and value]	ShareStrings		[nimi ja arvo]
+Reset Layout	ShareStrings		Palauta Asettelu
+Norwegian	ShareStrings		Norja
+Data Compression	ShareStrings		Datan Pakkaus
+No target user specified in /msg	ShareStrings		Kohdekäyttäjää ei ole määritetty komennolle /msg
+Can't download files from 	ShareStrings		Ei voida ladata tiedostoja käyttäjältä 
+logged in for	ShareStrings		kirjautuneenaoloaika
+<unknown type>	ShareStrings		<tuntematon tyyppi>
+Start Query	ShareStrings		Aloita Haku
+File	ShareStrings		Tiedosto
+share screenshot	ShareStrings		jaa ruudunkaappaus

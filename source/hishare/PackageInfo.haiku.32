@@ -1,0 +1,43 @@
+name BeShare
+version 3.03-1
+architecture x86_gcc2
+summary "File Sharing and Chatting"
+description "BeShare is a BeOS/Haiku-native file sharing program. It operates similarly to other such programs (Napster, Hotline, etc)  but with a few advantages:
+
+BeShare allows you to upload or download any type of file, not just mp3. When browsing files, you can see their attributes (similar to Be's Tracker view) Your query is always \"live\", so if new files that match your query become available, you will see them added to the results list right away (you won't have to click refresh or anything first)
+
+BeShare includes a rudimentary chat mechanism for you social types.
+
+BeShare supports any number of simultaneous uploads and downloads in parallel, but will serialize simultaneous file requests to any given host for efficiency.
+
+This version supports the BeShare:Info attribute, press the \"Information\" button to see the info for the selected file.  It's also the Universal version, using stock BeOS APIs, which works on BeOS & Haiku, PowerPC & Intel CPUs, 32 bit & 64 bit."
+
+packager "Alexander G. M. Smith <agmsmith@ncf.ca>"
+vendor "Fat Elk Software"
+ 
+licenses {
+    "Artistic"
+}
+
+copyrights {
+    "Jeremy Friesner - Extensions by Pete Goodeve and others"
+}
+
+provides {
+    beshare = 3.03
+    app:BeShare =  3.03
+    cmd:filechopper = 3.03
+}
+
+urls {
+       "https://public.msli.com/lcs/beshare/index.html"
+}
+source-urls {
+    "https://public.msli.com/lcs/beshare/BeShare2.28.zip",
+    "https://public.msli.com/lcs/muscle/muscle3.20.zip",
+    "https://github.com/agmsmith/BeShare"
+}
+
+post-install-scripts {
+    "boot/post-install/beshare-post-install.sh"
+}

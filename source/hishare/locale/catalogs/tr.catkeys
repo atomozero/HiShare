@@ -1,0 +1,301 @@
+1	Turkish	application/x-vnd.HiShare	2764403860
+Auto-away tag set to: 	ShareStrings		otomatik yok olma ayarı belirle: 
+Server uptime	ShareStrings		Yansı işlem kümülesi
+Color prefs by	ShareStrings		Renk ayarları
+ is now 	ShareStrings		 şu an  
+Language %s selected.  Change will take effect after you restart HiShare.	ShareStrings		%s dili seçildi.  Bir dahaki HiShare açılışında etkinleşecek.
+Ban User For	ShareStrings		Kullanıcıyı devre'den çıkarılacak müddet
+Can't download from user 	ShareStrings		Kullanıcı'dan dosya indirmedim 
+Scrolled Text Background	ShareStrings		Gezilmiş Karakter arkası
+toggle custom coloring	ShareStrings		kişisel renk ayarlarına geç
+Bulgarian	ShareStrings		Bulgarca
+remove an alias	ShareStrings		Alias sil
+Esperanto	ShareStrings		Esperanto
+Finnish	ShareStrings		Finnish
+File Size	ShareStrings		Dosya büyüklüğü
+Server memory usage	ShareStrings		Yansı Ön Bellek kullanımı
+Restart Transfer	ShareStrings		Transferi tekrarla
+Revert	ShareStrings		iptal et/çevir
+Romanian	ShareStrings		Rumence
+Warning Messages	ShareStrings		Uyarı mesajları
+synonym for /action	ShareStrings		/action için bir senonim
+Your name has been changed to 	ShareStrings		Değiştirdiğiniz Lâkâb 
+Auto Away	ShareStrings		Otomatik yok mesajı
+Disabled	ShareStrings		Kapat
+<name or session id> <text>	ShareStrings		<isim veya otrum id> <tekst>
+An Error Occurred.	ShareStrings		Bir hata oldu hocam.
+Switch to Page	ShareStrings		Geçilecek sayfa
+Connecting to server...	ShareStrings		Yansıya bağlanıyorum...
+Connection established.	ShareStrings		Yansıya bağlanıldı.
+Server status requested.	ShareStrings		Yansı bilgileri soruluyor.
+Clear Finished/Failed Transfers	ShareStrings		Bitirilen/İptal olan Dosya indirim tarihçesini sil
+bytes/second	ShareStrings		byte/saniye
+Results Per Page	ShareStrings		Sayfa başına sonuç sayısı
+set custom window title	ShareStrings		pencere ismini kişisel olarak adlandır
+Chinese (Simplified)	ShareStrings		Çince
+Unknown user 	ShareStrings		Bilinmeyen kullanıcı 
+Private Messages	ShareStrings		Özel mesajlar
+Ignore pattern set to: 	ShareStrings		Aldırılmayan tip ayarı: 
+Serbian	ShareStrings		Sırbca
+Open Shared Folder	ShareStrings		Paylaşılan Klasörü aç
+Open Downloads Folder	ShareStrings		Dosya indirim Klasörünü aç
+set user status string	ShareStrings		Kullanıcı Durum öğesini etkinleştir
+Current /ignore pattern is: 	ShareStrings		Ayarlanmış olan /aldırmama ayarı: 
+Error, couldn't create connect thread! (Try quitting HiShare, then Restarting Networking)	ShareStrings		Bağlantı tret'i kurulamadı! (HiShare'i kapatınız, 'Networking'i tekrar başlatınız)
+Max Simultaneous Uploads	ShareStrings		Azami paralel dosya gönderme sayısı
+Dutch	ShareStrings		Flamenk'ce
+Hours	ShareStrings		Saat
+Name	ShareStrings		İsim
+ping other clients	ShareStrings		Devredeki Client'lere ping gönder
+away	ShareStrings		yok
+Queued (Remote machine too busy)	ShareStrings		Beklemede (uzaktaki makine (ayni anda) daha fazla indirmeye müsade etmiyor )
+Max Simultaneous Downloads	ShareStrings		Azami paralel dosya indirme sayısı
+Rcvd: 	ShareStrings		Ulaşan: 
+Removing %lu upload bans	ShareStrings		İptal edilen dosya gönderme yasakları %lu 
+User Events	ShareStrings		Kullanıcı olayları
+stop the current query	ShareStrings		Yürümekte olan aramayı durdut
+[serverName]	ShareStrings		[yansıAdı]
+Open Folder	ShareStrings		Klasör aç..
+File download session to 	ShareStrings		Verilen Dosya indirim oturumu 
+, because both of us are behind firewalls.	ShareStrings		, çünkü ikimiz'de bir ateş duvarı arkasındayız.
+Queued (Local machine too busy)	ShareStrings		Beklemede (kendi makinede indirme sınırına ulaştım)
+Connect to 	ShareStrings		Yansıya bağlan: 
+Logging Enabled	ShareStrings		Not alınıyor
+font size in points	ShareStrings		pt olarak karakter büyüklüğü
+Connecting...	ShareStrings		Bağlanıyorum...
+Force away state	ShareStrings		yok olma durumu etkinleştir
+ - Connected to 	ShareStrings		 - Bağlanılan Yansı 
+send a private message	ShareStrings		özel mesaj gönder
+Paused Upload Progress	ShareStrings		Ara verilmiş Dosya gönderme panosu 
+Watch pattern set to: 	ShareStrings		Gözetlenecek kişiyi belirle: 
+Your status has been changed to: 	ShareStrings		Durumunuzun değiştirildiği ayar: 
+Couldn't start file-sharing server thread!  (Try Restarting Networking, then restarting HiShare)	ShareStrings		Dosya Paylaşım sunucu tred'ini başlatamadım!  (Networking'i tekrar başlat, ondan sonra HiShare'i tekrar başlat)
+Beep When Mentioned	ShareStrings		Konu olunduğunda sinyal çal
+French	ShareStrings		Fransızca
+Move to Bottom	ShareStrings		Aşağıya in
+clear startup commands	ShareStrings		Uygulama başlangıç komutlarını sil
+Forever	ShareStrings		Süresiz (abi öldün sen bu yansıda!)
+, message \"	ShareStrings		, mesaj "
+Portuguese	ShareStrings		Portekizce
+User at IP %s banned for	ShareStrings		%s IP 'li kullanıcı'nın devreye girme yasağı
+change your user name	ShareStrings		lâkâb değştir
+[queryString]	ShareStrings		[AramaFormülü]
+Max Simultaneous Downloads Per User	ShareStrings		Kişi başına azami dosya indirme sayısı
+Error starting download--no accept port!	ShareStrings		İndirmede hata oluştu--bir port aksepte edilmedi!
+Timestamps	ShareStrings		Zaman Mühürü
+Sent: 	ShareStrings		Gönderilen: 
+set command for when transfers cease	ShareStrings		ölen dosya indirmeler için özel komut:
+Stopped Query	ShareStrings		Arama durdutuldu
+Error writing to file 	ShareStrings		dosya yazılım hatası 
+Current /watch pattern is: 	ShareStrings		Şu an ki gözetlenen kulanıcı: 
+Selection	ShareStrings		Seçim
+Stop Query	ShareStrings		aramayı durdut
+Error starting delayed connect--no transceiver thread!	ShareStrings		Geciktirmeli Bağlanmada hata oluştu--Gönderici tred'i yok!
+Shortest Uploads First	ShareStrings		Shortest Uploads First
+Banned	ShareStrings		Yansı'dan def edilmiş
+Unknown	ShareStrings		Bilinmiyor
+change the auto-away tag	ShareStrings		otomatik yok olma ayarını değiştir
+Korean	ShareStrings		Korece
+create an alias	ShareStrings		Alias gir
+Name Said	ShareStrings		Çağrılan Ad
+There are %i transfers in progress, are you sure you want to quit?	ShareStrings		Dikkat! %i transfer devam etmekte, HiShare'i kapatmaya emin misin?
+Query:	ShareStrings		Aranacak öğe:
+Move to Top	ShareStrings		Yukarıya çık
+Error starting delayed connect!	ShareStrings		Geciktirmeli Bağlanmada hata oluştu!
+Log	ShareStrings		Not geç
+Local Nick	ShareStrings		Yerel Nik
+Modification Time	ShareStrings		Modifiye zamanı
+Retain File Paths	ShareStrings		Dosya Köklerini kopyala
+add startup command	ShareStrings		uygulama başlangıç komutu ekle
+Download Selected Files	ShareStrings		Seçilen dosyaları indir
+show some miscellaneous info	ShareStrings		Bilimum bilgi göster
+Removed server: %s	ShareStrings		Silien Yansı: %s
+false	ShareStrings		yanlış
+Recorded startup command: 	ShareStrings		Kayıt olan uygulama başlangıç komutu: 
+Preparing to Download	ShareStrings		İndirmeye hazırlanıyorum
+ - (%lu-%lu) of %lu results shown (	ShareStrings		 - (%lu-%lu) sonuç gösterildi %lu 'dan/'den  (
+Couldn't start ShareFileTransfer session to serve remote transfer request!  (Try Restarting Networking, then restarting HiShare)	ShareStrings		Karşıdan gelen transfer isteğine Dosya Paylaşım Transferi başlatılamadı!  (Networking'i tekrar başlat, ondan sonra HiShare'i tekrar başlat)
+Couldn't connect	ShareStrings		Bağlanamadım
+/sec, 	ShareStrings		/saniye, 
+Choose Colors	ShareStrings		Renk seçenekleri
+command	ShareStrings		komut
+AutoPriv pattern set to: 	ShareStrings		Otomatik özel çet oturum ayarı: 
+Anonymous	ShareStrings		Anonim
+Available irc-style commands:	ShareStrings		Mevcut İRC tipi komutlar:
+User 	ShareStrings		Kiş 
+Couldn't find font	ShareStrings		Couldn't find font
+until	ShareStrings		müddet
+<action>	ShareStrings		<aksiyon>
+Load	ShareStrings		yükle
+Server version	ShareStrings		Yansı Versiyonu
+Changed Query to	ShareStrings		Sorgulama değişmesi
+Move Up	ShareStrings		çık
+Set max download rate (per transfer)	ShareStrings		Azami transfer başına indirme hızı
+Full User Queries	ShareStrings		Komple Kullanıcı sorgulaması
+URL	ShareStrings		URL
+Auto-reconnect sequence terminated.	ShareStrings		Tekrar Bağlanma işlemi tamamlandı
+Text Background	ShareStrings		Karakter arkası
+Client	ShareStrings		Yansı Bağlanma uygulaması:
+ (a.k.a. 	ShareStrings		 (ünvanı 
+tag	ShareStrings		ayar
+Watch	ShareStrings		Gözetle
+Removed alias	ShareStrings		silinmiş Alias'lar
+Private	ShareStrings		Özel
+Restore Preset	ShareStrings		Hafızalanmış ayarı etkinleştir
+You are no longer connected to the MUSCLE server.	ShareStrings		MUSCLE Yansı'dan devre dışı olundu .
+Remove Selected	ShareStrings		Seçilenleri görünümden kaldır
+Halt Transfer	ShareStrings		Transferi durdut
+Path	ShareStrings		Dosya Kökü
+Language	ShareStrings		Dil
+Set alias	ShareStrings		Alias'ı ayarla
+User Name:	ShareStrings		kullanıcı Adı:
+disconnect from the server	ShareStrings		Yansıdan çık
+%.1fMB used (%.1fMB available)	ShareStrings		%lfMB kullanılıyor (%.lfMB mevcut)
+Italian	ShareStrings		Italyanca
+show this help text	ShareStrings		bu yardım kılavuzunu göster
+[font name]	ShareStrings		[font name]
+HiShare is listening on port %u.  Select Connect from the File menu to begin!	ShareStrings		HiShare port %u üzerinden dinliyor.  Başlamak için lütfen Yansıya bağlanın!
+Connect to server	ShareStrings		Bağlanacak Yansı
+HiShare v%s is now available for download.  You can upgrade at %s	ShareStrings		HiShare v%s mevcut! Güncelleme için %s 'den indirmeniz mümkün.
+Russian	ShareStrings		Rusça
+Ping	ShareStrings		Ping
+Error	ShareStrings		Hata
+Files	ShareStrings		Dosya
+quit HiShare	ShareStrings		HiShare'i bitir
+Default	ShareStrings		standart
+Text	ShareStrings		Yazı
+Preparing to Upload	ShareStrings		Göndermeye hazırlanıyorum
+Settings	ShareStrings		Ayarlar
+Font reset to default	ShareStrings		Font reset to default
+shell command	ShareStrings		şel komutu
+Awaiting callback...	ShareStrings		Çağrı bekliyorum...
+I'm Firewalled	ShareStrings		Ateş Duvarın arkasındayım!
+Error, unknown command	ShareStrings		Bu komut bilinmiyor
+Added server: %s	ShareStrings		Eklenilen Yansı: %s
+Clear Chat Log	ShareStrings		Çet Notlarını sil
+Kind	ShareStrings		Nev'i
+Download complete	ShareStrings		İndirme tamamlndı
+Display	ShareStrings		Göster
+User #	ShareStrings		Kullanıcı #
+Font size reset to default	ShareStrings		Karakter boyları standart değerlere çevirildi
+Turkish	ShareStrings		Türkçe
+Action	ShareStrings		Aksiyon
+ failed to initialize!	ShareStrings		 başlatılamadaı!
+Startup commands cleared.	ShareStrings		SUygulama başlangıç ayarları silindi.
+Max Simultaneous Uploads Per User	ShareStrings		Kullanıcı başına azami dosya gönderme sayısı
+Error, no user specified!	ShareStrings		Kullanıcı seçilmedi!
+Server status:	ShareStrings		ansı durumu:
+Transferred this session:  %s down, %s up.	ShareStrings		Oturum transferleri: %s indirildi, %s gönderildi.
+set font	ShareStrings		set font
+ID	ShareStrings		ID
+Couldn't find 'shared' subdirectory, file sharing disabled!	ShareStrings		'Shared' Alt Klasörü bulamadım, dosya paylaşımı - malûm - iptal!
+specify AutoPriv users	ShareStrings		Otomatik özel çet oturum kullanıcıları belirt:
+idle command set to	ShareStrings		boş komutu ayarla
+Local session root	ShareStrings		Yansı oturum Dizin kökü
+System Uptime	ShareStrings		Sistem işlem kümülesi
+by	ShareStrings		tarafından
+Unknown data format!	ShareStrings		Dosya tipini algılamıyorum!
+Request server status	ShareStrings		Yansı bilgileri sorgula
+Open Private Chat Window	ShareStrings		Özel mesaj penceresini aç
+Ping returned in %Li milliseconds	ShareStrings		Ping %Li ms'de geri geldi 
+Limit Bandwidth	ShareStrings		Veri hızı sınırlaması
+minutes	ShareStrings		dakika
+Will attempt auto-reconnect in %lu minutes.	ShareStrings		Otomatik Yansıya kayıt olma işlemin tekrarı: %lu dakika. 
+Status	ShareStrings		Devre Durumu
+ - %lu results shown (	ShareStrings		 - %lu bulunan sayısı (
+Server:	ShareStrings		Yansı:
+clear the chat log	ShareStrings		Çet notlarını sil
+Max download rate is	ShareStrings		Azami indirme hızı: 
+ is downloading 	ShareStrings		indiriyor 
+Ignore pattern removed.	ShareStrings		Aldırılmayan tip ayarı iptal edildi.
+to	ShareStrings		isteyen
+Open File	ShareStrings		Dosya aç
+Medium	ShareStrings		orta
+ is now connected.	ShareStrings		bağlandı.
+\" not sent.	ShareStrings		" gönderilmedi.
+Logging Disabled	ShareStrings		Not alınmıyor
+Download Progress	ShareStrings		Dosya indirim panosu
+File download accept session for 	ShareStrings		Dosya indirme oturumuna izin verilen kullanıcı 
+No Limit	ShareStrings		İstediğin kadar, hocam!
+System	ShareStrings		Sistem
+execute shell command	ShareStrings		komut gir (şel)
+Set max upload rate (per transfer)	ShareStrings		Azami transfer başına gönderme hızı değeri
+Move Down	ShareStrings		in
+Error sharing screenshot	ShareStrings		Masa üstü vesikalığı paylaşmasında hata
+Login on Startup	ShareStrings		HiShare başlangıcında otomatik olarak yansıya bağlan
+Warning	ShareStrings		Uyarı
+weeks	ShareStrings		hafta
+Type /help for a list of available commands.	ShareStrings		 /help mevcut komutlarımı gösterir.
+Low	ShareStrings		az
+remove all upload bans	ShareStrings		tüm dosya gönderme yasaklarını sil
+, no connection information available.	ShareStrings		, bağlantı bilgileri mevcut değil.
+Sent ping request to: 	ShareStrings		Ping gönderilecek kişi: 
+Upload Progress	ShareStrings		Dosya gönderme panosu
+Error Messages	ShareStrings		Hata mesajları
+Quit	ShareStrings		Yazılımı bitir
+specify users to watch	ShareStrings		Gözetlenecek kişileri belirle
+ has finished downloading 	ShareStrings		 dosya indirmeyi bitirdi 
+Started Query	ShareStrings		Arama başlatıldı
+High	ShareStrings		yüksek
+Hungarian	ShareStrings		Macarca
+Watch pattern removed.	ShareStrings		Gözetleme ayarını sıfırla.
+Japanese	ShareStrings		Japanese
+Examining Files...	ShareStrings		Dosyalar kontrol ediliyor...
+Save Preset	ShareStrings		Ayarları hatırla
+Query Changes	ShareStrings		Farkları sorgula
+Don't Quit	ShareStrings		Hayır kapatma
+specify users to ignore	ShareStrings		kıl olduğun/yadırgamadığın kişileri gir
+Connection to server failed.	ShareStrings		Yansıya bağlanamdım.
+Executing shell command	ShareStrings		komut uygulanıyor
+Attributes	ShareStrings		Atributlar
+Swedish	ShareStrings		İsveç'ce
+AutoClear Finished Downloads	ShareStrings		Tamamlanmış Dosya indirmeleri otomatikmen görünümden sil
+Chat	ShareStrings		Çet
+Border Areas	ShareStrings		Kenar renkleri
+is now sharing a screenshot	ShareStrings		bir Masa üstü vesikalığı paylaştı
+(Sharing %i files)	ShareStrings		(%i Dosya paylaşılıyor)
+Font size set to:	ShareStrings		Ayarlanan Karakter boyu:
+connect to a server	ShareStrings		Bir yansıya bağlan
+German	ShareStrings		Alman
+true	ShareStrings		doğru
+Remote Nick	ShareStrings		Uzaktaki Nik
+ - Connecting to 	ShareStrings		 - Yansıya bağlanıyorum 
+from	ShareStrings		gönderen
+start a new query	ShareStrings		Yani bi arama başlat
+HiShare Private Chat Window	ShareStrings		HiShare özel mesaj penceresi
+Info Messages	ShareStrings		Bilgi mesajları
+Custom window title is now	ShareStrings		Cpencere ismi şimdi:
+ has disconnected.	ShareStrings		devre dışı.
+Upload Bandwidth	ShareStrings		Dosya gönderme hız sınırlandırması
+AutoUpdate Server List	ShareStrings		Otoamtik Yansı Güncellemeleri
+do something	ShareStrings		bi şiiler yap
+English	ShareStrings		İngilizce
+Disconnect	ShareStrings		devreden çık
+days	ShareStrings		gün
+set font size	ShareStrings		Karakter Büyüklüğünü ayarla:
+Open Logs Folder	ShareStrings		Oturum Notları klasörünü aç
+About HiShare	ShareStrings		HiShare hakkında
+Uploads	ShareStrings		Gönderilen Dosyalar
+ is now known as 	ShareStrings		bilindiği lakâbı 
+Spanish	ShareStrings		İspanyolca
+Download aborted	ShareStrings		İndirme iptal edildi
+Attempting auto-reconnect.	ShareStrings		Tekrar bağlanmaya çalışıyorum.
+Chat With:	ShareStrings		Çet yapılacak kişi:
+Font set to	ShareStrings		Font set to
+File Sharing Enabled	ShareStrings		Dosya paylaşımını çalıştır
+<name>	ShareStrings		<isim>
+AutoPriv pattern removed.	ShareStrings		Otomatik özel çet oturumu silindi.
+<names or session ids>	ShareStrings		<isim veya oturumİD>
+Current /autopriv pattern is: 	ShareStrings		Yüklenmiş Otomatik özel çet oturumu: 
+Max upload rate is	ShareStrings		Azami gönderme hızı
+[name and value]	ShareStrings		[ad ve değer]
+Reset Layout	ShareStrings		Deseni standard değerlerine al
+Norwegian	ShareStrings		Norweç'ce
+Data Compression	ShareStrings		Transfer sıkıştırma oranı
+No target user specified in /msg	ShareStrings		Gönderme yaptığınız kullanıcı belirsiz /msg
+Can't download files from 	ShareStrings		Dosya indirilemeyen kullanıcı 
+logged in for	ShareStrings		devre içi kümülesi
+<unknown type>	ShareStrings		<bilinmeyen tip>
+Start Query	ShareStrings		Aramayı başlat
+File	ShareStrings		Dosya
+share screenshot	ShareStrings		Masa üstü vesikalığı paylaş

@@ -1,0 +1,301 @@
+1	Serbian	application/x-vnd.HiShare	2764403860
+Auto-away tag set to: 	ShareStrings		Auto-away tag set to: 
+Server uptime	ShareStrings		Server uptime
+Color prefs by	ShareStrings		Color prefs by
+ is now 	ShareStrings		 is now 
+Language %s selected.  Change will take effect after you restart HiShare.	ShareStrings		Jezik %s izabran. Promena ce se prikazati po ponovnom pokretanju HiShare-a.
+Ban User For	ShareStrings		Ban User For
+Can't download from user 	ShareStrings		Nije moguce preuzeti datoteku od korisnika 
+Scrolled Text Background	ShareStrings		Scrolled Text Background
+toggle custom coloring	ShareStrings		toggle custom coloring
+Bulgarian	ShareStrings		Bulgarian
+remove an alias	ShareStrings		remove an alias
+Esperanto	ShareStrings		Esperanto
+Finnish	ShareStrings		Finnish
+File Size	ShareStrings		Velicina datoteke
+Server memory usage	ShareStrings		Server memory usage
+Restart Transfer	ShareStrings		Ponovno pokreni preuzimanje
+Revert	ShareStrings		Revert
+Romanian	ShareStrings		Romanian
+Warning Messages	ShareStrings		Poruke upozorenja
+synonym for /action	ShareStrings		sinonim za /akciju
+Your name has been changed to 	ShareStrings		Vase ime je promenjeno u 
+Auto Away	ShareStrings		Auto Away
+Disabled	ShareStrings		Onemogucen
+<name or session id> <text>	ShareStrings		<ime ili id sesije> <tekst>
+An Error Occurred.	ShareStrings		Desila se greska.
+Switch to Page	ShareStrings		Prebaci se na stranicu
+Connecting to server...	ShareStrings		Povezivanje na server...
+Connection established.	ShareStrings		Uspostavljena veza.
+Server status requested.	ShareStrings		Server status requested.
+Clear Finished/Failed Transfers	ShareStrings		Izbrisi zavrsene/neuspesne transfere
+bytes/second	ShareStrings		bytes/second
+Results Per Page	ShareStrings		Resuzultati po stranici
+set custom window title	ShareStrings		set custom window title
+Chinese (Simplified)	ShareStrings		Chinese (Simplified)
+Unknown user 	ShareStrings		Nepoznat korisnik 
+Private Messages	ShareStrings		Privatne poruke
+Ignore pattern set to: 	ShareStrings		Lista za ignorisanje podesena na: 
+Serbian	ShareStrings		Srpski
+Open Shared Folder	ShareStrings		Otvori direktorijum sa deljenim datotekama
+Open Downloads Folder	ShareStrings		Otvori Download direktorijum
+set user status string	ShareStrings		set user status string
+Current /ignore pattern is: 	ShareStrings		Trenutna /lista ignorisanja: 
+Error, couldn't create connect thread! (Try quitting HiShare, then Restarting Networking)	ShareStrings		Greska, nije se mogla uspostaviti konekcija! (Ugasite HiShare i restartujte Networking)
+Max Simultaneous Uploads	ShareStrings		Maksimum simultanih slanja
+Dutch	ShareStrings		Holandski
+Hours	ShareStrings		Hours
+Name	ShareStrings		Ime
+ping other clients	ShareStrings		ping-uj ostale klijente
+away	ShareStrings		away
+Queued (Remote machine too busy)	ShareStrings		Ceka (udaljeni racunar je zauzet)
+Max Simultaneous Downloads	ShareStrings		Maksimum simultanih preuzimanja
+Rcvd: 	ShareStrings		Primljeno: 
+Removing %lu upload bans	ShareStrings		Removing %lu upload bans
+User Events	ShareStrings		Korisnicki dogadjaji
+stop the current query	ShareStrings		zaustavi upit
+[serverName]	ShareStrings		[imeservera]
+Open Folder	ShareStrings		Otvori Direktorijum
+File download session to 	ShareStrings		Sesija preuzimanja od 
+, because both of us are behind firewalls.	ShareStrings		, zato sto smo obojica iza firewall-a.
+Queued (Local machine too busy)	ShareStrings		Ceka (lokalni racunar je zauzet)
+Connect to 	ShareStrings		Povezi se sa 
+Logging Enabled	ShareStrings		Povezivanje omoguceno
+font size in points	ShareStrings		font size in points
+Connecting...	ShareStrings		Povezivanje...
+Force away state	ShareStrings		Force away state
+ - Connected to 	ShareStrings		 - Povezi se sa 
+send a private message	ShareStrings		posalji privatnu poruku
+Paused Upload Progress	ShareStrings		Paused Upload Progress
+Watch pattern set to: 	ShareStrings		Watch pattern set to: 
+Your status has been changed to: 	ShareStrings		Your status has been changed to: 
+Couldn't start file-sharing server thread!  (Try Restarting Networking, then restarting HiShare)	ShareStrings		Nije se mogao pokrenuti ile-sharing server thread!  (Restartujte Networking i pokrenite HiShare!)
+Beep When Mentioned	ShareStrings		Upozori zvukom kad si pomenut
+French	ShareStrings		Francuski
+Move to Bottom	ShareStrings		Move to Bottom
+clear startup commands	ShareStrings		clear startup commands
+Forever	ShareStrings		Forever
+, message \"	ShareStrings		, poruka "
+Portuguese	ShareStrings		Portugalski
+User at IP %s banned for	ShareStrings		User at IP %s banned for
+change your user name	ShareStrings		promeni svoje korisnicko ime
+[queryString]	ShareStrings		[queryString]
+Max Simultaneous Downloads Per User	ShareStrings		Maksimum istovremenih preuzimanja po korisniku
+Error starting download--no accept port!	ShareStrings		Greska pri preuzimanju-nije prihvacen port!
+Timestamps	ShareStrings		Vreme
+Sent: 	ShareStrings		Poslato: 
+set command for when transfers cease	ShareStrings		set command for when transfers cease
+Stopped Query	ShareStrings		Zaustavljen sistem
+Error writing to file 	ShareStrings		Greska pri snimanju datoteke 
+Current /watch pattern is: 	ShareStrings		Current /watch pattern is: 
+Selection	ShareStrings		Selection
+Stop Query	ShareStrings		Zaustavi upit
+Error starting delayed connect--no transceiver thread!	ShareStrings		Greska pri odlozenoj konekciji--no transceiver thread!
+Shortest Uploads First	ShareStrings		Shortest Uploads First
+Banned	ShareStrings		Banned
+Unknown	ShareStrings		Nepoznat
+change the auto-away tag	ShareStrings		change the auto-away tag
+Korean	ShareStrings		Korean
+create an alias	ShareStrings		create an alias
+Name Said	ShareStrings		Name Said
+There are %i transfers in progress, are you sure you want to quit?	ShareStrings		Trenutno je u toku %i transfera, da li ste sigurni da hocete da izadjete?
+Query:	ShareStrings		Upit:
+Move to Top	ShareStrings		Move to Top
+Error starting delayed connect!	ShareStrings		Greska pri odlozenoj konekciji!
+Log	ShareStrings		Log
+Local Nick	ShareStrings		Local Nick
+Modification Time	ShareStrings		Vreme promene
+Retain File Paths	ShareStrings		Retain File Paths
+add startup command	ShareStrings		add startup command
+Download Selected Files	ShareStrings		Preuzmi izabrane datoteke
+show some miscellaneous info	ShareStrings		show some miscellaneous info
+Removed server: %s	ShareStrings		Removed server: %s
+false	ShareStrings		netacno
+Recorded startup command: 	ShareStrings		Recorded startup command: 
+Preparing to Download	ShareStrings		Pripremanje preuzimanja
+ - (%lu-%lu) of %lu results shown (	ShareStrings		 - (%lu-%lu) od %lu rezultata (
+Couldn't start ShareFileTransfer session to serve remote transfer request!  (Try Restarting Networking, then restarting HiShare)	ShareStrings		Nije pokrenuta ShareFileTransfer sesija da bi se zadovoljio zahtev! (Restartuj Networking,a potom restartuj HiShare)
+Couldn't connect	ShareStrings		Povezivanje neuspesno
+/sec, 	ShareStrings		/sek, 
+Choose Colors	ShareStrings		Choose Colors
+command	ShareStrings		command
+AutoPriv pattern set to: 	ShareStrings		AutoPriv pattern set to: 
+Anonymous	ShareStrings		Anoniman
+Available irc-style commands:	ShareStrings		Raspolozive irc-olike komande:
+User 	ShareStrings		Korisnik 
+Couldn't find font	ShareStrings		Couldn't find font
+until	ShareStrings		until
+<action>	ShareStrings		<akcija>
+Load	ShareStrings		Load
+Server version	ShareStrings		Server version
+Changed Query to	ShareStrings		Promenjen upit u
+Move Up	ShareStrings		Pomeri gore
+Set max download rate (per transfer)	ShareStrings		Set max download rate (per transfer)
+Full User Queries	ShareStrings		Puni korisnicki upiti
+URL	ShareStrings		URL
+Auto-reconnect sequence terminated.	ShareStrings		Auto-reconnect sequence terminated.
+Text Background	ShareStrings		Text Background
+Client	ShareStrings		Client
+ (a.k.a. 	ShareStrings		 (a.k.a. 
+tag	ShareStrings		tag
+Watch	ShareStrings		Watch
+Removed alias	ShareStrings		Removed alias
+Private	ShareStrings		Private
+Restore Preset	ShareStrings		Ponovo ucitaj sablon
+You are no longer connected to the MUSCLE server.	ShareStrings		Niste vise povezani na MUSCLE server.
+Remove Selected	ShareStrings		Izbrisi izabrano
+Halt Transfer	ShareStrings		Zaustavi preuzimanje
+Path	ShareStrings		Path
+Language	ShareStrings		Jezik
+Set alias	ShareStrings		Set alias
+User Name:	ShareStrings		Korisnicko ime:
+disconnect from the server	ShareStrings		prekini vezu sa serverom
+%.1fMB used (%.1fMB available)	ShareStrings		%.1fMB used (%.1fMB available)
+Italian	ShareStrings		Italijanski
+show this help text	ShareStrings		prikazi tekst pomoci
+[font name]	ShareStrings		[font name]
+HiShare is listening on port %u.  Select Connect from the File menu to begin!	ShareStrings		HiShare slusa na portu %u.  Izaberi Connect iz Datoteka menija da pocnes!
+Connect to server	ShareStrings		Povezi se na server
+HiShare v%s is now available for download.  You can upgrade at %s	ShareStrings		HiShare v%s is now available for download.  You can upgrade at %s
+Russian	ShareStrings		Ruski
+Ping	ShareStrings		Ping
+Error	ShareStrings		Greska
+Files	ShareStrings		Datoteke
+quit HiShare	ShareStrings		izadji iz HiShare-a
+Default	ShareStrings		Default
+Text	ShareStrings		Text
+Preparing to Upload	ShareStrings		Pripremanje slanja
+Settings	ShareStrings		Podesavanja
+Font reset to default	ShareStrings		Font reset to default
+shell command	ShareStrings		shell command
+Awaiting callback...	ShareStrings		Ceka odgovor...
+I'm Firewalled	ShareStrings		Ja sam iza firewall-a
+Error, unknown command	ShareStrings		Greska, nepoznata komanda
+Added server: %s	ShareStrings		Added server: %s
+Clear Chat Log	ShareStrings		Obrisi Chat Log
+Kind	ShareStrings		Tip
+Download complete	ShareStrings		Preuzimanje gotovo
+Display	ShareStrings		Prikazi
+User #	ShareStrings		Korisnik #
+Font size reset to default	ShareStrings		Font size reset to default
+Turkish	ShareStrings		Turkish
+Action	ShareStrings		Akcija
+ failed to initialize!	ShareStrings		 neuspesna inicijalizacija!
+Startup commands cleared.	ShareStrings		Startup commands cleared.
+Max Simultaneous Uploads Per User	ShareStrings		Maksimum istovremenih slanja po korisniku
+Error, no user specified!	ShareStrings		Greska, nije definisan korisnik!
+Server status:	ShareStrings		Server status:
+Transferred this session:  %s down, %s up.	ShareStrings		Transferred this session:  %s down, %s up.
+set font	ShareStrings		set font
+ID	ShareStrings		ID
+Couldn't find 'shared' subdirectory, file sharing disabled!	ShareStrings		Ne mogu da nadjem 'deljeni' poddirektorijum, deljenje datoteka onemoguceno!
+specify AutoPriv users	ShareStrings		specify AutoPriv users
+idle command set to	ShareStrings		idle command set to
+Local session root	ShareStrings		Local session root
+System Uptime	ShareStrings		System Uptime
+by	ShareStrings		od
+Unknown data format!	ShareStrings		Unknown data format!
+Request server status	ShareStrings		Request server status
+Open Private Chat Window	ShareStrings		Optvori prozor za privatni razgovor
+Ping returned in %Li milliseconds	ShareStrings		Ping se vratio za %Li milisekundi
+Limit Bandwidth	ShareStrings		Limit Bandwidth
+minutes	ShareStrings		minutes
+Will attempt auto-reconnect in %lu minutes.	ShareStrings		Will attempt auto-reconnect in %lu minutes.
+Status	ShareStrings		Status
+ - %lu results shown (	ShareStrings		 - %lu reultati prikazani (
+Server:	ShareStrings		Server:
+clear the chat log	ShareStrings		izbrisi chat log
+Max download rate is	ShareStrings		Max download rate is
+ is downloading 	ShareStrings		 preuzima datoteku 
+Ignore pattern removed.	ShareStrings		Lista za ignorisanje izbrisana.
+to	ShareStrings		ka
+Open File	ShareStrings		Otvori datoteku
+Medium	ShareStrings		Medium
+ is now connected.	ShareStrings		 je konektovan.
+\" not sent.	ShareStrings		" nije poslata.
+Logging Disabled	ShareStrings		Povezivanje onemoguceno
+Download Progress	ShareStrings		Download Progress
+File download accept session for 	ShareStrings		Preuzimanje datoteke prihvaceno od 
+No Limit	ShareStrings		Bez ogranicenja
+System	ShareStrings		Sistem
+execute shell command	ShareStrings		execute shell command
+Set max upload rate (per transfer)	ShareStrings		Set max upload rate (per transfer)
+Move Down	ShareStrings		Pomeri dole
+Error sharing screenshot	ShareStrings		Error sharing screenshot
+Login on Startup	ShareStrings		Povezi se automatski
+Warning	ShareStrings		Upozorenje
+weeks	ShareStrings		weeks
+Type /help for a list of available commands.	ShareStrings		Ukucaj /help za listu raspolozivih komandi.
+Low	ShareStrings		Low
+remove all upload bans	ShareStrings		remove all upload bans
+, no connection information available.	ShareStrings		, bez informacije o konekciji.
+Sent ping request to: 	ShareStrings		Posalji ping zahtev ka: 
+Upload Progress	ShareStrings		Upload Progress
+Error Messages	ShareStrings		Poruke o greskama
+Quit	ShareStrings		Izadji
+specify users to watch	ShareStrings		specify users to watch
+ has finished downloading 	ShareStrings		 has finished downloading 
+Started Query	ShareStrings		Pokrenut upit
+High	ShareStrings		High
+Hungarian	ShareStrings		Hungarian
+Watch pattern removed.	ShareStrings		Watch pattern removed.
+Japanese	ShareStrings		Japanese
+Examining Files...	ShareStrings		Ispitujem datoteke...
+Save Preset	ShareStrings		Snimi sablon
+Query Changes	ShareStrings		Promene upita
+Don't Quit	ShareStrings		Ne izadji
+specify users to ignore	ShareStrings		odredi korisnike za ignorisanje
+Connection to server failed.	ShareStrings		Beuspesno povezivanje na server.
+Executing shell command	ShareStrings		Executing shell command
+Attributes	ShareStrings		Atributi
+Swedish	ShareStrings		Svedski
+AutoClear Finished Downloads	ShareStrings		Automatski izbrisi zavrsene preuzete datoteke
+Chat	ShareStrings		Razgovor
+Border Areas	ShareStrings		Border Areas
+is now sharing a screenshot	ShareStrings		is now sharing a screenshot
+(Sharing %i files)	ShareStrings		(Delim %i lokalnih datoteka)
+Font size set to:	ShareStrings		Font size set to:
+connect to a server	ShareStrings		povezi se na server
+German	ShareStrings		Nemacki
+true	ShareStrings		tacno
+Remote Nick	ShareStrings		Remote Nick
+ - Connecting to 	ShareStrings		 - Povezi se sa 
+from	ShareStrings		od
+start a new query	ShareStrings		pokreni novi upit
+HiShare Private Chat Window	ShareStrings		HiShare prozor za privatni razgovor
+Info Messages	ShareStrings		Informativne poruke
+Custom window title is now	ShareStrings		Custom window title is now
+ has disconnected.	ShareStrings		 nije konektovan.
+Upload Bandwidth	ShareStrings		Brzina konekcije
+AutoUpdate Server List	ShareStrings		AutoUpdate Server List
+do something	ShareStrings		uradi nsto
+English	ShareStrings		Engleski
+Disconnect	ShareStrings		Prekini vezu
+days	ShareStrings		days
+set font size	ShareStrings		set font size
+Open Logs Folder	ShareStrings		Open Logs Folder
+About HiShare	ShareStrings		O HiShare-u
+Uploads	ShareStrings		Slanja
+ is now known as 	ShareStrings		 se sad zove 
+Spanish	ShareStrings		Spanski
+Download aborted	ShareStrings		Preuzimanje prekinuto
+Attempting auto-reconnect.	ShareStrings		Attempting auto-reconnect.
+Chat With:	ShareStrings		razgovor sa:
+Font set to	ShareStrings		Font set to
+File Sharing Enabled	ShareStrings		File Sharing Enabled
+<name>	ShareStrings		<ime>
+AutoPriv pattern removed.	ShareStrings		AutoPriv pattern removed.
+<names or session ids>	ShareStrings		<imena ili id sesija>
+Current /autopriv pattern is: 	ShareStrings		Current /autopriv pattern is: 
+Max upload rate is	ShareStrings		Max upload rate is
+[name and value]	ShareStrings		[name and value]
+Reset Layout	ShareStrings		Resetuj interfejs
+Norwegian	ShareStrings		Norveski
+Data Compression	ShareStrings		Data Compression
+No target user specified in /msg	ShareStrings		Nije odredjen ciljni korisnik u /msg
+Can't download files from 	ShareStrings		Nemoguce preuzeti od 
+logged in for	ShareStrings		logged in for
+<unknown type>	ShareStrings		<nepoznat tip>
+Start Query	ShareStrings		Pokreni upit
+File	ShareStrings		Datoteka
+share screenshot	ShareStrings		share screenshot

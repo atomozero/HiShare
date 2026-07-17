@@ -1,0 +1,39 @@
+HiShare — licensing overview
+============================
+
+HiShare is the modernized edition of BeShare 3.04 by Jeremy Friesner.
+Different parts of this source tree are covered by different licenses:
+
+1. BeShare / HiShare application code
+   (source/hishare/*, excluding the santa/ subdirectory)
+
+   The original BeShare code was placed in the public domain by its author,
+   Jeremy Friesner (1999-2012). The HiShare modernization (2026, atomozero)
+   is likewise released into the public domain: do with it what you want.
+
+2. MUSCLE networking library
+   (source/muscle/)
+
+   Copyright Meyer Sound Laboratories Inc., distributed under its own
+   BSD-style license. See source/muscle/LICENSE.
+
+3. Santa's Gift Bag GUI classes — ColumnListView, BetterScrollView, etc.
+   (source/hishare/santa/)
+
+   Copyright Brian Tietz, distributed under its own license, which allows
+   free use in freeware and cheap shareware and requires keeping its
+   documentation and license alongside the code, with modifications clearly
+   marked. See source/hishare/santa/License. HiShare is free software, so
+   its use here is within those terms; the HiShare modifications to these
+   classes (Haiku theme-awareness, etc.) are marked in the sources.
+
+4. zlib
+   (source/muscle/zlib/zlib/)
+
+   Copyright Jean-loup Gailly and Mark Adler, zlib license.
+
+Note on source/hishare/BeShareSSLKeys.h: the PEM key pair embedded there is
+NOT a secret. It is a well-known, shared key that ships inside every binary
+and provides opportunistic transport encryption only (protection against
+passive eavesdropping), not authentication. See the comments in that file,
+including how to regenerate the pair.

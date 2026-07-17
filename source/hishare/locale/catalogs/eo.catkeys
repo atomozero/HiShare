@@ -1,0 +1,301 @@
+1	Esperanto	application/x-vnd.HiShare	2764403860
+Auto-away tag set to: 	ShareStrings		Aŭtomata-for-mesaĝo ŝanĝita al: 
+Server uptime	ShareStrings		Tempodaŭro ekde la servila ŝaltiĝo
+Color prefs by	ShareStrings		Color prefs by
+ is now 	ShareStrings		 nun estas 
+Language %s selected.  Change will take effect after you restart HiShare.	ShareStrings		La lingvo %s estis elektita.  La ŝanĝo efikos post restartigo de HiShare.
+Ban User For	ShareStrings		Malpermesu Uzanton Dum
+Can't download from user 	ShareStrings		Ne eblas elŝuti de uzanto 
+Scrolled Text Background	ShareStrings		Scrolled Text Background
+toggle custom coloring	ShareStrings		toggle custom coloring
+Bulgarian	ShareStrings		Bulgara
+remove an alias	ShareStrings		forigas alinomon
+Esperanto	ShareStrings		Esperanto
+Finnish	ShareStrings		Finnish
+File Size	ShareStrings		Grandeco
+Server memory usage	ShareStrings		Servila uzo de memoro
+Restart Transfer	ShareStrings		Restartigu Elŝuton
+Revert	ShareStrings		Revert
+Romanian	ShareStrings		Romanian
+Warning Messages	ShareStrings		Alertajn Mesaĝojn
+synonym for /action	ShareStrings		sinonimo de /action
+Your name has been changed to 	ShareStrings		Via nomo estas ŝanĝita al 
+Auto Away	ShareStrings		Aŭtomate For
+Disabled	ShareStrings		Neaktivita
+<name or session id> <text>	ShareStrings		<nomo aŭ sesia id> <teksto>
+An Error Occurred.	ShareStrings		Okazis Eraro.
+Switch to Page	ShareStrings		Ŝanĝu al Paĝo
+Connecting to server...	ShareStrings		Konektas al servilo...
+Connection established.	ShareStrings		Konekto establita.
+Server status requested.	ShareStrings		Servila stato postulita.
+Clear Finished/Failed Transfers	ShareStrings		Forigu Finitajn/Malsukcesajn Transigojn
+bytes/second	ShareStrings		bytes/second
+Results Per Page	ShareStrings		Rezultoj sur Ĉiu Paĝo
+set custom window title	ShareStrings		ŝanĝu la fenestro-titolon
+Chinese (Simplified)	ShareStrings		Chinese (Simplified)
+Unknown user 	ShareStrings		Nekonata uzanto 
+Private Messages	ShareStrings		Privatajn Mesaĝojn
+Ignore pattern set to: 	ShareStrings		Ignorfiltro ŝanĝita al: 
+Serbian	ShareStrings		Serba
+Open Shared Folder	ShareStrings		Malfermu La Disponigan Dosierujon
+Open Downloads Folder	ShareStrings		Malfermu La Elŝutan Dosierujon
+set user status string	ShareStrings		ŝanĝas la stato-tekston de la uzanto
+Current /ignore pattern is: 	ShareStrings		Nuna /ignore-filtro estas: 
+Error, couldn't create connect thread! (Try quitting HiShare, then Restarting Networking)	ShareStrings		Eraro, ne eblis krei konektan fadenon! (Provu eliru HiShare-on, poste Restartigu la Retumadon)
+Max Simultaneous Uploads	ShareStrings		Supra Limo de Samtempaj Alŝutoj
+Dutch	ShareStrings		Nederlanda
+Hours	ShareStrings		Horoj
+Name	ShareStrings		Nomo
+ping other clients	ShareStrings		pingas aliajn klientojn
+away	ShareStrings		for
+Queued (Remote machine too busy)	ShareStrings		Envicigita (Fora komputilo tro okupita)
+Max Simultaneous Downloads	ShareStrings		Supra Limo de Samtempaj Elŝutoj
+Rcvd: 	ShareStrings		Ricevita: 
+Removing %lu upload bans	ShareStrings		Forigas %lu alŝut-malpermesojn
+User Events	ShareStrings		Uzant-Eventojn
+stop the current query	ShareStrings		haltigas la nunan serĉon
+[serverName]	ShareStrings		[servilNomo]
+Open Folder	ShareStrings		Malfermu La Dosierujon
+File download session to 	ShareStrings		Dosierelŝuta sesio al 
+, because both of us are behind firewalls.	ShareStrings		, ĉar ni ambaŭ estas malantaŭ fajroŝirmiloj.
+Queued (Local machine too busy)	ShareStrings		Envicigita (Loka komputilo tro okupita)
+Connect to 	ShareStrings		Konektu al 
+Logging Enabled	ShareStrings		Protokolo Aktivita
+font size in points	ShareStrings		tipargrandeco en punktoj
+Connecting...	ShareStrings		Konektas...
+Force away state	ShareStrings		Devige enŝaltas for-staton
+ - Connected to 	ShareStrings		 - Konektita al 
+send a private message	ShareStrings		sendas privatan mesaĝon
+Paused Upload Progress	ShareStrings		Paused Upload Progress
+Watch pattern set to: 	ShareStrings		Observa filtro ŝanĝita al: 
+Your status has been changed to: 	ShareStrings		Via stato ŝanĝiĝis al: 
+Couldn't start file-sharing server thread!  (Try Restarting Networking, then restarting HiShare)	ShareStrings		Ne eblis startigi la dosier-disponigan fadenon!  (Provu Restartigu la Retumadon, poste restartigu HiShare-on)
+Beep When Mentioned	ShareStrings		Sonu Kiam Menciita
+French	ShareStrings		Franca
+Move to Bottom	ShareStrings		Movu al la Malsupro
+clear startup commands	ShareStrings		nuligu start-ordonojn
+Forever	ShareStrings		Eterne
+, message \"	ShareStrings		, mesaĝo "
+Portuguese	ShareStrings		Portugala
+User at IP %s banned for	ShareStrings		Uzanto kun IP %s malpermesita dum
+change your user name	ShareStrings		ŝanĝas vian uzantonomon
+[queryString]	ShareStrings		[serĉTeksto]
+Max Simultaneous Downloads Per User	ShareStrings		Supra Limo de Samtempaj Elŝutoj por Ĉiu Uzanto
+Error starting download--no accept port!	ShareStrings		Eraro je starto de elŝuto--neniu akcepta pordo!
+Timestamps	ShareStrings		Tempomarkojn
+Sent: 	ShareStrings		Sendita: 
+set command for when transfers cease	ShareStrings		set command for when transfers cease
+Stopped Query	ShareStrings		Ĉesis Serĉi
+Error writing to file 	ShareStrings		Eraro je skribo al dosiero 
+Current /watch pattern is: 	ShareStrings		Aktuala observa filtro estas: 
+Selection	ShareStrings		Selection
+Stop Query	ShareStrings		Ĉesu Serĉi
+Error starting delayed connect--no transceiver thread!	ShareStrings		Eraro je starto de prokrastita konekto--neniu ricevsenda fadeno!
+Shortest Uploads First	ShareStrings		Shortest Uploads First
+Banned	ShareStrings		Banned
+Unknown	ShareStrings		Nekonata
+change the auto-away tag	ShareStrings		ŝanĝas la aŭtomata-for-mesaĝo
+Korean	ShareStrings		Korean
+create an alias	ShareStrings		kreas alinomon
+Name Said	ShareStrings		Name Said
+There are %i transfers in progress, are you sure you want to quit?	ShareStrings		Estas %i aktiva(j) transigo(j), ĉu vi vere volas eliri?
+Query:	ShareStrings		Serĉu:
+Move to Top	ShareStrings		Movu al la Supro
+Error starting delayed connect!	ShareStrings		Eraro je starto de prokrastita konekto!
+Log	ShareStrings		Protokolu
+Local Nick	ShareStrings		Local Nick
+Modification Time	ShareStrings		Laste Ŝanĝita
+Retain File Paths	ShareStrings		Konservu Dosierajn Padojn
+add startup command	ShareStrings		aldonu start-ordonon
+Download Selected Files	ShareStrings		Elŝutu Elektitajn Dosierojn
+show some miscellaneous info	ShareStrings		show some miscellaneous info
+Removed server: %s	ShareStrings		Forigis la servilon
+false	ShareStrings		malvere
+Recorded startup command: 	ShareStrings		Registrita start-ordono: 
+Preparing to Download	ShareStrings		Preparas Elŝuti
+ - (%lu-%lu) of %lu results shown (	ShareStrings		 - (%lu-%lu) el %lu rezultoj montritaj (
+Couldn't start ShareFileTransfer session to serve remote transfer request!  (Try Restarting Networking, then restarting HiShare)	ShareStrings		Ne eblis startigi ShareFileTransfer-sesion por servi la foran transigpeton!  (Try Restarting Networking, then restarting HiShare)
+Couldn't connect	ShareStrings		Ne eblis konekti
+/sec, 	ShareStrings		/sek, 
+Choose Colors	ShareStrings		Choose Colors
+command	ShareStrings		ordono
+AutoPriv pattern set to: 	ShareStrings		AutoPriv-filtro ŝanĝita al: 
+Anonymous	ShareStrings		Anonima
+Available irc-style commands:	ShareStrings		Disponeblaj irc-stilaj komandoj:
+User 	ShareStrings		Uzanto 
+Couldn't find font	ShareStrings		Couldn't find font
+until	ShareStrings		until
+<action>	ShareStrings		<ago>
+Load	ShareStrings		Ŝarĝo
+Server version	ShareStrings		Servilo versio
+Changed Query to	ShareStrings		Ŝanĝis Serĉo al
+Move Up	ShareStrings		Movu Supren
+Set max download rate (per transfer)	ShareStrings		Set max download rate (per transfer)
+Full User Queries	ShareStrings		Plenaj Uzant-Serĉoj
+URL	ShareStrings		URL
+Auto-reconnect sequence terminated.	ShareStrings		La aŭtomata rekonektado nuligita.
+Text Background	ShareStrings		Text Background
+Client	ShareStrings		Kliento
+ (a.k.a. 	ShareStrings		 (alinome 
+tag	ShareStrings		mesaĝo
+Watch	ShareStrings		Observu
+Removed alias	ShareStrings		Forigis alinomon
+Private	ShareStrings		Private
+Restore Preset	ShareStrings		Reŝarĝu Preferojn
+You are no longer connected to the MUSCLE server.	ShareStrings		Vi ne plu estas konektita al la MUSCLE-servilo.
+Remove Selected	ShareStrings		Forigu Elektitan
+Halt Transfer	ShareStrings		Haltigu Elŝuton
+Path	ShareStrings		Pado
+Language	ShareStrings		Lingvo
+Set alias	ShareStrings		Ŝanĝis alinomon
+User Name:	ShareStrings		Uzantonomo:
+disconnect from the server	ShareStrings		malkonektas de la servilo
+%.1fMB used (%.1fMB available)	ShareStrings		%.1fMB uzataj (%.1fMB disponeblaj)
+Italian	ShareStrings		Itala
+show this help text	ShareStrings		montras la jenan helptekston
+[font name]	ShareStrings		[font name]
+HiShare is listening on port %u.  Select Connect from the File menu to begin!	ShareStrings		HiShare aŭskultas ĉe la pordo %u.  Elektu Konektu en la Arkivo-menuo por komenci!
+Connect to server	ShareStrings		Konektu al servilo
+HiShare v%s is now available for download.  You can upgrade at %s	ShareStrings		HiShare v%s nun elŝuteblas. Vi povas ĝisdatigi ĉe %s
+Russian	ShareStrings		Rusa
+Ping	ShareStrings		Ping
+Error	ShareStrings		Eraro
+Files	ShareStrings		Dosieroj
+quit HiShare	ShareStrings		eliru HiShare-on
+Default	ShareStrings		Default
+Text	ShareStrings		Text
+Preparing to Upload	ShareStrings		Preparas Alŝuti
+Settings	ShareStrings		Preferoj
+Font reset to default	ShareStrings		Font reset to default
+shell command	ShareStrings		shell command
+Awaiting callback...	ShareStrings		Atendas revokon...
+I'm Firewalled	ShareStrings		Mi estas malantaŭ Fajroŝirmilo
+Error, unknown command	ShareStrings		Eraro, nekonata komando
+Added server: %s	ShareStrings		Aldonis la servilon
+Clear Chat Log	ShareStrings		Malplenigu La Babilan Protokolon
+Kind	ShareStrings		Tipo
+Download complete	ShareStrings		Elŝuto finita
+Display	ShareStrings		Montru
+User #	ShareStrings		Uzanto #
+Font size reset to default	ShareStrings		Tipargrandeco ŝanĝita al la origina grandeco
+Turkish	ShareStrings		Turkish
+Action	ShareStrings		Ago
+ failed to initialize!	ShareStrings		 malsukcesis iniciatiĝi!
+Startup commands cleared.	ShareStrings		Start-ordonoj nuligitaj.
+Max Simultaneous Uploads Per User	ShareStrings		Supra Limo de Samtempaj Alŝutoj por Ĉiu Uzanto
+Error, no user specified!	ShareStrings		Eraro, uzanto ne specifita!
+Server status:	ShareStrings		Servila stato:
+Transferred this session:  %s down, %s up.	ShareStrings		Transferred this session:  %s down, %s up.
+set font	ShareStrings		set font
+ID	ShareStrings		ID
+Couldn't find 'shared' subdirectory, file sharing disabled!	ShareStrings		Ne eblis trovi la dosierujon 'shared', dosier-disponigado malebligita!
+specify AutoPriv users	ShareStrings		precizigu AutoPriv-uzantojn
+idle command set to	ShareStrings		idle command set to
+Local session root	ShareStrings		Radiko de la loka komputilo
+System Uptime	ShareStrings		Tempodaŭro ekde la sistema ŝaltiĝo
+by	ShareStrings		de
+Unknown data format!	ShareStrings		Nekonata datum-formato!
+Request server status	ShareStrings		Postulu la servilan staton
+Open Private Chat Window	ShareStrings		Malfermu Privatan Babilfenestron
+Ping returned in %Li milliseconds	ShareStrings		La pingo revenis post %Li milisekundoj.
+Limit Bandwidth	ShareStrings		Limit Bandwidth
+minutes	ShareStrings		minutoj
+Will attempt auto-reconnect in %lu minutes.	ShareStrings		Provos rekonekti aŭtomate denove post %lu minutoj.
+Status	ShareStrings		Stato
+ - %lu results shown (	ShareStrings		 - %lu rezultoj montritaj (
+Server:	ShareStrings		Servilo:
+clear the chat log	ShareStrings		malplenigas la babilan protokolon
+Max download rate is	ShareStrings		Max download rate is
+ is downloading 	ShareStrings		 elŝutas 
+Ignore pattern removed.	ShareStrings		Ignorfiltro forigita.
+to	ShareStrings		al
+Open File	ShareStrings		Malfermu Dosieron
+Medium	ShareStrings		Medium
+ is now connected.	ShareStrings		 nun estas konektita.
+\" not sent.	ShareStrings		" ne sendita.
+Logging Disabled	ShareStrings		Protokolo Neaktivita
+Download Progress	ShareStrings		Download Progress
+File download accept session for 	ShareStrings		Dosierelŝuta akceptsesio al 
+No Limit	ShareStrings		Neniu Limo
+System	ShareStrings		Sistemo
+execute shell command	ShareStrings		execute shell command
+Set max upload rate (per transfer)	ShareStrings		Set max upload rate (per transfer)
+Move Down	ShareStrings		Movu Malsupren
+Error sharing screenshot	ShareStrings		Error sharing screenshot
+Login on Startup	ShareStrings		Konektu je la Programstarto
+Warning	ShareStrings		Averto
+weeks	ShareStrings		semajnojn
+Type /help for a list of available commands.	ShareStrings		Skribu /help por listo de disponeblaj komandoj.
+Low	ShareStrings		Low
+remove all upload bans	ShareStrings		forigu ĉiujn alŝut-malpermesojn
+, no connection information available.	ShareStrings		, neniu konekta informo haveblas.
+Sent ping request to: 	ShareStrings		Pingo-peto sendita al: 
+Upload Progress	ShareStrings		Upload Progress
+Error Messages	ShareStrings		Erarajn Mesaĝojn
+Quit	ShareStrings		Eliru
+specify users to watch	ShareStrings		precizigu observotajn uzantojn
+ has finished downloading 	ShareStrings		 has finished downloading 
+Started Query	ShareStrings		Komencis Serĉi
+High	ShareStrings		High
+Hungarian	ShareStrings		Hungarian
+Watch pattern removed.	ShareStrings		Observa filtro forigita.
+Japanese	ShareStrings		Japanese
+Examining Files...	ShareStrings		Ekzamenas la Dosierojn...
+Save Preset	ShareStrings		Ŝparu Preferojn
+Query Changes	ShareStrings		Serĉo-Ŝanĝojn
+Don't Quit	ShareStrings		Ne Eliru
+specify users to ignore	ShareStrings		specifu uzantojn por ignori
+Connection to server failed.	ShareStrings		Konekto al la servilo malsukcesis.
+Executing shell command	ShareStrings		Executing shell command
+Attributes	ShareStrings		Atributoj
+Swedish	ShareStrings		Sveda
+AutoClear Finished Downloads	ShareStrings		Forigu Finitajn Elŝutojn Aŭtomate
+Chat	ShareStrings		Babiladon
+Border Areas	ShareStrings		Border Areas
+is now sharing a screenshot	ShareStrings		is now sharing a screenshot
+(Sharing %i files)	ShareStrings		(Disponigas %i lokajn dosierojn)
+Font size set to:	ShareStrings		Tipargrandeco nun estas:
+connect to a server	ShareStrings		konektas al servilo
+German	ShareStrings		Germana
+true	ShareStrings		vere
+Remote Nick	ShareStrings		Remote Nick
+ - Connecting to 	ShareStrings		 - Konektas al 
+from	ShareStrings		de
+start a new query	ShareStrings		startigas novan serĉon
+HiShare Private Chat Window	ShareStrings		HiShare Private Chat Window
+Info Messages	ShareStrings		Informajn Mesaĝojn
+Custom window title is now	ShareStrings		La fenestrotitolo nun estas
+ has disconnected.	ShareStrings		 malkonektis.
+Upload Bandwidth	ShareStrings		Alŝuta Bendlarĝo
+AutoUpdate Server List	ShareStrings		Aŭtomate Ĝisdatigi La Servil-liston
+do something	ShareStrings		faru ion
+English	ShareStrings		Angla
+Disconnect	ShareStrings		Malkonektu
+days	ShareStrings		tagojn
+set font size	ShareStrings		elektu tipargrandecon
+Open Logs Folder	ShareStrings		Malfermu la Protokol-dosierujon
+About HiShare	ShareStrings		Pri HiShare
+Uploads	ShareStrings		Alŝutojn
+ is now known as 	ShareStrings		 nun estas konata kiel 
+Spanish	ShareStrings		Hispana
+Download aborted	ShareStrings		Elŝuto abortigita
+Attempting auto-reconnect.	ShareStrings		Provas rekonekti aŭtomate.
+Chat With:	ShareStrings		Babilu Kun:
+Font set to	ShareStrings		Font set to
+File Sharing Enabled	ShareStrings		Dosierdisponado Aktiva
+<name>	ShareStrings		<nomo>
+AutoPriv pattern removed.	ShareStrings		AutoPriv-filtro forigita.
+<names or session ids>	ShareStrings		<nomoj aŭ sesiaj id-oj>
+Current /autopriv pattern is: 	ShareStrings		Nuna /autopriv-filtro estas: 
+Max upload rate is	ShareStrings		Max upload rate is
+[name and value]	ShareStrings		[nomo kaj valoro]
+Reset Layout	ShareStrings		Reŝarĝu La Aranĝon
+Norwegian	ShareStrings		Norvega
+Data Compression	ShareStrings		Data Compression
+No target user specified in /msg	ShareStrings		Ricevonta uzanto ne specifita en /msg
+Can't download files from 	ShareStrings		Ne eblas elŝuti dosierojn de 
+logged in for	ShareStrings		konektita
+<unknown type>	ShareStrings		<nekonata tipo>
+Start Query	ShareStrings		Komencu Serĉi
+File	ShareStrings		Arkivo
+share screenshot	ShareStrings		share screenshot

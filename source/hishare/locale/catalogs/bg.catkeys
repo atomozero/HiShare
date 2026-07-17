@@ -1,0 +1,301 @@
+1	Bulgarian	application/x-vnd.HiShare	2764403860
+Auto-away tag set to: 	ShareStrings		Отметка режим "Изход": 
+Server uptime	ShareStrings		Server uptime
+Color prefs by	ShareStrings		Color prefs by
+ is now 	ShareStrings		 сега се подвизава под името 
+Language %s selected.  Change will take effect after you restart HiShare.	ShareStrings		Избран е %s език.  Промяната ще настъпи след рестартиране на HiShare.
+Ban User For	ShareStrings		Ban User For
+Can't download from user 	ShareStrings		Не мога да сваля файла от клиент 
+Scrolled Text Background	ShareStrings		Scrolled Text Background
+toggle custom coloring	ShareStrings		toggle custom coloring
+Bulgarian	ShareStrings		Български
+remove an alias	ShareStrings		изтрий псевдоним
+Esperanto	ShareStrings		Есперанто
+Finnish	ShareStrings		Finnish
+File Size	ShareStrings		Размер
+Server memory usage	ShareStrings		Използвана памет от сървъра
+Restart Transfer	ShareStrings		Рестартирай трансфера
+Revert	ShareStrings		Revert
+Romanian	ShareStrings		Romanian
+Warning Messages	ShareStrings		Предупреждения
+synonym for /action	ShareStrings		синоним на команда /action
+Your name has been changed to 	ShareStrings		Вашето име бе променено на 
+Auto Away	ShareStrings		Режим " Изход" след
+Disabled	ShareStrings		деактивиран
+<name or session id> <text>	ShareStrings		<име или клиентски №> <текст>
+An Error Occurred.	ShareStrings		Грешка
+Switch to Page	ShareStrings		Прехвърли се на страница
+Connecting to server...	ShareStrings		Връзваме се със сървър...
+Connection established.	ShareStrings		Установена е връзка.
+Server status requested.	ShareStrings		Запитване за текущия статус на сървъра.
+Clear Finished/Failed Transfers	ShareStrings		Автом. изтрий завършилите /неуспелите
+bytes/second	ShareStrings		bytes/second
+Results Per Page	ShareStrings		Количество резултати на страница
+set custom window title	ShareStrings		задай различно заглавие на прозореца
+Chinese (Simplified)	ShareStrings		Chinese (Simplified)
+Unknown user 	ShareStrings		Неизвестен клиент 
+Private Messages	ShareStrings		Лични съобщения
+Ignore pattern set to: 	ShareStrings		Маска на команда /ignore: 
+Serbian	ShareStrings		Сръбски
+Open Shared Folder	ShareStrings		Отвори папка Shared
+Open Downloads Folder	ShareStrings		Отвори папка Downloads
+set user status string	ShareStrings		задай клиентски статус
+Current /ignore pattern is: 	ShareStrings		Текущата маска на команда /ignore е: 
+Error, couldn't create connect thread! (Try quitting HiShare, then Restarting Networking)	ShareStrings		Грешка, не може да се създаде нишка! (Затворете HiShare и натиснете Restart Networkiing в мрежовите настройки)
+Max Simultaneous Uploads	ShareStrings		Макс. число за upload
+Dutch	ShareStrings		Датски
+Hours	ShareStrings		Часове
+Name	ShareStrings		Име
+ping other clients	ShareStrings		пинг на другите клиенти
+away	ShareStrings		излязъл
+Queued (Remote machine too busy)	ShareStrings		На опашката (отдалечената машина е заета в момента)
+Max Simultaneous Downloads	ShareStrings		Макс. число за download
+Rcvd: 	ShareStrings		Приети: 
+Removing %lu upload bans	ShareStrings		Removing %lu upload bans
+User Events	ShareStrings		Локални събития
+stop the current query	ShareStrings		спри текущата заявка
+[serverName]	ShareStrings		[сървър]
+Open Folder	ShareStrings		Отвори папка
+File download session to 	ShareStrings		Не мога да получа отговор от 
+, because both of us are behind firewalls.	ShareStrings		, защото и двата клиента са зад защитна стена.
+Queued (Local machine too busy)	ShareStrings		На опашката (локалната машина е заета в момента)
+Connect to 	ShareStrings		Connect to 
+Logging Enabled	ShareStrings		Записите са включени
+font size in points	ShareStrings		font size in points
+Connecting...	ShareStrings		Connect...
+Force away state	ShareStrings		изключи режим "Изход"
+ - Connected to 	ShareStrings		 - Връзка с 
+send a private message	ShareStrings		изпрати лично съобщение
+Paused Upload Progress	ShareStrings		Paused Upload Progress
+Watch pattern set to: 	ShareStrings		Watch pattern set to: 
+Your status has been changed to: 	ShareStrings		Вашият статус беше променен на: 
+Couldn't start file-sharing server thread!  (Try Restarting Networking, then restarting HiShare)	ShareStrings		Не мога да стартирам file-sharing server thread!  (Опитай Restarting Networking, след това стартирай HiShare)
+Beep When Mentioned	ShareStrings		Подай сигнал при споменаване на името
+French	ShareStrings		Френски
+Move to Bottom	ShareStrings		Премести най-отзад
+clear startup commands	ShareStrings		изтрий стартиращите команди
+Forever	ShareStrings		Завинаги
+, message \"	ShareStrings		, съобщение "
+Portuguese	ShareStrings		Португалски
+User at IP %s banned for	ShareStrings		User at IP %s banned for
+change your user name	ShareStrings		смени името на клиента
+[queryString]	ShareStrings		[заявка]
+Max Simultaneous Downloads Per User	ShareStrings		Макс. число download-и за клиент
+Error starting download--no accept port!	ShareStrings		Не мога да започна свалянето - няма отворен порт!
+Timestamps	ShareStrings		Покажи времето
+Sent: 	ShareStrings		Изпратени: 
+set command for when transfers cease	ShareStrings		set command for when transfers cease
+Stopped Query	ShareStrings		Търсенето е спряно
+Error writing to file 	ShareStrings		Грешка при запис на файла 
+Current /watch pattern is: 	ShareStrings		Current /watch pattern is: 
+Selection	ShareStrings		Selection
+Stop Query	ShareStrings		Спри
+Error starting delayed connect--no transceiver thread!	ShareStrings		Не мога да продължа, отложена връзка (delayed)- няма изходен поток!
+Shortest Uploads First	ShareStrings		Shortest Uploads First
+Banned	ShareStrings		Banned
+Unknown	ShareStrings		Неизвестен
+change the auto-away tag	ShareStrings		промени отметка "Изход"
+Korean	ShareStrings		Korean
+create an alias	ShareStrings		създай псевдоним
+Name Said	ShareStrings		Name Said
+There are %i transfers in progress, are you sure you want to quit?	ShareStrings		Дърпат се %i файл(а), уверени ли сте, че искате да напуснете програмата?
+Query:	ShareStrings		Заявка:
+Move to Top	ShareStrings		Премести най-отпред
+Error starting delayed connect!	ShareStrings		Не мога да продължа - отложена връзка (delayed)!
+Log	ShareStrings		Записи
+Local Nick	ShareStrings		Local Nick
+Modification Time	ShareStrings		Променен
+Retain File Paths	ShareStrings		Запомни пътищата
+add startup command	ShareStrings		добави команда при стартиране
+Download Selected Files	ShareStrings		Свали избраните файлове
+show some miscellaneous info	ShareStrings		show some miscellaneous info
+Removed server: %s	ShareStrings		Изтрит е сървър: %s
+false	ShareStrings		лъжа
+Recorded startup command: 	ShareStrings		показва информация за състоянието (статуса) на сървъра: 
+Preparing to Download	ShareStrings		Подготовка за download
+ - (%lu-%lu) of %lu results shown (	ShareStrings		 - показани са (%lu-%lu) варианта от %lu (
+Couldn't start ShareFileTransfer session to serve remote transfer request!  (Try Restarting Networking, then restarting HiShare)	ShareStrings		Couldn't start ShareFileTransfer session to serve remote transfer request!  (Try Restarting Networking, then restarting HiShare)
+Couldn't connect	ShareStrings		Връзката е невъзможна
+/sec, 	ShareStrings		/сек., 
+Choose Colors	ShareStrings		Choose Colors
+command	ShareStrings		команда
+AutoPriv pattern set to: 	ShareStrings		AutoPriv pattern set to: 
+Anonymous	ShareStrings		Анонимен
+Available irc-style commands:	ShareStrings		Поддръжани IRC-команди:
+User 	ShareStrings		Клиент 
+Couldn't find font	ShareStrings		Couldn't find font
+until	ShareStrings		until
+<action>	ShareStrings		<действие>
+Load	ShareStrings		Зареден в %
+Server version	ShareStrings		Версия на сървъра
+Changed Query to	ShareStrings		Заявката е изменена на 
+Move Up	ShareStrings		Нагоре
+Set max download rate (per transfer)	ShareStrings		Set max download rate (per transfer)
+Full User Queries	ShareStrings		Показване на всички клиентски файлове
+URL	ShareStrings		URL
+Auto-reconnect sequence terminated.	ShareStrings		Auto-reconnect sequence terminated.
+Text Background	ShareStrings		Text Background
+Client	ShareStrings		Client
+ (a.k.a. 	ShareStrings		 (известен като 
+tag	ShareStrings		отметка
+Watch	ShareStrings		Наблюдавай
+Removed alias	ShareStrings		Изтрий псевдоним
+Private	ShareStrings		Private
+Restore Preset	ShareStrings		Въстанови
+You are no longer connected to the MUSCLE server.	ShareStrings		Вие вече не сте включен към MUSCLE сървър.
+Remove Selected	ShareStrings		Изтрий селектираните
+Halt Transfer	ShareStrings		Отмени трансфера
+Path	ShareStrings		Път
+Language	ShareStrings		Език
+Set alias	ShareStrings		Псевдоним
+User Name:	ShareStrings		Име на клиента:
+disconnect from the server	ShareStrings		disconnect от сървър
+%.1fMB used (%.1fMB available)	ShareStrings		%.1fMB използвани (%.1fMB достъпни)
+Italian	ShareStrings		Италиански
+show this help text	ShareStrings		покажи списъка с команди
+[font name]	ShareStrings		[font name]
+HiShare is listening on port %u.  Select Connect from the File menu to begin!	ShareStrings		HiShare следи порт %i.  Изберете Connect в менюто Файл!
+Connect to server	ShareStrings		Connect 
+HiShare v%s is now available for download.  You can upgrade at %s	ShareStrings		HiShare v%s е достъпна за сваляне.  Можете да свалите версия %s
+Russian	ShareStrings		Руски
+Ping	ShareStrings		Ping
+Error	ShareStrings		Грешка
+Files	ShareStrings		Файла(a)
+quit HiShare	ShareStrings		изход от HiShare
+Default	ShareStrings		Default
+Text	ShareStrings		Text
+Preparing to Upload	ShareStrings		Подготовка за upload
+Settings	ShareStrings		Настройки
+Font reset to default	ShareStrings		Font reset to default
+shell command	ShareStrings		shell command
+Awaiting callback...	ShareStrings		Чакам отговор...
+I'm Firewalled	ShareStrings		Зад защитна стена съм (firewall)
+Error, unknown command	ShareStrings		Неизвестна команда 
+Added server: %s	ShareStrings		Добавен е сървър: %s
+Clear Chat Log	ShareStrings		Изчисти чат прозореца
+Kind	ShareStrings		Значение
+Download complete	ShareStrings		Свалянето завърши
+Display	ShareStrings		Покажи
+User #	ShareStrings		Клиент № 
+Font size reset to default	ShareStrings		Font size reset to default
+Turkish	ShareStrings		Turkish
+Action	ShareStrings		Действие
+ failed to initialize!	ShareStrings		, възможно е той да е със защитна стена
+Startup commands cleared.	ShareStrings		Стартовите команди са изтрити.
+Max Simultaneous Uploads Per User	ShareStrings		Макс. число upload-и за клиент
+Error, no user specified!	ShareStrings		Грешка, не е указан клиент!
+Server status:	ShareStrings		Статус на сървъра:
+Transferred this session:  %s down, %s up.	ShareStrings		Transferred this session:  %s down, %s up.
+set font	ShareStrings		set font
+ID	ShareStrings		№
+Couldn't find 'shared' subdirectory, file sharing disabled!	ShareStrings		Не мога да намеря папка Shared, забранени са локалните файлове!
+specify AutoPriv users	ShareStrings		specify AutoPriv users
+idle command set to	ShareStrings		idle command set to
+Local session root	ShareStrings		Local session root
+System Uptime	ShareStrings		System Uptime
+by	ShareStrings		от
+Unknown data format!	ShareStrings		Неизвестен формат на данните!
+Request server status	ShareStrings		запитване за състоянието на сървъра
+Open Private Chat Window	ShareStrings		Oтвори прозорец за чат
+Ping returned in %Li milliseconds	ShareStrings		Пакета се връща за %Li милисекунди
+Limit Bandwidth	ShareStrings		Limit Bandwidth
+minutes	ShareStrings		минути
+Will attempt auto-reconnect in %lu minutes.	ShareStrings		Will attempt auto-reconnect in %lu minutes.
+Status	ShareStrings		Статус
+ - %lu results shown (	ShareStrings		 - %lu вариант(a) са показани (
+Server:	ShareStrings		Сървър:
+clear the chat log	ShareStrings		изтрий записаните разговори
+Max download rate is	ShareStrings		Max download rate is
+ is downloading 	ShareStrings		 се сваля 
+Ignore pattern removed.	ShareStrings		Маска на команда /ignore е изтрита.
+to	ShareStrings		в
+Open File	ShareStrings		Отвори файл
+Medium	ShareStrings		Medium
+ is now connected.	ShareStrings		 се включи.
+\" not sent.	ShareStrings		" не беше изпратено.
+Logging Disabled	ShareStrings		Записите са деактивирани
+Download Progress	ShareStrings		Download Progress
+File download accept session for 	ShareStrings		Не може да се инициализира връзка с
+No Limit	ShareStrings		Без ограничения
+System	ShareStrings		Система
+execute shell command	ShareStrings		execute shell command
+Set max upload rate (per transfer)	ShareStrings		Set max upload rate (per transfer)
+Move Down	ShareStrings		Надолу
+Error sharing screenshot	ShareStrings		Error sharing screenshot
+Login on Startup	ShareStrings		Логин при стартиране
+Warning	ShareStrings		Внимание!
+weeks	ShareStrings		седмици
+Type /help for a list of available commands.	ShareStrings		Напишете /help, за да видите списъка с валидни команди.
+Low	ShareStrings		Low
+remove all upload bans	ShareStrings		изтрий всички забрани за upload
+, no connection information available.	ShareStrings		, няма информация за връзка.
+Sent ping request to: 	ShareStrings		Изпрати пинг до: 
+Upload Progress	ShareStrings		Upload Progress
+Error Messages	ShareStrings		Грешки
+Quit	ShareStrings		Изход
+specify users to watch	ShareStrings		клиент(и) за наблюдение
+ has finished downloading 	ShareStrings		 has finished downloading 
+Started Query	ShareStrings		Заявката е стартирана
+High	ShareStrings		High
+Hungarian	ShareStrings		Hungarian
+Watch pattern removed.	ShareStrings		Watch pattern removed.
+Japanese	ShareStrings		Japanese
+Examining Files...	ShareStrings		Преглед на файловете...
+Save Preset	ShareStrings		Съхрани
+Query Changes	ShareStrings		Изменения на заявката
+Don't Quit	ShareStrings		Не
+specify users to ignore	ShareStrings		игнорирай клиент
+Connection to server failed.	ShareStrings		Не успяхте да се свържете със сървър.
+Executing shell command	ShareStrings		Executing shell command
+Attributes	ShareStrings		Атрибути
+Swedish	ShareStrings		Шведски
+AutoClear Finished Downloads	ShareStrings		Автоматично изтрий завършилите
+Chat	ShareStrings		Разговори (чат)
+Border Areas	ShareStrings		Border Areas
+is now sharing a screenshot	ShareStrings		is now sharing a screenshot
+(Sharing %i files)	ShareStrings		(Достъпни са %i локални файла)
+Font size set to:	ShareStrings		Font size set to:
+connect to a server	ShareStrings		свържи се със сървър
+German	ShareStrings		Немски
+true	ShareStrings		истина
+Remote Nick	ShareStrings		Remote Nick
+ - Connecting to 	ShareStrings		 - Връзваме се със 
+from	ShareStrings		от
+start a new query	ShareStrings		стартирай нова заявка
+HiShare Private Chat Window	ShareStrings		HiShare чат прозорец
+Info Messages	ShareStrings		Информационни съобщения
+Custom window title is now	ShareStrings		Прозореца сега се казва
+ has disconnected.	ShareStrings		 беше отстранен ( disconnected).
+Upload Bandwidth	ShareStrings		Скорост на връзката
+AutoUpdate Server List	ShareStrings		Aвтоматично обнови листа на сървърите
+do something	ShareStrings		направи нещо
+English	ShareStrings		Английски
+Disconnect	ShareStrings		Disconnect
+days	ShareStrings		дни
+set font size	ShareStrings		set font size
+Open Logs Folder	ShareStrings		Отвори папка Log
+About HiShare	ShareStrings		Информация за програмата
+Uploads	ShareStrings		Upload
+ is now known as 	ShareStrings		 си промени името на 
+Spanish	ShareStrings		Испански
+Download aborted	ShareStrings		Свалянето е прекъснато
+Attempting auto-reconnect.	ShareStrings		Attempting auto-reconnect.
+Chat With:	ShareStrings		Поговори с 
+Font set to	ShareStrings		Font set to
+File Sharing Enabled	ShareStrings		Разреши достъпа до локални файлове
+<name>	ShareStrings		<име>
+AutoPriv pattern removed.	ShareStrings		AutoPriv pattern removed.
+<names or session ids>	ShareStrings		<имена или №>
+Current /autopriv pattern is: 	ShareStrings		Current /autopriv pattern is: 
+Max upload rate is	ShareStrings		Max upload rate is
+[name and value]	ShareStrings		[име и стойност]
+Reset Layout	ShareStrings		Върни настройките по подразбиране
+Norwegian	ShareStrings		Норвежки
+Data Compression	ShareStrings		Data Compression
+No target user specified in /msg	ShareStrings		След /msg задължително трябва да е указан клиент
+Can't download files from 	ShareStrings		Не мога да сваля файловете от 
+logged in for	ShareStrings		logged in for
+<unknown type>	ShareStrings		<неизвестен тип (значение)>
+Start Query	ShareStrings		Започни търсене
+File	ShareStrings		Файл
+share screenshot	ShareStrings		share screenshot

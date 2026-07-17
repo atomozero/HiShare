@@ -1,0 +1,301 @@
+1	Japanese	application/x-vnd.HiShare	2764403860
+Auto-away tag set to: 	ShareStrings		自動不在時のタグ: 
+Server uptime	ShareStrings		サーバ アップタイム
+Color prefs by	ShareStrings		カラー設定の作者は
+ is now 	ShareStrings		 の状態は 
+Language %s selected.  Change will take effect after you restart HiShare.	ShareStrings		言語に %s が選択されました。変更内容は HiShare の再起動後に適用されます。
+Ban User For	ShareStrings		このユーザを禁止する
+Can't download from user 	ShareStrings		このユーザからダウンロードできません。ユーザ名: 
+Scrolled Text Background	ShareStrings		流れたテキストの背景
+toggle custom coloring	ShareStrings		カスタムカラーリングの切替
+Bulgarian	ShareStrings		Bulgarian
+remove an alias	ShareStrings		別名を除去
+Esperanto	ShareStrings		Esperanto
+Finnish	ShareStrings		Finnish
+File Size	ShareStrings		サイズ
+Server memory usage	ShareStrings		サーバ メモリの使用法
+Restart Transfer	ShareStrings		転送を再開
+Revert	ShareStrings		復元
+Romanian	ShareStrings		Romanian
+Warning Messages	ShareStrings		警告メッセージ(W)
+synonym for /action	ShareStrings		/action と同意語
+Your name has been changed to 	ShareStrings		あなたのユーザ名を次の名前に変更しました:
+Auto Away	ShareStrings		自動不在設定(T)
+Disabled	ShareStrings		無効
+<name or session id> <text>	ShareStrings		<ユーザ名 か セッションID> <テキスト>
+An Error Occurred.	ShareStrings		エラーが発生しました。
+Switch to Page	ShareStrings		ページ切換
+Connecting to server...	ShareStrings		サーバに接続しています...
+Connection established.	ShareStrings		接続を確立しました。
+Server status requested.	ShareStrings		サーバの状態を要求しました。
+Clear Finished/Failed Transfers	ShareStrings		完了/失敗 した転送をクリア
+bytes/second	ShareStrings		バイト/秒
+Results Per Page	ShareStrings		検索結果/ページ(S)
+set custom window title	ShareStrings		ウィンドウタイトルをカスタマイズします
+Chinese (Simplified)	ShareStrings		Chino
+Unknown user 	ShareStrings		未知のユーザ 
+Private Messages	ShareStrings		プライベートメッセージ(M)
+Ignore pattern set to: 	ShareStrings		無視するユーザのパターンへ登録: 
+Serbian	ShareStrings		Serbian
+Open Shared Folder	ShareStrings		共有フォルダを開く(S)
+Open Downloads Folder	ShareStrings		ダウンロードフォルダを開く(D)
+set user status string	ShareStrings		ユーザの状態の文字列を設定
+Current /ignore pattern is: 	ShareStrings		現在の無視するユーザのパターンは: 
+Error, couldn't create connect thread! (Try quitting HiShare, then Restarting Networking)	ShareStrings		エラー, 接続スレッドを作成できません! (HiShare を終了し、Network の再起動を試みてください)
+Max Simultaneous Uploads	ShareStrings		同時にアップロードする最大値(M)
+Dutch	ShareStrings		Dutch
+Hours	ShareStrings		時間
+Name	ShareStrings		ユーザ名
+ping other clients	ShareStrings		他のクライアントへ ping する
+away	ShareStrings		不在
+Queued (Remote machine too busy)	ShareStrings		順番待ち (リモートマシンがビジーです)
+Max Simultaneous Downloads	ShareStrings		同時にダウンロードする最大値(D)
+Rcvd: 	ShareStrings		受信: 
+Removing %lu upload bans	ShareStrings		%lu 個のアップロード禁止を解除しました。
+User Events	ShareStrings		ユーザ イベント(E)
+stop the current query	ShareStrings		現在のクエリを停止します
+[serverName]	ShareStrings		[サーバ名]
+Open Folder	ShareStrings		フォルダを開く
+File download session to 	ShareStrings		ファイルダウンロードセッションは 
+, because both of us are behind firewalls.	ShareStrings		, なぜなら双方共ファイアウォールに隠されているからです。
+Queued (Local machine too busy)	ShareStrings		順番待ち (ローカルマシンがビジーです)
+Connect to 	ShareStrings		接続(N) : 
+Logging Enabled	ShareStrings		ログを取る
+font size in points	ShareStrings		[フォントサイズ(ポイント)]
+Connecting...	ShareStrings		接続しています...
+Force away state	ShareStrings		強制的に不在状態にする
+ - Connected to 	ShareStrings		 - 接続完了 : 
+send a private message	ShareStrings		プライベートメッセージを送信
+Paused Upload Progress	ShareStrings		停止したアップロードの進行
+Watch pattern set to: 	ShareStrings		観察するユーザのパターンへ登録: 
+Your status has been changed to: 	ShareStrings		あなたの状態を次の状態に変更しました: 
+Couldn't start file-sharing server thread!  (Try Restarting Networking, then restarting HiShare)	ShareStrings		ファイル共有 サーバ スレッドが開始できません!  (Network の再起動を試みてください。その後 HiShare を開始してください。)
+Beep When Mentioned	ShareStrings		名を挙げた際 Beep 音を鳴らす
+French	ShareStrings		French
+Move to Bottom	ShareStrings		一番下に移動
+clear startup commands	ShareStrings		スタートアップコマンドのクリア
+Forever	ShareStrings		永久に
+, message \"	ShareStrings		, メッセージ "
+Portuguese	ShareStrings		Portuguese
+User at IP %s banned for	ShareStrings		IP %s のユーザを次の間禁止します:
+change your user name	ShareStrings		あなたの名前の変更
+[queryString]	ShareStrings		[検索する文字列]
+Max Simultaneous Downloads Per User	ShareStrings		同時にダウンロードする最大値/人数(R)
+Error starting download--no accept port!	ShareStrings		エラー ダウンロード開始--ポートを受け取れません!
+Timestamps	ShareStrings		タイムスタンプ(T)
+Sent: 	ShareStrings		送信: 
+set command for when transfers cease	ShareStrings		転送を中断するコマンドの設定
+Stopped Query	ShareStrings		クエリの停止
+Error writing to file 	ShareStrings		ファイルの書き込みに失敗しました 
+Current /watch pattern is: 	ShareStrings		現在の観察するユーザのパターンは: 
+Selection	ShareStrings		選択アイテム
+Stop Query	ShareStrings		クエリ停止
+Error starting delayed connect--no transceiver thread!	ShareStrings		エラー 遅延接続開始--スレッドを受け取れません!
+Shortest Uploads First	ShareStrings		最短アップロード(F)
+Banned	ShareStrings		禁止済み
+Unknown	ShareStrings		未知
+change the auto-away tag	ShareStrings		自動不在時のタグを変更
+Korean	ShareStrings		Korean
+create an alias	ShareStrings		別名を作成
+Name Said	ShareStrings		名前の発言
+There are %i transfers in progress, are you sure you want to quit?	ShareStrings		現在 %i つの転送が進行中です。本当に終了してよろしいですか?
+Query:	ShareStrings		クエリ:
+Move to Top	ShareStrings		一番上に移動
+Error starting delayed connect!	ShareStrings		エラー 遅延接続が開始できません!
+Log	ShareStrings		ログ(O)
+Local Nick	ShareStrings		ローカル Nick
+Modification Time	ShareStrings		更新日時
+Retain File Paths	ShareStrings		ファイルパスを保持する(N)
+add startup command	ShareStrings		スタートアップコマンドの追加
+Download Selected Files	ShareStrings		選択したファイルをダウンロード
+show some miscellaneous info	ShareStrings		その他の情報を表示
+Removed server: %s	ShareStrings		サーバを除去: %s
+false	ShareStrings		false
+Recorded startup command: 	ShareStrings		登録済みスタートアップコマンド: 
+Preparing to Download	ShareStrings		ダウンロードの準備をしています
+ - (%lu-%lu) of %lu results shown (	ShareStrings		 - (%lu-%lu) of %lu ファイルの合計は (
+Couldn't start ShareFileTransfer session to serve remote transfer request!  (Try Restarting Networking, then restarting HiShare)	ShareStrings		リモートサーバへ転送を要求しましたが、ファイル共有転送セッションが開始できません!  (Network の再起動を試みてください。その後 HiShare を開始してください。)
+Couldn't connect	ShareStrings		接続に失敗しました
+/sec, 	ShareStrings		/秒, 
+Choose Colors	ShareStrings		カラー設定(H)
+command	ShareStrings		[コマンド]
+AutoPriv pattern set to: 	ShareStrings		自動プライベートのパターンへ登録: 
+Anonymous	ShareStrings		匿名
+Available irc-style commands:	ShareStrings		IRC-スタイルのコマンドが利用できます:
+User 	ShareStrings		ユーザ 
+Couldn't find font	ShareStrings		フォントを見つけることができませんでした
+until	ShareStrings		until
+<action>	ShareStrings		<アクション>
+Load	ShareStrings		ロード
+Server version	ShareStrings		サーバのバージョン
+Changed Query to	ShareStrings		変更するクエリは
+Move Up	ShareStrings		上に移動
+Set max download rate (per transfer)	ShareStrings		最大ダウンロード率設定 (/転送)
+Full User Queries	ShareStrings		全ユーザをクエリ対象とする(U)
+URL	ShareStrings		URL
+Auto-reconnect sequence terminated.	ShareStrings		自動連続再接続を終了しました。
+Text Background	ShareStrings		テキストの背景
+Client	ShareStrings		クライアント
+ (a.k.a. 	ShareStrings		 (ユーザ名 
+tag	ShareStrings		[タグ]
+Watch	ShareStrings		観察
+Removed alias	ShareStrings		別名を除去
+Private	ShareStrings		プライベート
+Restore Preset	ShareStrings		リセットの復元(R)
+You are no longer connected to the MUSCLE server.	ShareStrings		MUSCLE サーバから切断しました。
+Remove Selected	ShareStrings		選択アイテムを除去
+Halt Transfer	ShareStrings		転送の停止
+Path	ShareStrings		パス
+Language	ShareStrings		言語設定(A)
+Set alias	ShareStrings		別名を設定
+User Name:	ShareStrings		ユーザ名:
+disconnect from the server	ShareStrings		サーバから切断
+%.1fMB used (%.1fMB available)	ShareStrings		%.1fMB 使用 (%.1fMB 利用可能)
+Italian	ShareStrings		Italian
+show this help text	ShareStrings		このヘルプテキストの表示
+[font name]	ShareStrings		[フォント名]
+HiShare is listening on port %u.  Select Connect from the File menu to begin!	ShareStrings		HiShare はポート %u で待ち受け中です。ファイルメニューの"接続 :"を選択し開始してください。
+Connect to server	ShareStrings		サーバに接続
+HiShare v%s is now available for download.  You can upgrade at %s	ShareStrings		最新版の HiShare v%s がダウンロード可能です。 %s にてアップグレードしてください。
+Russian	ShareStrings		Russian
+Ping	ShareStrings		Ping
+Error	ShareStrings		エラー
+Files	ShareStrings		項目数
+quit HiShare	ShareStrings		HiShare の終了
+Default	ShareStrings		既定値
+Text	ShareStrings		テキスト
+Preparing to Upload	ShareStrings		アップロードの準備をしています
+Settings	ShareStrings		設定(S)
+Font reset to default	ShareStrings		既定フォントへリセットされました
+shell command	ShareStrings		シェルコマンド
+Awaiting callback...	ShareStrings		応答を待っています...
+I'm Firewalled	ShareStrings		ファイヤウォールを通知する(W)
+Error, unknown command	ShareStrings		このコマンドは無効です:
+Added server: %s	ShareStrings		サーバを追加: %s
+Clear Chat Log	ShareStrings		チャットログをクリア(L)
+Kind	ShareStrings		種類
+Download complete	ShareStrings		ダウンロード完了
+Display	ShareStrings		表示(I)
+User #	ShareStrings		ユーザ #
+Font size reset to default	ShareStrings		フォントサイズを初期値へ戻す
+Turkish	ShareStrings		Turkish
+Action	ShareStrings		アクション
+ failed to initialize!	ShareStrings		 の初期化に失敗しました!
+Startup commands cleared.	ShareStrings		スタートアップコマンドを削除しました。
+Max Simultaneous Uploads Per User	ShareStrings		同時にアップロードする最大値/人数(P)
+Error, no user specified!	ShareStrings		エラー, ユーザの指定がされていません!
+Server status:	ShareStrings		サーバの状態:
+Transferred this session:  %s down, %s up.	ShareStrings		このセッションの転送状況は: ダウンロード %s ,アップロード %s 。
+set font	ShareStrings		フォント設定
+ID	ShareStrings		ID
+Couldn't find 'shared' subdirectory, file sharing disabled!	ShareStrings		'shared' サブディレクトリが見つかりません。ファイル共有は無効になります!
+specify AutoPriv users	ShareStrings		自動プライベートユーザ指定
+idle command set to	ShareStrings		待機コマンドの設定
+Local session root	ShareStrings		Local session root
+System Uptime	ShareStrings		システム アップタイム
+by	ShareStrings		by
+Unknown data format!	ShareStrings		未知のデータ形式です!
+Request server status	ShareStrings		サーバの状態を要求します
+Open Private Chat Window	ShareStrings		プライベートチャットウィンドウを開く(P)
+Ping returned in %Li milliseconds	ShareStrings		Ping の返答時間は %Li ミリ秒
+Limit Bandwidth	ShareStrings		限界帯域幅
+minutes	ShareStrings		分間
+Will attempt auto-reconnect in %lu minutes.	ShareStrings		%lu 分後に自動再接続を試みます。
+Status	ShareStrings		状態
+ - %lu results shown (	ShareStrings		 - %lu ファイルの合計は (
+Server:	ShareStrings		サーバ:
+clear the chat log	ShareStrings		チャットログのクリア
+Max download rate is	ShareStrings		最大ダウンロード率
+ is downloading 	ShareStrings		 は次のファイルのダウンロードを開始しました:
+Ignore pattern removed.	ShareStrings		無視するユーザのパターンを削除しました。
+to	ShareStrings		to
+Open File	ShareStrings		ファイルを開く
+Medium	ShareStrings		中
+ is now connected.	ShareStrings		 は、今、接続しました。
+\" not sent.	ShareStrings		" を送信していません。
+Logging Disabled	ShareStrings		ログを取らない
+Download Progress	ShareStrings		ダウンロードの進行
+File download accept session for 	ShareStrings		ファイルダウンロード受諾セッション for 
+No Limit	ShareStrings		無制限
+System	ShareStrings		システム
+execute shell command	ShareStrings		シェルコマンドの実行
+Set max upload rate (per transfer)	ShareStrings		最大アップロード率設定 (/転送)
+Move Down	ShareStrings		下に移動
+Error sharing screenshot	ShareStrings		スクリーンショットのシェアに失敗しました
+Login on Startup	ShareStrings		自動接続(G)
+Warning	ShareStrings		警告
+weeks	ShareStrings		週間
+Type /help for a list of available commands.	ShareStrings		/help と入力するとコマンドリストを参照することができます。
+Low	ShareStrings		低い
+remove all upload bans	ShareStrings		アップロード禁止をすべて解除します
+, no connection information available.	ShareStrings		, 接続に関する情報が入手できません。
+Sent ping request to: 	ShareStrings		次のユーザへ ping をリクエストしました: 
+Upload Progress	ShareStrings		アップロードの進行
+Error Messages	ShareStrings		エラーメッセージ(R)
+Quit	ShareStrings		終了(Q)
+specify users to watch	ShareStrings		指定ユーザを観察
+ has finished downloading 	ShareStrings		 は次のファイルのダウンロードが完了しました:
+Started Query	ShareStrings		クエリの開始
+High	ShareStrings		高い
+Hungarian	ShareStrings		Hungarian
+Watch pattern removed.	ShareStrings		観察するユーザのパターンを削除しました。
+Japanese	ShareStrings		にほんご
+Examining Files...	ShareStrings		ファイルの調査中...
+Save Preset	ShareStrings		プリセットの保存(S)
+Query Changes	ShareStrings		クエリの変更
+Don't Quit	ShareStrings		終了しない
+specify users to ignore	ShareStrings		指定ユーザを無視する
+Connection to server failed.	ShareStrings		サーバの接続に失敗しました。
+Executing shell command	ShareStrings		シェルコマンドの実行中
+Attributes	ShareStrings		属性(A)
+Swedish	ShareStrings		Swedish
+AutoClear Finished Downloads	ShareStrings		ダウンロード済アイテムの自動クリア(L)
+Chat	ShareStrings		チャット(C)
+Border Areas	ShareStrings		ボーダー部分
+is now sharing a screenshot	ShareStrings		は今スクリーンショットをシェアしました
+(Sharing %i files)	ShareStrings		(共有 %i ローカルファイル)
+Font size set to:	ShareStrings		フォントサイズ:
+connect to a server	ShareStrings		サーバへ接続
+German	ShareStrings		German
+true	ShareStrings		true
+Remote Nick	ShareStrings		リモート Nick
+ - Connecting to 	ShareStrings		 - 接続先 : 
+from	ShareStrings		from
+start a new query	ShareStrings		新しいクエリを開始します
+HiShare Private Chat Window	ShareStrings		プライベートチャットウィンドウ
+Info Messages	ShareStrings		情報メッセージ(I)
+Custom window title is now	ShareStrings		ウィンドウタイトルを次に変更しました
+ has disconnected.	ShareStrings		 は、切断しました。
+Upload Bandwidth	ShareStrings		アップロードの帯域幅(B)
+AutoUpdate Server List	ShareStrings		サーバリストの自動更新(V)
+do something	ShareStrings		何かをする
+English	ShareStrings		English
+Disconnect	ShareStrings		切断(I)
+days	ShareStrings		日間
+set font size	ShareStrings		フォントサイズ設定
+Open Logs Folder	ShareStrings		ログフォルダを開く(O)
+About HiShare	ShareStrings		バージョン情報(A)
+Uploads	ShareStrings		アップロード(P)
+ is now known as 	ShareStrings		 のユーザ名は 
+Spanish	ShareStrings		Spanish
+Download aborted	ShareStrings		ダウンロード失敗
+Attempting auto-reconnect.	ShareStrings		自動再接続を試みています。
+Chat With:	ShareStrings		チャット相手:
+Font set to	ShareStrings		フォント設定:
+File Sharing Enabled	ShareStrings		ファイル共有を有効にする(E)
+<name>	ShareStrings		<ユーザ名>
+AutoPriv pattern removed.	ShareStrings		自動プライベートのパターンを削除しました。
+<names or session ids>	ShareStrings		<ユーザ名 か セッションID>
+Current /autopriv pattern is: 	ShareStrings		現在の自動プライベートユーザのパターンは: 
+Max upload rate is	ShareStrings		最大アップロード率
+[name and value]	ShareStrings		[ユーザ名 と 値]
+Reset Layout	ShareStrings		レイアウトをリセット(R)
+Norwegian	ShareStrings		Norwegian
+Data Compression	ShareStrings		データ圧縮(C)
+No target user specified in /msg	ShareStrings		特定のユーザを指定しない /msg
+Can't download files from 	ShareStrings		ファイルのダウンロードができません from 
+logged in for	ShareStrings		ログインしてから
+<unknown type>	ShareStrings		<未知の形式>
+Start Query	ShareStrings		クエリ開始
+File	ShareStrings		ファイル(F)
+share screenshot	ShareStrings		スクリーンショットをシェアします
