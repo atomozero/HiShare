@@ -1,5 +1,15 @@
 # Changelog
 
+## HiShare 1.1-2 (July 2026)
+
+Packaging-only revision, no code changes:
+
+- The bundled documentation now includes the updated README (multi-server
+  section) alongside CHANGELOG and LICENSE.
+- The post-install script ships with its executable bit set (it silently
+  failed to run in earlier packages; harmless, as the app creates its data
+  folders on demand).
+
 ## HiShare 1.1-1 (July 2026)
 
 ### Multi-server support
