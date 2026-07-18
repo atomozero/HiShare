@@ -362,6 +362,9 @@ void ShareFileTransfer :: SaveToArchive(BMessage & archive) const
    archive.AddInt64("partialhashsize", (int64)_partialHashSize);
    archive.AddString("remoteusername", _remoteUserName());
    archive.AddBool("acceptsession", _isAcceptSession);
+   // Remember which server this transfer's peer was on (by name: connIDs are
+   // not stable across restarts), so the restore can pick the right connection.
+   archive.AddString("server", _conn ? _conn->GetServerName()() : "");
 
    HashtableIterator<String, OffsetAndPath> iter = _origFileSet.GetIterator();
    const String * nextKey;

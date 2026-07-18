@@ -471,6 +471,7 @@ private:
    bool IsConnecting() const;               // true iff any connection is connecting
    bool AnyAutoReconnectPending() const;    // true iff any connection has a reconnect runner
    ServerConnection * FindConnectionByID(int32 connID) const;
+   ServerConnection * FindConnectionByServerName(const char * serverName) const;  // case-insensitive; NULL if absent
 
    // Automatic router port forwarding (UPnP/NAT-PMP) lifecycle helpers.
    void StartPortMapper();

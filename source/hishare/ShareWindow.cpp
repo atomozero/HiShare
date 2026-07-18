@@ -2015,7 +2015,9 @@ ShareWindow :: ShareWindow(uint64 installID, BMessage & settingsMsg, const char 
       for (int i=0; settingsMsg.FindMessage("transfer", i, &xfrMsg) == B_NO_ERROR; i++)
       {
          ShareFileTransfer * xfer = new ShareFileTransfer(_downloadsDir, NetClient()->GetLocalSessionID(), 0, 0, _maxDownloadRate);
-         xfer->SetConn(PrimaryConnection());  // TODO(multi-server): remember/restore the transfer's original server
+         const char * xfrServer;
+         ServerConnection * xfrConn = (xfrMsg.FindString("server", &xfrServer) == B_NO_ERROR) ? FindConnectionByServerName(xfrServer) : NULL;
+         xfer->SetConn(xfrConn ? xfrConn : PrimaryConnection());  // fall back to the primary if the archived server isn't among our connections
          xfer->SetFromArchive(xfrMsg);
          AddHandler(xfer);
          xfer->AbortSession(true, true);  // start up already errored out but ready to restart
@@ -6267,6 +6269,15 @@ ShareWindow ::
 FindConnectionByID(int32 connID) const
 {
    for (uint32 i=0; i<_connections.GetNumItems(); i++) if (_connections[i]->GetConnID() == connID) return _connections[i];
+   return NULL;
+}
+
+ServerConnection *
+ShareWindow ::
+FindConnectionByServerName(const char * serverName) const
+{
+   if ((serverName == NULL)||(serverName[0] == '\0')) return NULL;
+   for (uint32 i=0; i<_connections.GetNumItems(); i++) if (strcasecmp(_connections[i]->GetServerName()(), serverName) == 0) return _connections[i];
    return NULL;
 }
 
