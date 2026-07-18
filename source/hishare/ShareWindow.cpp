@@ -347,6 +347,54 @@ private:
    bool      _hover, _pressed, _connected;
 };
 
+// Small prompt window for "Connect to additional server": asks for the server
+// address instead of silently reading the main server entry field (which users
+// reasonably expect to still hold their primary server).
+class AddServerWindow : public BWindow
+{
+public:
+   AddServerWindow(const BMessenger & target, const char * initialText)
+      : BWindow(BRect(0, 0, 320, 72), "Connect to additional server", B_TITLED_WINDOW_LOOK, B_MODAL_APP_WINDOW_FEEL, B_NOT_RESIZABLE | B_NOT_ZOOMABLE | B_AUTO_UPDATE_SIZE_LIMITS)
+      , _target(target)
+   {
+      BView * bg = new BView(Bounds(), NULL, B_FOLLOW_ALL_SIDES, 0);
+      bg->SetViewUIColor(B_PANEL_BACKGROUND_COLOR);
+      AddChild(bg);
+
+      BRect b = bg->Bounds().InsetByCopy(10, 10);
+      _entry = new BTextControl(BRect(b.left, b.top, b.right, b.top + 20), NULL, "Server:", initialText, NULL, B_FOLLOW_LEFT_RIGHT | B_FOLLOW_TOP);
+      _entry->SetDivider(be_plain_font->StringWidth("Server:") + 8.0f);
+      bg->AddChild(_entry);
+
+      BButton * cancel  = new BButton(BRect(b.right - 170, b.bottom - 24, b.right - 90, b.bottom), NULL, "Cancel", new BMessage(B_QUIT_REQUESTED), B_FOLLOW_RIGHT | B_FOLLOW_BOTTOM);
+      BButton * connect = new BButton(BRect(b.right - 80, b.bottom - 24, b.right, b.bottom), NULL, "Connect", new BMessage('acsv'), B_FOLLOW_RIGHT | B_FOLLOW_BOTTOM);
+      bg->AddChild(cancel);
+      bg->AddChild(connect);
+      SetDefaultButton(connect);
+      _entry->MakeFocus();
+      CenterOnScreen();
+   }
+
+   virtual void MessageReceived(BMessage * msg)
+   {
+      if (msg->what == 'acsv')
+      {
+         if (_entry->Text()[0])
+         {
+            BMessage toWin(ShareWindow::SHAREWINDOW_COMMAND_CONNECT_ADDITIONAL_SERVER);
+            toWin.AddString("server", _entry->Text());
+            _target.SendMessage(&toWin);
+         }
+         PostMessage(B_QUIT_REQUESTED);
+      }
+      else BWindow::MessageReceived(msg);
+   }
+
+private:
+   BMessenger _target;
+   BTextControl * _entry;
+};
+
 static int g_servertest = 0;
 
 static String RemoveSpecialQueryChars(const String & localString)
@@ -1398,7 +1446,7 @@ ShareWindow :: ShareWindow(uint64 installID, BMessage & settingsMsg, const char 
    BMenu * fileMenu = new BMenu(str(STR_FILE));
    fileMenu->AddItem(_connectMenuItem = new BMenuItem(str(STR_CONNECT_TO_SERVER), new BMessage(SHAREWINDOW_COMMAND_RECONNECT_TO_SERVER), shortcut(SHORTCUT_CONNECT)));
    fileMenu->AddItem(_disconnectMenuItem = new BMenuItem(str(STR_DISCONNECT), new BMessage(SHAREWINDOW_COMMAND_DISCONNECT_FROM_SERVER), shortcut(SHORTCUT_DISCONNECT), B_SHIFT_KEY));
-   fileMenu->AddItem(new BMenuItem("Connect to additional server", new BMessage(SHAREWINDOW_COMMAND_CONNECT_ADDITIONAL_SERVER)));
+   fileMenu->AddItem(new BMenuItem("Connect to additional server" B_UTF8_ELLIPSIS, new BMessage(SHAREWINDOW_COMMAND_CONNECT_ADDITIONAL_SERVER)));
    fileMenu->AddItem(_connectionsMenu = new BMenu("Connections"));
    fileMenu->AddItem(new BSeparatorItem);
 
@@ -3859,8 +3907,15 @@ void ShareWindow :: MessageReceived(BMessage * msg)
 
       case SHAREWINDOW_COMMAND_CONNECT_ADDITIONAL_SERVER:
       {
-         const char * server = _serverEntry->Text();
-         if ((server)&&(server[0]))
+         const char * server;
+         if (msg->FindString("server", &server) != B_NO_ERROR)
+         {
+            // No server given: this is the menu click.  Ask which server to add
+            // (prefilled with the main entry field's text as a starting point).
+            (new AddServerWindow(BMessenger(this), _serverEntry->Text()))->Show();
+            break;
+         }
+         if (server[0])
          {
             ServerConnection * existing = FindConnectionByServerName(server);
             if (existing)
