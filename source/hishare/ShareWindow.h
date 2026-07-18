@@ -403,6 +403,11 @@ private:
    // RemoteUserItem::SetConn()'s key format.
    String MakeUserKey(ServerConnection * conn, const char * sessionID) const;
 
+   // Looks up (sessionID) across every server connection, first match wins.
+   // With one connection this is exact; with several it is ambiguous, so callers
+   // that know the peer's connection should use MakeUserKey directly instead.
+   RemoteUserItem * FindUserBySessionID(const char * sessionID) const;
+
    PrefilledBitmap _defaultBitmap;
 
    Hashtable<const char *, RemoteUserItem *> _users;

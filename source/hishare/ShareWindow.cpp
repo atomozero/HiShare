@@ -4199,15 +4199,15 @@ LogMessage(LogMessageType type, const char * text, const char * optSessionID, co
    // Ignore messages that match our ignore pattern.
    if ((_ignorePattern.Length() > 0)&&(optSessionID))
    {
-      RemoteUserItem * user;
-      if ((_users.Get(MakeUserKey(PrimaryConnection(), optSessionID)(), user) == B_NO_ERROR)&&(MatchesUserFilter(user, _ignorePattern()))) return;  // TODO(multi-server): use the sender's own connection
+      RemoteUserItem * user = FindUserBySessionID(optSessionID);
+      if ((user)&&(MatchesUserFilter(user, _ignorePattern()))) return;
    }
 
    const rgb_color watchColor = GetColor(COLOR_WATCH);
    if ((optSessionID)&&((optEchoTo == NULL)||(optEchoTo == this))&&(type == LOG_REMOTE_USER_CHAT_MESSAGE))
    {
-      RemoteUserItem * user;
-      if (_users.Get(MakeUserKey(PrimaryConnection(), optSessionID)(), user) == B_NO_ERROR)  // TODO(multi-server): use the sender's own connection
+      RemoteUserItem * user = FindUserBySessionID(optSessionID);
+      if (user)
       {
          if (isPersonal)
          {
@@ -4582,6 +4582,18 @@ MakeUserKey(ServerConnection * conn, const char * sessionID) const
    String key = buf;
    key += sessionID;
    return key;
+}
+
+RemoteUserItem *
+ShareWindow ::
+FindUserBySessionID(const char * sessionID) const
+{
+   for (uint32 i=0; i<_connections.GetNumItems(); i++)
+   {
+      RemoteUserItem * user;
+      if (_users.Get(MakeUserKey(_connections[i], sessionID)(), user) == B_NO_ERROR) return user;
+   }
+   return NULL;
 }
 
 void
@@ -5305,8 +5317,8 @@ ParseUserTargets(const char * text, Hashtable<RemoteUserItem *, String> & sendTo
       // session ID has priority over other ID methods, as it disallows 'imposters'.
       for (int i=clauses.GetNumItems()-1; i>=0; i--)
       {
-         RemoteUserItem * user;
-         if (_users.Get(MakeUserKey(PrimaryConnection(), clauses[i]())(), user) == B_NO_ERROR)  // TODO(multi-server): resolve target across connections
+         RemoteUserItem * user = FindUserBySessionID(clauses[i]());
+         if (user)
          {
             sendTo.Put(user, setRestOfString);
             clauses.RemoveItemAt(i);
@@ -5864,8 +5876,8 @@ GetUserNameBySessionID(ServerConnection * conn, const char * sessionID) const
 
 void ShareWindow :: GetUserNameForSession(const char * sessionID, String & retUserName) const
 {
-   const char * ret = GetUserNameBySessionID(PrimaryConnection(), sessionID);  // TODO(multi-server): thread the connection through
-   retUserName = ret ? ret : str(STR_UNKNOWN);
+   const RemoteUserItem * user = FindUserBySessionID(sessionID);
+   retUserName = user ? user->GetVerbatimHandle() : str(STR_UNKNOWN);
 }
 
 void ShareWindow :: GetLocalUserName(String & retLocalUserName) const
