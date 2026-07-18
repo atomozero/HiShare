@@ -406,7 +406,7 @@ MessageReceived(BMessage * msg)
 
                case MTT_EVENT_SESSION_DISCONNECTED:
                   DisconnectFromServer();  // clean up the dead BMessageTransceiverThread object
-                  ((ShareWindow*)Looper())->BeginAutoReconnect();
+                  ((ShareWindow*)Looper())->BeginAutoReconnect(_owner);
                break;
             }
          }

@@ -112,7 +112,7 @@ public:
    bool GetFirewalled() const;
 
    // Returns true iff we're connected to the server
-   bool IsConnected() const {return _isConnected;}
+   bool IsConnected() const;   // true iff at least one server connection is connected
 
    // Returns a tab-completed version of (origText) into (returnCompletedText), or returns B_ERROR.
    virtual status_t DoTabCompletion(const char * origText, String & returnCompletedText, const char * optMatchExpression) const;
@@ -172,7 +172,7 @@ public:
    void AddToTransferCounts(bool isUpload, uint32 numBytes) {if (isUpload) _totalBytesUploaded += ((uint64)numBytes); else _totalBytesDownloaded += ((uint64)numBytes);}
 
    /** Called when the server disconnects us.  Will start the auto-reconnect process. */
-   void BeginAutoReconnect();
+   void BeginAutoReconnect(ServerConnection * conn);
 
    /** Returns true iff we are scanning our shares folder for files asynchronously */
    bool IsScanningShares() const {return NetClient() ? NetClient()->IsScanningShares() : false;}
@@ -192,7 +192,7 @@ public:
    void SendMessageToServer(const MessageRef & msg);
 
    // Called by the drag&drop code to get the server's address
-   String GetConnectedTo() const {return _connectedTo;}
+   String GetConnectedTo() const;   // primary connection's server name ("" if none)
 
    // Returns our current zlib-compression level setting (0-9)
    uint32 GetCompressionLevel() const {return _compressionLevel;}
@@ -326,10 +326,6 @@ private:
 
    bool _queryEnabled;
    String _queryOnConnect;
-
-   bool _isConnecting;
-   bool _isConnected;
-   String _connectedTo;
 
    BButton * _enableQueryButton;
    BButton * _disableQueryButton;
@@ -465,10 +461,16 @@ private:
    void SaveAttributesPreset(BMessage & saveMsg);
    void RestoreAttributesPreset(const BMessage & restoreMsg);
 
-   void ReconnectToServer();
- 
-   void DoAutoReconnect();
-   void ResetAutoReconnectState(bool resetCountToo);
+   void ReconnectToServer(ServerConnection * conn);
+
+   void DoAutoReconnect(ServerConnection * conn);
+   void ResetAutoReconnectState(ServerConnection * conn, bool resetCountToo);
+
+   // Aggregate views over _connections (with a single connection these are
+   // identical to the old _isConnecting/_autoReconnectRunner member checks).
+   bool IsConnecting() const;               // true iff any connection is connecting
+   bool AnyAutoReconnectPending() const;    // true iff any connection has a reconnect runner
+   ServerConnection * FindConnectionByID(int32 connID) const;
 
    // Automatic router port forwarding (UPnP/NAT-PMP) lifecycle helpers.
    void StartPortMapper();
@@ -573,9 +575,6 @@ private:
    bool _userIntendedFirewalled;   // the user's own preference (what gets persisted)
    bool _mapperManagesFirewalled;  // false once the user toggles firewalled by hand
    bool _mapperClearedFirewalled;  // true while our automatic "off" override is in effect
-
-   uint32 _autoReconnectAttemptCount;
-   BMessageRunner * _autoReconnectRunner;
 
    uint32 _maxDownloadRate;
    uint32 _maxUploadRate;

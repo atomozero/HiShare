@@ -1214,8 +1214,6 @@ static const BRect defaultPrivateRect(100,300,500,475);
 ShareWindow :: ShareWindow(uint64 installID, BMessage & settingsMsg, const char * connectServer) :
    ChatWindow(BRect(WINDOW_START_X,WINDOW_START_Y,WINDOW_START_X+WINDOW_START_W,WINDOW_START_Y+WINDOW_START_H),"HiShare",B_TITLED_WINDOW_LOOK, B_NORMAL_WINDOW_FEEL,0L),
    _queryEnabled(false),
-   _isConnecting(false),
-   _isConnected(false),
    _currentPage(0),
    _bytesShown(0LL),
    _defaultBitmap(BRect(0,0,15,15),B_COLOR_8_BIT,DefaultData,false,false),
@@ -1249,8 +1247,6 @@ ShareWindow :: ShareWindow(uint64 installID, BMessage & settingsMsg, const char 
    _userIntendedFirewalled(false),
    _mapperManagesFirewalled(true),
    _mapperClearedFirewalled(false),
-   _autoReconnectAttemptCount(0),
-   _autoReconnectRunner(NULL),
    _maxDownloadRate(0),
    _maxUploadRate(0),
    _doubleBufferBitmap(NULL),
@@ -2292,7 +2288,7 @@ ShareWindow :: ~ShareWindow()
 {
    if (_colorPicker->Lock()) _colorPicker->Quit();
 
-   ResetAutoReconnectState(true);  // make sure the autoreconnect runner is deleted
+   for (uint32 i=0; i<_connections.GetNumItems(); i++) ResetAutoReconnectState(_connections[i], true);  // make sure no autoreconnect runner survives us
 
    StopPortMapper();  // remove our port-forwarding mapping from the router (best effort)
 
@@ -3949,8 +3945,8 @@ void ShareWindow :: MessageReceived(BMessage * msg)
       break;
 
       case SHAREWINDOW_COMMAND_DISCONNECT_FROM_SERVER:
-         if (_autoReconnectRunner) LogMessage(LOG_INFORMATION_MESSAGE, str(STR_AUTO_RECONNECT_SEQUENCE_TERMINATED));
-         ResetAutoReconnectState(true);  // user intervened, so reset count
+         if (AnyAutoReconnectPending()) LogMessage(LOG_INFORMATION_MESSAGE, str(STR_AUTO_RECONNECT_SEQUENCE_TERMINATED));
+         ResetAutoReconnectState(PrimaryConnection(), true);  // user intervened, so reset count
          UpdateConnectStatus(false);     // make sure disconnect button goes disabled
          NetClient()->DisconnectFromServer();
       break;
@@ -3975,8 +3971,8 @@ void ShareWindow :: MessageReceived(BMessage * msg)
       break;
 
       case SHAREWINDOW_COMMAND_RECONNECT_TO_SERVER:
-         ResetAutoReconnectState(true);  // user intervened, so reset count
-         ReconnectToServer();
+         ResetAutoReconnectState(PrimaryConnection(), true);  // user intervened, so reset count
+         ReconnectToServer(PrimaryConnection());
       break;
 
       case SHAREWINDOW_COMMAND_CHANGE_FILE_NAME_QUERY:
@@ -4062,8 +4058,16 @@ void ShareWindow :: MessageReceived(BMessage * msg)
       break;
 
       case SHAREWINDOW_COMMAND_AUTO_RECONNECT:
-         if ((_isConnecting == false)&&(_isConnected == false)) DoAutoReconnect();
-                                                           else ResetAutoReconnectState(false);
+      {
+         // The runner message is tagged with the connID of the connection to retry.
+         int32 connID;
+         ServerConnection * conn = (msg->FindInt32("connid", &connID) == B_NO_ERROR) ? FindConnectionByID(connID) : PrimaryConnection();
+         if (conn)
+         {
+            if ((conn->IsConnecting() == false)&&(conn->IsConnected() == false)) DoAutoReconnect(conn);
+                                                                            else ResetAutoReconnectState(conn, false);
+         }
+      }
       break;
 
       case SHAREWINDOW_COMMAND_SHOW_COLOR_PICKER:
@@ -4382,8 +4386,8 @@ void
 ShareWindow ::
 UpdateQueryEnabledStatus()
 {
-   _enableQueryButton->SetEnabled((_isConnected)&(!_queryEnabled));
-   _disableQueryButton->SetEnabled((_isConnected)&(_queryEnabled));
+   _enableQueryButton->SetEnabled((IsConnected())&(!_queryEnabled));
+   _disableQueryButton->SetEnabled((IsConnected())&(_queryEnabled));
 }
 
 void
@@ -4392,10 +4396,10 @@ UpdateConnectStatus(bool titleToo)
 {
    const char * sname = _serverEntry->Text();
 
-   bool c = ((_isConnected)||(_isConnecting));
+   bool c = ((IsConnected())||(IsConnecting()));
    _connectMenuItem->SetEnabled(!c);
    if (sname[0] == '\0') sname = "???";
-   _disconnectMenuItem->SetEnabled((c)||(_autoReconnectRunner != NULL));
+   _disconnectMenuItem->SetEnabled((c)||(AnyAutoReconnectPending()));
 
    _firewalled->SetMarked(NetClient()->GetFirewalled());
 
@@ -4424,10 +4428,10 @@ UpdateTitleBar()
    if (_headerBanner)
    {
       const char * uname = (_userNameEntry && _userNameEntry->Text()[0]) ? _userNameEntry->Text() : "HiShare";
-      int state = _isConnected ? 2 : (_isConnecting ? 1 : 0);
+      int state = IsConnected() ? 2 : (IsConnecting() ? 1 : 0);
       String sub;
-      if (_isConnected)      { sub = "Connected to "; sub += _connectedTo; }
-      else if (_isConnecting) sub = str(STR_CONNECTING_TO_SERVER_DOTDOTDOT);
+      if (IsConnected())      { sub = "Connected to "; sub += GetConnectedTo(); }
+      else if (IsConnecting()) sub = str(STR_CONNECTING_TO_SERVER_DOTDOTDOT);
       else                    sub = "Not connected";
       if ((NetClient())&&(_sharingEnabled)&&(GetFileSharingEnabled()))
       {
@@ -4440,8 +4444,8 @@ UpdateTitleBar()
       _headerBanner->SetInfo(uname, sub(), state);
    }
    if (_connectToolButton)
-      _connectToolButton->SetConnected(_isConnected || _isConnecting,
-                                       (_isConnected || _isConnecting) ? "Disconnect" : "Connect");
+      _connectToolButton->SetConnected(IsConnected() || IsConnecting(),
+                                       (IsConnected() || IsConnecting()) ? "Disconnect" : "Connect");
 
    UpdatePagingButtons();
 }
@@ -4450,8 +4454,8 @@ void
 ShareWindow ::
 UpdateDownloadButtonStatus()
 {
-   _requestDownloadsButton->SetEnabled((_isConnected)&&(_resultsView->CurrentSelection() >= 0));
-   _requestInfoButton->SetEnabled((_isConnected)&&(_resultsView->CurrentSelection() >= 0));
+   _requestDownloadsButton->SetEnabled((IsConnected())&&(_resultsView->CurrentSelection() >= 0));
+   _requestInfoButton->SetEnabled((IsConnected())&&(_resultsView->CurrentSelection() >= 0));
 
    bool deadTransfersPresent = false;
    for (int i=_transferList->CountItems()-1; i>=0; i--)
@@ -4536,14 +4540,18 @@ void
 ShareWindow ::
 SetConnectStatus(ServerConnection * conn, bool isConnecting, bool isConnected)
 {
-   (void) conn;  // phase 1: threaded through; per-connection status handling comes later
-   if ((!_isConnected)&&(isConnected))
+   if (conn == NULL) return;
+
+   const bool wasConnected  = conn->IsConnected();
+   const bool wasConnecting = conn->IsConnecting();
+
+   if ((!wasConnected)&&(isConnected))
    {
       LogMessage(LOG_INFORMATION_MESSAGE, str(STR_CONNECTION_ESTABLISHED));
 
-      AddServerItem(_connectedTo(), false, 0);
+      AddServerItem(conn->GetServerName()(), false, 0);
 
-      NetClient()->SetUploadStats(CountUploadSessions(), _maxSimultaneousUploadSessions, true);
+      conn->Client()->SetUploadStats(CountUploadSessions(), _maxSimultaneousUploadSessions, true);
 
       if (_queryOnConnect.Length() > 0)
       {
@@ -4551,18 +4559,19 @@ SetConnectStatus(ServerConnection * conn, bool isConnecting, bool isConnected)
          _queryOnConnect = "";  // we only want to do this once!
       }
    }
-   else if ((!_isConnecting)&&(isConnecting)) LogMessage(LOG_INFORMATION_MESSAGE, str(STR_CONNECTING_TO_SERVER_DOTDOTDOT));
+   else if ((!wasConnecting)&&(isConnecting)) LogMessage(LOG_INFORMATION_MESSAGE, str(STR_CONNECTING_TO_SERVER_DOTDOTDOT));
    else if ((isConnecting == false)&&(isConnected == false))
    {
-           if (_isConnected) LogMessage(LOG_ERROR_MESSAGE, str(STR_YOU_ARE_NO_LONGER_CONNECTED_TO_THE_MUSCLE_SERVER));
-      else if (_isConnecting) LogMessage(LOG_ERROR_MESSAGE, str(STR_CONNECTION_TO_SERVER_FAILED));
+           if (wasConnected)  LogMessage(LOG_ERROR_MESSAGE, str(STR_YOU_ARE_NO_LONGER_CONNECTED_TO_THE_MUSCLE_SERVER));
+      else if (wasConnecting) LogMessage(LOG_ERROR_MESSAGE, str(STR_CONNECTION_TO_SERVER_FAILED));
    }
 
-   _isConnecting = isConnecting;
-   _isConnected  = isConnected;
+   conn->SetConnectState(isConnecting, isConnected);
 
-   // If we're not connected anymore, make sure the display is clear
-   if (_isConnected == false) 
+   // If no connection is left, make sure the display is clear.
+   // TODO(multi-server): on a single connection's disconnect, remove only its
+   // users/results instead of waiting for the last connection to drop.
+   if (IsConnected() == false)
    {
       ClearUsers();
       SetQueryEnabled(false);
@@ -6017,7 +6026,7 @@ ShareWindow :: DispatchMessage(BMessage * msg, BHandler * handler)
             switch(c)
             {
                case B_ENTER: 
-                  if ((_isConnected)&&(handler == _fileNameQueryEntry->TextView())) PostMessage(SHAREWINDOW_COMMAND_ENABLE_QUERY); 
+                  if ((IsConnected())&&(handler == _fileNameQueryEntry->TextView())) PostMessage(SHAREWINDOW_COMMAND_ENABLE_QUERY);
                break;
                 
                case B_UP_ARROW: case B_DOWN_ARROW:
@@ -6040,7 +6049,7 @@ ShareWindow :: UserChatted()
 {
    // Watch for selected UI events to see when the user is back
    _lastInteractionAt = system_time();
-   _autoReconnectAttemptCount = 0;  // if user is here, don't make him wait for a reconnect
+   for (uint32 i=0; i<_connections.GetNumItems(); i++) _connections[i]->ResetAutoReconnectAttemptCount();  // if user is here, don't make him wait for a reconnect
    if (_idle)
    {
       _idle = false;
@@ -6171,36 +6180,42 @@ bool ShareWindow :: IsFieldSuperset(const BMessage & m1, const BMessage & m2) co
 }                  
 
 void
-ShareWindow :: BeginAutoReconnect()
+ShareWindow :: BeginAutoReconnect(ServerConnection * conn)
 {
-   if (_autoReconnectAttemptCount++ > 0)
+   if (conn == NULL) return;
+
+   if (conn->IncrementAutoReconnectAttemptCount() > 0)
    {
       // for subsequent tries, we wait a while longer each time
-      ResetAutoReconnectState(false);  // make sure no runner is currently going
-      uint32 reconnectDelayMinutes = _autoReconnectAttemptCount-1;
+      ResetAutoReconnectState(conn, false);  // make sure no runner is currently going
+      uint32 reconnectDelayMinutes = conn->GetAutoReconnectAttemptCount()-1;
       char buf[128];
       sprintf(buf, str(STR_WILL_ATTEMPT_AUTO_RECONNECT_IN_PLU_MINUTES), reconnectDelayMinutes);
       LogMessage(LOG_INFORMATION_MESSAGE, buf);
-      _autoReconnectRunner = new BMessageRunner(BMessenger(this), new BMessage(SHAREWINDOW_COMMAND_AUTO_RECONNECT), reconnectDelayMinutes*60*1000000LL);
+      BMessage runnerMsg(SHAREWINDOW_COMMAND_AUTO_RECONNECT);
+      runnerMsg.AddInt32("connid", conn->GetConnID());
+      conn->SetAutoReconnectRunner(new BMessageRunner(BMessenger(this), &runnerMsg, reconnectDelayMinutes*60*1000000LL));
       UpdateConnectStatus(false);  // so that the disconnect button will become enabled
    }
-   else DoAutoReconnect();
+   else DoAutoReconnect(conn);
 }
 
-void 
-ShareWindow :: DoAutoReconnect()
+void
+ShareWindow :: DoAutoReconnect(ServerConnection * conn)
 {
-   ResetAutoReconnectState(false);  // once the connection is started, the runner is unnecessary
+   ResetAutoReconnectState(conn, false);  // once the connection is started, the runner is unnecessary
    LogMessage(LOG_INFORMATION_MESSAGE, str(STR_ATTEMPTING_AUTO_RECONNECT));
-   ReconnectToServer();  // reconnect immediately
+   ReconnectToServer(conn);  // reconnect immediately
 }
 
-void ShareWindow :: ReconnectToServer()
+void ShareWindow :: ReconnectToServer(ServerConnection * conn)
 {
+   if (conn == NULL) return;
+
    const char * server = _serverEntry->Text();
    if (server)
    {
-      _connectedTo = server;  // save this for later, when we're connected
+      conn->SetServerName(server);  // save this for later, when we're connected
       StringTokenizer tok(server, " :");
       const char * host = tok.GetNextToken();
       if (host)
@@ -6208,18 +6223,58 @@ void ShareWindow :: ReconnectToServer()
          const char * portStr = tok.GetNextToken();
          int port = portStr ? atoi(portStr) : 0;
          if (port <= 0) port = 2960;
-         NetClient()->ConnectToServer(host, (uint16) (port ? port : 2960));
+         conn->Client()->ConnectToServer(host, (uint16) (port ? port : 2960));
       }
    }
    UpdateConnectStatus(true);
 }
 
-void 
+void
 ShareWindow ::
-ResetAutoReconnectState(bool resetCountToo)
+ResetAutoReconnectState(ServerConnection * conn, bool resetCountToo)
 {
-   delete _autoReconnectRunner; _autoReconnectRunner = NULL;
-   if (resetCountToo) _autoReconnectAttemptCount = 0;
+   if (conn == NULL) return;
+   conn->SetAutoReconnectRunner(NULL);
+   if (resetCountToo) conn->ResetAutoReconnectAttemptCount();
+}
+
+bool
+ShareWindow ::
+IsConnected() const
+{
+   for (uint32 i=0; i<_connections.GetNumItems(); i++) if (_connections[i]->IsConnected()) return true;
+   return false;
+}
+
+bool
+ShareWindow ::
+IsConnecting() const
+{
+   for (uint32 i=0; i<_connections.GetNumItems(); i++) if (_connections[i]->IsConnecting()) return true;
+   return false;
+}
+
+bool
+ShareWindow ::
+AnyAutoReconnectPending() const
+{
+   for (uint32 i=0; i<_connections.GetNumItems(); i++) if (_connections[i]->GetAutoReconnectRunner()) return true;
+   return false;
+}
+
+ServerConnection *
+ShareWindow ::
+FindConnectionByID(int32 connID) const
+{
+   for (uint32 i=0; i<_connections.GetNumItems(); i++) if (_connections[i]->GetConnID() == connID) return _connections[i];
+   return NULL;
+}
+
+String
+ShareWindow ::
+GetConnectedTo() const
+{
+   return PrimaryConnection() ? PrimaryConnection()->GetServerName() : String("");
 }
 
 void 
@@ -6289,7 +6344,7 @@ ShareWindow :: SetLocalUserStatus(const char * status)
 
 void ShareWindow :: SetServer(const char * server)
 {
-   bool reconnect = ((_isConnected == false)||(strcasecmp(server, _serverEntry->Text())));
+   bool reconnect = ((IsConnected() == false)||(strcasecmp(server, _serverEntry->Text())));
    _serverEntry->SetText(server);
    if (reconnect) PostMessage(SHAREWINDOW_COMMAND_RECONNECT_TO_SERVER);
 }

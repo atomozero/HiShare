@@ -6,6 +6,8 @@
 #include "util/String.h"
 #include "BeShareNameSpace.h"
 
+class BMessageRunner;
+
 namespace beshare {
 
 class ShareNetClient;
@@ -35,10 +37,28 @@ public:
    const String & GetServerName() const {return _serverName;}
    void SetServerName(const char * name) {_serverName = name;}
 
+   /* Connection state, updated by ShareWindow::SetConnectStatus(). */
+   bool IsConnected() const  {return _isConnected;}
+   bool IsConnecting() const {return _isConnecting;}
+   void SetConnectState(bool isConnecting, bool isConnected) {_isConnecting = isConnecting; _isConnected = isConnected;}
+
+   /* Auto-reconnect bookkeeping.  The runner (owned by us) periodically posts
+    * SHAREWINDOW_COMMAND_AUTO_RECONNECT (tagged with our connID) to the window. */
+   BMessageRunner * GetAutoReconnectRunner() const {return _autoReconnectRunner;}
+   void SetAutoReconnectRunner(BMessageRunner * runner);  // deletes any previous one
+   uint32 GetAutoReconnectAttemptCount() const {return _autoReconnectAttemptCount;}
+   uint32 IncrementAutoReconnectAttemptCount() {return _autoReconnectAttemptCount++;}  // returns the pre-increment value
+   void ResetAutoReconnectAttemptCount() {_autoReconnectAttemptCount = 0;}
+
 private:
    int32 _connID;
    String _serverName;
    ShareNetClient * _netClient;
+
+   bool _isConnecting;
+   bool _isConnected;
+   BMessageRunner * _autoReconnectRunner;
+   uint32 _autoReconnectAttemptCount;
 };
 
 };  // end namespace beshare
