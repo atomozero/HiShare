@@ -494,6 +494,7 @@ private:
    ServerConnection * AddConnection(const char * optServerName);  // NULL if already at MAX_SERVER_CONNECTIONS
    void RemoveConnection(ServerConnection * conn);                // no-op on the last remaining connection
    void RemoveUsersForConnection(ServerConnection * conn);        // drops its users (and their results)
+   void UpdateServerColumnVisibility();                           // Server columns show iff >1 connections
 
    // Automatic router port forwarding (UPnP/NAT-PMP) lifecycle helpers.
    void StartPortMapper();

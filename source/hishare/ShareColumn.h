@@ -27,7 +27,8 @@ public:
       ATTR_FILENAME,
       ATTR_OWNERNAME,
       ATTR_OWNERID,
-      ATTR_OWNERCONNECTION
+      ATTR_OWNERCONNECTION,
+      ATTR_OWNERSERVER   // encoded as '5' in the "\001<type>" special-column names
    };
 
 private:

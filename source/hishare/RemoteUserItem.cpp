@@ -14,6 +14,7 @@ enum {
    REMOTE_USER_COLUMN_BANDWIDTH,
    REMOTE_USER_COLUMN_LOAD,
    REMOTE_USER_COLUMN_CLIENT,
+   REMOTE_USER_COLUMN_SERVER,   // keep last: saved column widths/orders index by position
    NUM_REMOTE_USER_COLUMNS
 };
 
@@ -54,6 +55,8 @@ SetConn(ServerConnection * conn)
    sprintf(buf, "%ld:", conn ? (long) conn->GetConnID() : -1L);
    _userKey = buf;
    _userKey += _sessionID;
+
+   SetColumnContent(REMOTE_USER_COLUMN_SERVER, conn ? conn->GetServerName()() : "", false, false);
 }
 
 String
@@ -251,6 +254,7 @@ Compare(const RemoteUserItem * u2, int32 sortKey) const
    {
       case REMOTE_USER_COLUMN_HANDLE:    return strcasecmp(GetDisplayHandle(), u2->GetDisplayHandle());
       case REMOTE_USER_COLUMN_STATUS:    return strcasecmp(GetDisplayStatus(), u2->GetDisplayStatus());
+      case REMOTE_USER_COLUMN_SERVER:    return strcasecmp(GetConn() ? GetConn()->GetServerName()() : "", u2->GetConn() ? u2->GetConn()->GetServerName()() : "");
       case REMOTE_USER_COLUMN_ID:        return atol(GetSessionID())-atol(u2->GetSessionID());
       case REMOTE_USER_COLUMN_FILES:     return (GetNumSharedFiles() > u2->GetNumSharedFiles()) ? -1 : ((GetNumSharedFiles() == u2->GetNumSharedFiles()) ? 0 : 1);
       case REMOTE_USER_COLUMN_BANDWIDTH: return (GetBandwidth() > u2->GetBandwidth()) ? -1 : ((GetBandwidth() == u2->GetBandwidth()) ? 0 : 1);

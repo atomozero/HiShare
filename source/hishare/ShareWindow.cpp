@@ -756,6 +756,7 @@ static const char * _defaultServers[] =
 #define FILE_SESSION_COLUMN_NAME    str(STR_SESSIONID_KEY)
 #define FILE_OWNER_BANDWIDTH_NAME   str(STR_CONNECTION_KEY)
 #define FILE_MODIFICATION_TIME_NAME str(STR_MODIFICATION_TIME)
+#define FILE_OWNER_SERVER_NAME      "\0015Server"   // ShareColumn::ATTR_OWNERSERVER special column
 
 #define DEFAULT_COLUMN_WIDTH 40.0f
 
@@ -1990,6 +1991,7 @@ ShareWindow :: ShareWindow(uint64 installID, BMessage & settingsMsg, const char 
    AddUserColumn(settingsMsg, STR_CONNECTION_KEY,  0.57f, str(STR_CONNECTION_KEY)+2, 0);
    AddUserColumn(settingsMsg, STR_LOAD,            0.37f, NULL, CLV_RIGHT_JUSTIFIED);
    AddUserColumn(settingsMsg, STR_CLIENT,          0.37f, NULL, 0);
+   AddUserColumn(settingsMsg, STR_SERVER,          0.45f, "Server", CLV_HIDDEN);  // shown automatically with >1 connections
 
    int numColumns = _usersView->CountColumns();
    if (numColumns > 0)
@@ -2044,6 +2046,7 @@ ShareWindow :: ShareWindow(uint64 installID, BMessage & settingsMsg, const char 
    CreateColumn(NULL, FILE_OWNER_COLUMN_NAME,      false);
    CreateColumn(NULL, FILE_OWNER_BANDWIDTH_NAME,   false);
    CreateColumn(NULL, FILE_SESSION_COLUMN_NAME,    false);
+   CreateColumn(NULL, FILE_OWNER_SERVER_NAME,      false);
    CreateColumn(NULL, "beshare:Modification Time", false);
    CreateColumn(NULL, "beshare:Path",              false);
 
@@ -2074,6 +2077,7 @@ ShareWindow :: ShareWindow(uint64 installID, BMessage & settingsMsg, const char 
 
    if ((connectServer)||(_loginOnStartup->IsMarked())) PostMessage(SHAREWINDOW_COMMAND_RECONNECT_TO_SERVER);
 
+   UpdateServerColumnVisibility();  // extra connections may have been restored from settings
    UpdatePagingButtons();
 
    // Restore attribute presets
@@ -2477,6 +2481,7 @@ GenerateSettingsMessage(BMessage & settingsMsg)
    SaveUserColumn(settingsMsg, STR_CONNECTION_KEY, _usersView->ColumnAt(4));
    SaveUserColumn(settingsMsg, STR_LOAD,           _usersView->ColumnAt(5));
    SaveUserColumn(settingsMsg, STR_CLIENT,         _usersView->ColumnAt(6));
+   SaveUserColumn(settingsMsg, STR_SERVER,         _usersView->ColumnAt(7));
 
    int numColumns = _usersView->CountColumns();
    if (numColumns > 0)
@@ -3861,7 +3866,11 @@ void ShareWindow :: MessageReceived(BMessage * msg)
             else
             {
                ServerConnection * conn = AddConnection(server);
-               if (conn) ReconnectToServer(conn);
+               if (conn)
+               {
+                  ReconnectToServer(conn);
+                  UpdateServerColumnVisibility();
+               }
                else
                {
                   char buf[80];
@@ -3886,6 +3895,7 @@ void ShareWindow :: MessageReceived(BMessage * msg)
                String s("Removed server connection to ");
                s += conn->GetServerName();
                RemoveConnection(conn);
+               UpdateServerColumnVisibility();
                LogMessage(LOG_INFORMATION_MESSAGE, s());
             }
          }
@@ -4777,6 +4787,30 @@ RemoveConnection(ServerConnection * conn)
    delete conn;
 
    UpdateConnectStatus(true);
+}
+
+void
+ShareWindow ::
+UpdateServerColumnVisibility()
+{
+   const bool multi = (GetConnectionCount() > 1);
+
+   // Users list: fixed column #7 ("Server").
+   if (_usersView)
+   {
+      CLVColumn * col = _usersView->ColumnAt(7);
+      if ((col)&&(col->IsShown() != multi)) col->SetShown(multi);
+   }
+
+   // Results list: flip the attribute column through the standard toggle path,
+   // so the Attributes menu item and saved settings stay consistent.
+   BMenuItem * mi;
+   if ((_attribMenuItems.Get(FILE_OWNER_SERVER_NAME, mi) == B_NO_ERROR)&&(mi->IsMarked() != multi))
+   {
+      BMessage tmsg(SHAREWINDOW_COMMAND_TOGGLE_COLUMN);
+      tmsg.AddString("attrib", FILE_OWNER_SERVER_NAME);
+      PostMessage(&tmsg);
+   }
 }
 
 void

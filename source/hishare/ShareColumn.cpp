@@ -1,6 +1,7 @@
 #include "ShareColumn.h"
 #include "RemoteFileItem.h"
 #include "RemoteUserItem.h"
+#include "ServerConnection.h"
 #include "ShareStrings.h"
 #include "ShareUtils.h"
 
@@ -38,6 +39,10 @@ GetFileCellText(const RemoteFileItem * item) const
 
       case ATTR_OWNERCONNECTION:
          result = item->GetOwner()->GetBandwidthLabel();
+      break;
+
+      case ATTR_OWNERSERVER:
+         if (item->GetOwner()->GetConn()) result = item->GetOwner()->GetConn()->GetServerName()();
       break;
 
       case ATTR_MISC:
@@ -148,6 +153,10 @@ Compare(const RemoteFileItem * rf1, const RemoteFileItem * rf2) const
          uint32 b2 = rf2->GetOwner()->GetBandwidth();
          return (b1 != b2) ? ((b1 > b2) ? -1 : 1) : 0;
       }
+
+      case ATTR_OWNERSERVER:
+         return strcasecmp(rf1->GetOwner()->GetConn() ? rf1->GetOwner()->GetConn()->GetServerName()() : "",
+                           rf2->GetOwner()->GetConn() ? rf2->GetOwner()->GetConn()->GetServerName()() : "");
       break;
 
       case ATTR_MISC:
