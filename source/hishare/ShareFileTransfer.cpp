@@ -291,6 +291,7 @@ public:
 
 ShareFileTransfer ::
 ShareFileTransfer(const BDirectory & fileDir, const char * localSessionID, uint64 remoteInstallID, uint64 partialHashSize, uint32 bandwidthLimit) :
+   _conn(NULL),
    _dir(fileDir),
    _currentFileSize(-1),
    _currentFileBytesDone(-1),
@@ -436,7 +437,7 @@ void
 ShareFileTransfer ::
 UpdateRemoteUserName() 
 {
-   const char * name = ((ShareWindow*)Looper())->GetUserNameBySessionID(_remoteSessionID());
+   const char * name = ((ShareWindow*)Looper())->GetUserNameBySessionID(_conn, _remoteSessionID());
    if (name) 
    {
       _remoteUserName = name;
@@ -1723,7 +1724,7 @@ BeginTransfer()
          if (_isAccepting)
          {
             uint16 port = _mtt ? _acceptingOn : 0;
-            if (port > 0) ((ShareWindow*)Looper())->SendConnectBackRequestMessage(_remoteSessionID(), port, _useTLS);
+            if (port > 0) ((ShareWindow*)Looper())->SendConnectBackRequestMessage(_conn, _remoteSessionID(), port, _useTLS);
                      else ((ShareWindow*)Looper())->LogMessage(LOG_ERROR_MESSAGE, str(STR_ERROR_STARTING_DOWNLOAD_NO_ACCEPT_PORT));
          }
          else startConnect = true;

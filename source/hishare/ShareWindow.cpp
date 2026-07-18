@@ -2019,6 +2019,7 @@ ShareWindow :: ShareWindow(uint64 installID, BMessage & settingsMsg, const char 
       for (int i=0; settingsMsg.FindMessage("transfer", i, &xfrMsg) == B_NO_ERROR; i++)
       {
          ShareFileTransfer * xfer = new ShareFileTransfer(_downloadsDir, NetClient()->GetLocalSessionID(), 0, 0, _maxDownloadRate);
+         xfer->SetConn(PrimaryConnection());  // TODO(multi-server): remember/restore the transfer's original server
          xfer->SetFromArchive(xfrMsg);
          AddHandler(xfer);
          xfer->AbortSession(true, true);  // start up already errored out but ready to restart
@@ -2640,12 +2641,13 @@ TransferCallbackRejected(const char * from, uint64 timeLeft)
 
 void
 ShareWindow ::
-ConnectBackRequestReceived(const char * targetSessionID, uint16 port, const MessageRef & optBase)
+ConnectBackRequestReceived(ServerConnection * conn, const char * targetSessionID, uint16 port, const MessageRef & optBase)
 {
+   ShareNetClient * nc = conn ? conn->Client() : NetClient();
    if (_sharingEnabled->IsMarked())
    {
       RemoteUserItem * target;
-      if ((_users.Get(MakeUserKey(PrimaryConnection(), targetSessionID)(), target) == B_NO_ERROR)&&(target->GetFirewalled() == false))  // TODO(multi-server): use the target's own connection
+      if ((_users.Get(MakeUserKey(conn, targetSessionID)(), target) == B_NO_ERROR)&&(target->GetFirewalled() == false))
       {
          // Check the IP address to make sure it's not banned
          uint32 rip = ParseRemoteIP(target->GetHostName());
@@ -2654,13 +2656,14 @@ ConnectBackRequestReceived(const char * targetSessionID, uint16 port, const Mess
          if (banTimeLeft > 0)
          {
             MessageRef banRef = MakeBannedMessage(banTimeLeft, optBase);
-            if ((NetClient())&&(banRef())&&
+            if ((nc)&&(banRef())&&
                 (banRef()->AddString(PR_NAME_SESSION, "") == B_NO_ERROR)&&
-                (banRef()->AddString(PR_NAME_KEYS, String("/*/")+targetSessionID) == B_NO_ERROR)) NetClient()->SendMessageToSessions(banRef, true);
+                (banRef()->AddString(PR_NAME_KEYS, String("/*/")+targetSessionID) == B_NO_ERROR)) nc->SendMessageToSessions(banRef, true);
          }
          else
          {
-            ShareFileTransfer * xfer = new ShareFileTransfer(_shareDir, NetClient()->GetLocalSessionID(), target->GetInstallID(), 0, _maxUploadRate);
+            ShareFileTransfer * xfer = new ShareFileTransfer(_shareDir, nc ? nc->GetLocalSessionID() : "", target->GetInstallID(), 0, _maxUploadRate);
+            xfer->SetConn(conn);
             AddHandler(xfer);
 
             // The downloader tells us (via "use_ssl" in the connect-back request) whether to
@@ -2704,7 +2707,9 @@ RequestDownloads(const BMessage & filelistMsg, const BDirectory & downloadDir, B
             ShareFileTransfer * xfer;
             if (newTransferSessions.Get(owner, xfer) == B_ERROR)
             {
-               xfer = new ShareFileTransfer(downloadDir, NetClient()->GetLocalSessionID(), owner->GetInstallID(), owner->GetSupportsPartialHash() ? NUM_PARTIAL_HASH_BYTES : 0, _maxDownloadRate);
+               ServerConnection * ownerConn = owner->GetConn() ? owner->GetConn() : PrimaryConnection();
+               xfer = new ShareFileTransfer(downloadDir, (ownerConn ? ownerConn->Client() : NetClient())->GetLocalSessionID(), owner->GetInstallID(), owner->GetSupportsPartialHash() ? NUM_PARTIAL_HASH_BYTES : 0, _maxDownloadRate);
+               xfer->SetConn(ownerConn);
                AddHandler(xfer);
                newTransferSessions.Put(owner, xfer);
             }
@@ -2742,9 +2747,12 @@ RequestDownloads(const BMessage & filelistMsg, const BDirectory & downloadDir, B
 
 status_t ShareWindow :: SetupNewDownload(const RemoteUserItem * user, ShareFileTransfer * xfer, bool forceRemoteIsFirewalled)
 {
+   ServerConnection * userConn = user->GetConn() ? user->GetConn() : PrimaryConnection();
+   ShareNetClient * nc = userConn ? userConn->Client() : NetClient();
+   xfer->SetConn(userConn);
    if ((user->GetFirewalled())||(forceRemoteIsFirewalled))
    {
-      if (NetClient()->GetFirewalled())
+      if (nc->GetFirewalled())
       {
          String errStr(str(STR_CANT_DOWNLOAD_FILES_FROM));
          errStr += user->GetUserString();
@@ -2755,7 +2763,7 @@ status_t ShareWindow :: SetupNewDownload(const RemoteUserItem * user, ShareFileT
       {
          // We accept and the (firewalled) peer connects back => we're the TLS server.
          // Encrypt if we require it, or if the peer advertises TLS support.
-         xfer->SetUseTLS(NetClient()->GetRequireTLS() || user->GetSupportsSSL());
+         xfer->SetUseTLS(nc->GetRequireTLS() || user->GetSupportsSSL());
          if (xfer->InitAcceptSession(user->GetSessionID()) == B_NO_ERROR) return B_NO_ERROR;
          else
          {
@@ -2786,9 +2794,10 @@ status_t ShareWindow :: SetupNewDownload(const RemoteUserItem * user, ShareFileT
 
 void
 ShareWindow ::
-SendConnectBackRequestMessage(const char * sessionID, uint16 port, bool useSSL)
+SendConnectBackRequestMessage(ServerConnection * conn, const char * sessionID, uint16 port, bool useSSL)
 {
-   NetClient()->SendConnectBackRequestMessage(sessionID, port, useSSL);
+   ShareNetClient * nc = conn ? conn->Client() : NetClient();
+   if (nc) nc->SendConnectBackRequestMessage(sessionID, port, useSSL);
 }
 
 static int SortShareFileTransfersBySize(ShareFileTransfer * const & s1, ShareFileTransfer * const & s2, void * cookie)
@@ -3793,6 +3802,7 @@ void ShareWindow :: MessageReceived(BMessage * msg)
                            else
                            {
                               ShareFileTransfer * newSession = new ShareFileTransfer(_shareDir, NetClient()->GetLocalSessionID(), 0, 0, _maxUploadRate);
+                              newSession->SetConn(PrimaryConnection());  // TODO(multi-server): identify which server this inbound peer came from
                               AddHandler(newSession);
                               // A peer connected to us => we're the TLS server.  If we require TLS the
                               // peer already saw our "supports_ssl" flag and connected with TLS to match.
@@ -3843,12 +3853,14 @@ void ShareWindow :: MessageReceived(BMessage * msg)
          {
             bool restarted = false;
             RemoteUserItem * user;
+            ServerConnection * conn = who->GetConn() ? who->GetConn() : PrimaryConnection();
+            ShareNetClient * nc = conn ? conn->Client() : NetClient();
             if ((who->IsUploadSession() == false)&&(who->IsActive() == false)&&
-                (NetClient()->GetFirewalled() == false)&&
-                (_users.Get(MakeUserKey(PrimaryConnection(), who->GetRemoteSessionID())(), user) == B_NO_ERROR))  // is he still online?  TODO(multi-server): use the transfer's own connection
+                (nc->GetFirewalled() == false)&&
+                (_users.Get(MakeUserKey(conn, who->GetRemoteSessionID())(), user) == B_NO_ERROR))  // is he still online?
             {
                who->ForgetRemoteAddress();  // so the restarted session runs in accept (connect-back) mode
-               if ((who->SetLocalSessionID(NetClient()->GetLocalSessionID()) == B_NO_ERROR)&&
+               if ((who->SetLocalSessionID(nc->GetLocalSessionID()) == B_NO_ERROR)&&
                    (SetupNewDownload(user, who, true) == B_NO_ERROR))
                {
                   String s("Couldn't connect directly to ");
@@ -4627,6 +4639,9 @@ void
 ShareWindow ::
 RestartDownloadsFor(const RemoteUserItem * user)
 {
+   ServerConnection * userConn = user->GetConn() ? user->GetConn() : PrimaryConnection();
+   ShareNetClient * nc = userConn ? userConn->Client() : NetClient();
+
    // Save any active, pending, or errored-out downloads; maybe we can continue them later.
    for (int i=_transferList->CountItems()-1; i>=0; i--)
    {
@@ -4637,7 +4652,7 @@ RestartDownloadsFor(const RemoteUserItem * user)
           (next->IsConnected() == false)&&
           (next->IsConnecting() == false)&&
           (next->ErrorOccurred())&&
-          (next->SetLocalSessionID(NetClient()->GetLocalSessionID()) == B_NO_ERROR)&&
+          (next->SetLocalSessionID(nc->GetLocalSessionID()) == B_NO_ERROR)&&
           (SetupNewDownload(user, next, next->IsAcceptSession()) == B_NO_ERROR)) next->RestartSession();
    }
    DequeueTransferSessions();
@@ -5841,15 +5856,15 @@ ShareWindow :: MatchesUserFilter(const RemoteUserItem * user, const char * filte
 
 const char *
 ShareWindow ::
-GetUserNameBySessionID(const char * sessionID) const
+GetUserNameBySessionID(ServerConnection * conn, const char * sessionID) const
 {
    RemoteUserItem * user;
-   return (_users.Get(MakeUserKey(PrimaryConnection(), sessionID)(), user) == B_NO_ERROR) ? user->GetVerbatimHandle() : NULL;  // TODO(multi-server): resolve across connections
+   return (_users.Get(MakeUserKey(conn ? conn : PrimaryConnection(), sessionID)(), user) == B_NO_ERROR) ? user->GetVerbatimHandle() : NULL;
 }         
 
 void ShareWindow :: GetUserNameForSession(const char * sessionID, String & retUserName) const
 {
-   const char * ret = GetUserNameBySessionID(sessionID);
+   const char * ret = GetUserNameBySessionID(PrimaryConnection(), sessionID);  // TODO(multi-server): thread the connection through
    retUserName = ret ? ret : str(STR_UNKNOWN);
 }
 

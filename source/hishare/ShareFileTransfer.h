@@ -27,6 +27,7 @@ enum {
 
 class MD5Looper;
 class ShareNetClient;
+class ServerConnection;
 
 /* a simple storage class, holds a file offset and a file path */
 class OffsetAndPath
@@ -186,6 +187,10 @@ public:
    /* Return the remote session ID, if known. */
    const char * GetRemoteSessionID() const {return _remoteSessionID();}
 
+   /* The server connection this transfer's remote peer belongs to (may be NULL). */
+   void SetConn(ServerConnection * conn) {_conn = conn;}
+   ServerConnection * GetConn() const {return _conn;}
+
    /* Connect-back fallback bookkeeping: when our direct TCP connection to a
     * supposedly non-firewalled peer never establishes (wrong/stale advertised
     * address, CGNAT, broken port forwarding), ShareWindow may retry the download
@@ -313,6 +318,7 @@ private:
    float _fontHeight;
    float _fontAscent;
 
+   ServerConnection * _conn;
    String _localSessionID;
    String _remoteSessionID;
    String _remoteUserName;

@@ -81,7 +81,7 @@ public:
    const BBitmap * GetBitmap(const char * mimeType);
  
    // Given a session ID, returns the user name for that ID, or NULL if the user is unknown
-   const char * GetUserNameBySessionID(const char * sessionID) const;
+   const char * GetUserNameBySessionID(ServerConnection * conn, const char * sessionID) const;
 
    // When doing a lot of add/remove file items, it's best to
    // bracket your calls with these for, efficieny in updates the GUI.
@@ -90,7 +90,7 @@ public:
 
    // Called when someone wants us to connect to him because we're behind a firewall
    // and that's the only way to download files from us.
-   void ConnectBackRequestReceived(const char * targetSessionID, uint16 port, const MessageRef & optBase);
+   void ConnectBackRequestReceived(ServerConnection * conn, const char * targetSessionID, uint16 port, const MessageRef & optBase);
 
    void SetUserUploadStats(ServerConnection * conn, const char * sessionID, uint32 cur, uint32 max);
    void SetUserStatus(ServerConnection * conn, const char * sessionID, const char * status);
@@ -100,7 +100,7 @@ public:
 
    // Tells the net client to send a message to another BeShare client, asking it
    // to connect back to us.
-   void SendConnectBackRequestMessage(const char * remoteSessionID, uint16 port, bool useSSL);
+   void SendConnectBackRequestMessage(ServerConnection * conn, const char * remoteSessionID, uint16 port, bool useSSL);
 
    // Returns an entry_ref for the shared file with the given file name.
    entry_ref FindSharedFile(const char * fileName) const {return NetClient()->FindSharedFile(fileName);}

@@ -694,7 +694,7 @@ MessageReceived(const MessageRef & msgRef)
          int32 port;
          if ((_firewalled) &&  // not firewalled?  Then they should just connect to us directly
              (msg->FindString("session", &session) == B_NO_ERROR) &&
-             (msg->FindInt32("port", &port)        == B_NO_ERROR)) ((ShareWindow*)Looper())->ConnectBackRequestReceived(session, (uint16)port, msgRef);
+             (msg->FindInt32("port", &port)        == B_NO_ERROR)) ((ShareWindow*)Looper())->ConnectBackRequestReceived(_owner, session, (uint16)port, msgRef);
       }
       break;
  
