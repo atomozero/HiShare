@@ -3862,7 +3862,19 @@ void ShareWindow :: MessageReceived(BMessage * msg)
          const char * server = _serverEntry->Text();
          if ((server)&&(server[0]))
          {
-            if (FindConnectionByServerName(server)) LogMessage(LOG_WARNING_MESSAGE, "There is already a connection to that server.");
+            ServerConnection * existing = FindConnectionByServerName(server);
+            if (existing)
+            {
+               // An offline connection to that server (e.g. restored from the
+               // last session) just gets brought back online; only complain if
+               // it's already up.
+               if ((existing->IsConnected())||(existing->IsConnecting())) LogMessage(LOG_WARNING_MESSAGE, "There is already a connection to that server.");
+               else
+               {
+                  ResetAutoReconnectState(existing, true);
+                  ReconnectToServer(existing);
+               }
+            }
             else
             {
                ServerConnection * conn = AddConnection(server);
@@ -3877,6 +3889,35 @@ void ShareWindow :: MessageReceived(BMessage * msg)
                   snprintf(buf, sizeof(buf), "Connection limit reached (%d servers).", (int) MAX_SERVER_CONNECTIONS);
                   LogMessage(LOG_ERROR_MESSAGE, buf);
                }
+            }
+         }
+      }
+      break;
+
+      case SHAREWINDOW_COMMAND_CONNECT_CONNECTION:
+      {
+         int32 connID;
+         ServerConnection * conn;
+         if ((msg->FindInt32("connid", &connID) == B_NO_ERROR)&&((conn = FindConnectionByID(connID)) != NULL)&&
+             (conn->IsConnected() == false)&&(conn->IsConnecting() == false))
+         {
+            ResetAutoReconnectState(conn, true);
+            ReconnectToServer(conn);
+         }
+      }
+      break;
+
+      case SHAREWINDOW_COMMAND_DISCONNECT_CONNECTION:
+      {
+         int32 connID;
+         ServerConnection * conn;
+         if ((msg->FindInt32("connid", &connID) == B_NO_ERROR)&&((conn = FindConnectionByID(connID)) != NULL))
+         {
+            if (conn == PrimaryConnection()) PostMessage(SHAREWINDOW_COMMAND_DISCONNECT_FROM_SERVER);  // keeps the usual logging
+            else
+            {
+               ResetAutoReconnectState(conn, true);
+               conn->Client()->DisconnectFromServer();
             }
          }
       }
@@ -4263,8 +4304,9 @@ ShareWindow :: MenusBeginning()
 {
    ChatWindow::MenusBeginning();
 
-   // Rebuild the Connections submenu to reflect the current connection set.
-   // Clicking an extra connection removes it; clicking the primary disconnects.
+   // Rebuild the Connections submenu to reflect the current connection set:
+   // each connection gets its own submenu with Connect/Disconnect (and Remove
+   // for non-primary connections).
    if (_connectionsMenu)
    {
       BMenuItem * old;
@@ -4278,11 +4320,24 @@ ShareWindow :: MenusBeginning()
               if (conn->IsConnecting())         label += "  - connecting";
          else if (conn->IsConnected() == false) label += "  - offline";
 
-         BMessage * m = new BMessage(SHAREWINDOW_COMMAND_REMOVE_CONNECTION);
+         BMenu * sub = new BMenu(label());
+
+         const bool online = ((conn->IsConnected())||(conn->IsConnecting()));
+         BMessage * m = new BMessage(online ? SHAREWINDOW_COMMAND_DISCONNECT_CONNECTION : SHAREWINDOW_COMMAND_CONNECT_CONNECTION);
          m->AddInt32("connid", conn->GetConnID());
-         BMenuItem * item = new BMenuItem(label(), m);
-         item->SetMarked(conn->IsConnected());
-         _connectionsMenu->AddItem(item);
+         sub->AddItem(new BMenuItem(online ? str(STR_DISCONNECT) : "Connect", m));
+
+         if (i > 0)
+         {
+            BMessage * rm = new BMessage(SHAREWINDOW_COMMAND_REMOVE_CONNECTION);
+            rm->AddInt32("connid", conn->GetConnID());
+            sub->AddItem(new BMenuItem("Remove", rm));
+         }
+
+         BMenuItem * subItem = new BMenuItem(sub);   // the submenu supplies the label
+         subItem->SetMarked(conn->IsConnected());
+         sub->SetTargetForItems(this);
+         _connectionsMenu->AddItem(subItem);
       }
    }
 }
