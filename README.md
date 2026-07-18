@@ -22,6 +22,11 @@ If HiShare saves you time, consider supporting development: [![Buy Me A Coffee](
 * Share and download **any** type of file over a MUSCLE server, with live
   queries — new matching files appear in your results as they are shared,
   no refresh needed
+* **Multi-server**: connect to up to 8 MUSCLE servers at once — queries and
+  results are aggregated, chat is broadcast (incoming lines are tagged with
+  their server of origin), transfers and private messages follow their
+  peer's server, and a Server column appears automatically in the lists.
+  Extra connections are remembered across restarts.
 * Browse files with their Haiku **attributes**, like a Tracker view
 * Built-in **chat**, private messages and user watching
 * Any number of simultaneous uploads/downloads, serialized per-host for
@@ -65,6 +70,9 @@ Pick a server (a public one is preselected), type a user name and click
 - The header banner shows your connection state, how many files you share,
   and your public address with a ✓ when the reachability probe confirms
   you are reachable from the internet
+- **File → Connect to additional server…** joins another MUSCLE server on
+  top of the current one; **File → Connections** lists every connection
+  with per-server Connect/Disconnect/Remove actions
 
 ### Firewalls and NAT
 
