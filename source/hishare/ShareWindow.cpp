@@ -3800,7 +3800,7 @@ void ShareWindow :: MessageReceived(BMessage * msg)
                            else
                            {
                               ShareFileTransfer * newSession = new ShareFileTransfer(_shareDir, NetClient()->GetLocalSessionID(), 0, 0, _maxUploadRate);
-                              newSession->SetConn(PrimaryConnection());  // TODO(multi-server): identify which server this inbound peer came from
+                              newSession->SetConn(PrimaryConnection());  // provisional; re-bound to the peer's own connection once it identifies itself (BindConnToRemoteSession)
                               AddHandler(newSession);
                               // A peer connected to us => we're the TLS server.  If we require TLS the
                               // peer already saw our "supports_ssl" flag and connected with TLS to match.
@@ -4605,6 +4605,14 @@ FindUserBySessionID(const char * sessionID) const
       if (_users.Get(MakeUserKey(_connections[i], sessionID)(), user) == B_NO_ERROR) return user;
    }
    return NULL;
+}
+
+ServerConnection *
+ShareWindow ::
+FindConnectionForSessionID(const char * sessionID) const
+{
+   const RemoteUserItem * user = FindUserBySessionID(sessionID);
+   return user ? user->GetConn() : NULL;
 }
 
 void

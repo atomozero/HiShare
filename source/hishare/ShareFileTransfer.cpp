@@ -438,7 +438,19 @@ AddRequestedFileName(const char * fileName, off_t optStartByte, const char * pat
 
 void
 ShareFileTransfer ::
-UpdateRemoteUserName() 
+BindConnToRemoteSession()
+{
+   // Inbound sessions are created before the peer has identified itself, so they
+   // start out bound to the primary connection.  Now that we know the peer's
+   // session ID, bind to the connection that actually has that user (no-op when
+   // the lookup fails or with a single connection).
+   ServerConnection * conn = ((ShareWindow*)Looper())->FindConnectionForSessionID(_remoteSessionID());
+   if (conn) _conn = conn;
+}
+
+void
+ShareFileTransfer ::
+UpdateRemoteUserName()
 {
    const char * name = ((ShareWindow*)Looper())->GetUserNameBySessionID(_conn, _remoteSessionID());
    if (name) 
@@ -1038,7 +1050,11 @@ MessageReceived(const MessageRef & msgRef)
       case TRANSFER_COMMAND_PEER_ID:
       {
          if (msg->FindString("beshare:FromUserName", _remoteUserName) == B_NO_ERROR) _displayRemoteUserName = SubstituteLabelledURLs(_remoteUserName).Trim();
-         if (msg->FindString("beshare:FromSession", _remoteSessionID) == B_NO_ERROR) UpdateRemoteUserName();
+         if (msg->FindString("beshare:FromSession", _remoteSessionID) == B_NO_ERROR)
+         {
+            BindConnToRemoteSession();
+            UpdateRemoteUserName();
+         }
          ((ShareWindow*)Looper())->RefreshTransferItem(this);
       }
       break;
@@ -1056,7 +1072,11 @@ MessageReceived(const MessageRef & msgRef)
             // This is used just as a backup, in case the session ID wasn't sent, or is unknown
             if (msg->FindString("beshare:FromUserName", _remoteUserName) == B_NO_ERROR) _displayRemoteUserName = SubstituteLabelledURLs(_remoteUserName).Trim();
 
-            if (msg->FindString("beshare:FromSession", _remoteSessionID) == B_NO_ERROR) UpdateRemoteUserName();
+            if (msg->FindString("beshare:FromSession", _remoteSessionID) == B_NO_ERROR)
+            {
+               BindConnToRemoteSession();
+               UpdateRemoteUserName();
+            }
 
             // If we are currently scanning files, then our file list may not be complete yet;  in that case
             // we will defer the processing of this Message until the scan has finished!

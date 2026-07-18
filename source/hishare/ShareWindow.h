@@ -83,6 +83,11 @@ public:
    // Given a session ID, returns the user name for that ID, or NULL if the user is unknown
    const char * GetUserNameBySessionID(ServerConnection * conn, const char * sessionID) const;
 
+   // Returns the connection that has a user with the given session ID (first match
+   // across connections), or NULL if none.  Inbound transfer sessions use this to
+   // bind themselves to their peer's server connection once the peer identifies itself.
+   ServerConnection * FindConnectionForSessionID(const char * sessionID) const;
+
    // When doing a lot of add/remove file items, it's best to
    // bracket your calls with these for, efficieny in updates the GUI.
    void BeginBatchFileResultUpdate();

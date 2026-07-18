@@ -191,6 +191,10 @@ public:
    void SetConn(ServerConnection * conn) {_conn = conn;}
    ServerConnection * GetConn() const {return _conn;}
 
+   /* Re-binds _conn to the connection that has our remote session ID, if any.
+    * Called when an inbound peer identifies itself (PEER_ID / FILE_LIST). */
+   void BindConnToRemoteSession();
+
    /* Connect-back fallback bookkeeping: when our direct TCP connection to a
     * supposedly non-firewalled peer never establishes (wrong/stale advertised
     * address, CGNAT, broken port forwarding), ShareWindow may retry the download
