@@ -1215,6 +1215,7 @@ ShareWindow :: ShareWindow(uint64 installID, BMessage & settingsMsg, const char 
    ChatWindow(BRect(WINDOW_START_X,WINDOW_START_Y,WINDOW_START_X+WINDOW_START_W,WINDOW_START_Y+WINDOW_START_H),"HiShare",B_TITLED_WINDOW_LOOK, B_NORMAL_WINDOW_FEEL,0L),
    _queryEnabled(false),
    _nextConnID(0),
+   _connectionsMenu(NULL),
    _currentPage(0),
    _bytesShown(0LL),
    _defaultBitmap(BRect(0,0,15,15),B_COLOR_8_BIT,DefaultData,false,false),
@@ -1396,6 +1397,8 @@ ShareWindow :: ShareWindow(uint64 installID, BMessage & settingsMsg, const char 
    BMenu * fileMenu = new BMenu(str(STR_FILE));
    fileMenu->AddItem(_connectMenuItem = new BMenuItem(str(STR_CONNECT_TO_SERVER), new BMessage(SHAREWINDOW_COMMAND_RECONNECT_TO_SERVER), shortcut(SHORTCUT_CONNECT)));
    fileMenu->AddItem(_disconnectMenuItem = new BMenuItem(str(STR_DISCONNECT), new BMessage(SHAREWINDOW_COMMAND_DISCONNECT_FROM_SERVER), shortcut(SHORTCUT_DISCONNECT), B_SHIFT_KEY));
+   fileMenu->AddItem(new BMenuItem("Connect to additional server", new BMessage(SHAREWINDOW_COMMAND_CONNECT_ADDITIONAL_SERVER)));
+   fileMenu->AddItem(_connectionsMenu = new BMenu("Connections"));
    fileMenu->AddItem(new BSeparatorItem);
 
    fileMenu->AddItem(new BMenuItem(str(STR_OPEN_SHARED_FOLDER), new BMessage(SHAREWINDOW_COMMAND_OPEN_SHARED_FOLDER), shortcut(SHORTCUT_OPEN_SHARED_FOLDER)));
@@ -3849,6 +3852,46 @@ void ShareWindow :: MessageReceived(BMessage * msg)
       }
       break;
 
+      case SHAREWINDOW_COMMAND_CONNECT_ADDITIONAL_SERVER:
+      {
+         const char * server = _serverEntry->Text();
+         if ((server)&&(server[0]))
+         {
+            if (FindConnectionByServerName(server)) LogMessage(LOG_WARNING_MESSAGE, "There is already a connection to that server.");
+            else
+            {
+               ServerConnection * conn = AddConnection(server);
+               if (conn) ReconnectToServer(conn);
+               else
+               {
+                  char buf[80];
+                  snprintf(buf, sizeof(buf), "Connection limit reached (%d servers).", (int) MAX_SERVER_CONNECTIONS);
+                  LogMessage(LOG_ERROR_MESSAGE, buf);
+               }
+            }
+         }
+      }
+      break;
+
+      case SHAREWINDOW_COMMAND_REMOVE_CONNECTION:
+      {
+         int32 connID;
+         ServerConnection * conn;
+         if ((msg->FindInt32("connid", &connID) == B_NO_ERROR)&&((conn = FindConnectionByID(connID)) != NULL))
+         {
+            // The primary connection can't be removed; treat the click as a disconnect.
+            if (conn == PrimaryConnection()) PostMessage(SHAREWINDOW_COMMAND_DISCONNECT_FROM_SERVER);
+            else
+            {
+               String s("Removed server connection to ");
+               s += conn->GetServerName();
+               RemoveConnection(conn);
+               LogMessage(LOG_INFORMATION_MESSAGE, s());
+            }
+         }
+      }
+      break;
+
       case SHAREWINDOW_COMMAND_RETRY_VIA_CONNECT_BACK:
       {
          // A direct TCP connection to a supposedly non-firewalled peer never came
@@ -4204,6 +4247,35 @@ void ShareWindow :: UpdaterCommandReceived(const char * key, const char * value)
    }
 }
 
+
+void
+ShareWindow :: MenusBeginning()
+{
+   ChatWindow::MenusBeginning();
+
+   // Rebuild the Connections submenu to reflect the current connection set.
+   // Clicking an extra connection removes it; clicking the primary disconnects.
+   if (_connectionsMenu)
+   {
+      BMenuItem * old;
+      while((old = _connectionsMenu->RemoveItem((int32)0)) != NULL) delete old;
+
+      for (uint32 i=0; i<_connections.GetNumItems(); i++)
+      {
+         ServerConnection * conn = _connections[i];
+         String label = (conn->GetServerName().Length() > 0) ? conn->GetServerName() : String("(no server)");
+         if (i == 0) label += " (primary)";
+              if (conn->IsConnecting())         label += "  - connecting";
+         else if (conn->IsConnected() == false) label += "  - offline";
+
+         BMessage * m = new BMessage(SHAREWINDOW_COMMAND_REMOVE_CONNECTION);
+         m->AddInt32("connid", conn->GetConnID());
+         BMenuItem * item = new BMenuItem(label(), m);
+         item->SetMarked(conn->IsConnected());
+         _connectionsMenu->AddItem(item);
+      }
+   }
+}
 
 void ShareWindow :: MakeAway()
 {

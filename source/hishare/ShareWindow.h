@@ -276,11 +276,14 @@ public:
       SHAREWINDOW_COMMAND_TOGGLE_REQUIRE_TLS,
       SHAREWINDOW_COMMAND_TOGGLE_NOTIFICATIONS,
       SHAREWINDOW_COMMAND_TOGGLE_CUSTOM_COLORS,
-      SHAREWINDOW_COMMAND_RETRY_VIA_CONNECT_BACK
+      SHAREWINDOW_COMMAND_RETRY_VIA_CONNECT_BACK,
+      SHAREWINDOW_COMMAND_CONNECT_ADDITIONAL_SERVER,
+      SHAREWINDOW_COMMAND_REMOVE_CONNECTION
    };
 
 protected:
    virtual void UserChatted();
+   virtual void MenusBeginning();
    virtual const char * GetLogFileNamePrefix() const {return "HiShare";}
 
 private:
@@ -361,6 +364,7 @@ private:
    BTextControl * _fileNameQueryEntry;
 
    BMenuBar * _menuBar;
+   BMenu * _connectionsMenu;   // dynamic list of server connections, rebuilt in MenusBeginning()
    HeaderBanner * _headerBanner;
    ToolButton * _connectToolButton;
 
