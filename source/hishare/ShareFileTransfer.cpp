@@ -1687,13 +1687,9 @@ DrawItem(BView * lv, BRect itemRect, bool /*complete*/)
 
       // Do border highlighting
       bool selected = IsSelected();
-      // Bevel derived from the row colour so it works on light and dark themes:
-      // raised when unselected, pressed when selected.  B_LIGHTEN_MAX_TINT
-      // bleaches any colour to pure white — a white line on dark rows — so
-      // lighten only moderately when the row background is dark.
-      const bool darkRow = (0.299f*backgroundColor.red + 0.587f*backgroundColor.green + 0.114f*backgroundColor.blue) < 128.0f;
-      const rgb_color bevelLight = tint_color(backgroundColor, darkRow ? B_LIGHTEN_1_TINT : B_LIGHTEN_MAX_TINT);
-      const rgb_color bevelDark  = tint_color(backgroundColor, B_DARKEN_3_TINT);
+      // Use system shine/shadow so the bevel respects the user's Appearance settings.
+      const rgb_color bevelLight = ui_color(B_SHINE_COLOR);
+      const rgb_color bevelDark  = ui_color(B_SHADOW_COLOR);
       doubleBufferView->SetHighColor(selected ? bevelDark : bevelLight);
       doubleBufferView->StrokeLine(BPoint(drawRect.left, drawRect.top), BPoint(drawRect.right, drawRect.top));
       doubleBufferView->StrokeLine(BPoint(drawRect.left, drawRect.top), BPoint(drawRect.left, drawRect.bottom));

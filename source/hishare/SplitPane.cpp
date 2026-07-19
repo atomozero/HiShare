@@ -85,12 +85,11 @@ void SplitPane::FrameResized(float w, float h){
 *   The main draw stuff here. basicly just the slider
 *******************************************************/
 void SplitPane::Draw(BRect /*f*/){
-   // Derive the divider bevel colours from the system panel colour so the
-   // splitter follows Haiku's light/dark theme.
-   const rgb_color splitPanel      = ui_color(B_PANEL_BACKGROUND_COLOR);
-   const rgb_color splitShadow     = tint_color(splitPanel, B_DARKEN_1_TINT);
-   const rgb_color splitDarkShadow = tint_color(splitPanel, B_DARKEN_2_TINT);
-   const rgb_color splitHilite     = tint_color(splitPanel, B_LIGHTEN_2_TINT);
+   // Use the system shine/shadow colours so the splitter respects whatever
+   // the user configured in Appearance preferences.
+   const rgb_color splitHilite     = ui_color(B_SHINE_COLOR);
+   const rgb_color splitShadow     = ui_color(B_SHADOW_COLOR);
+   const rgb_color splitDarkShadow = tint_color(splitShadow, B_DARKEN_1_TINT);
    SetHighColor(splitShadow);
 
    if(align == B_VERTICAL){

@@ -31,17 +31,10 @@
 #include "Cursors.h"
 
 
-// Theme-derived replacements for the classic hardcoded BeOS greys, so the
-// column headers follow the current Haiku colour scheme (light or dark).
-// Note: B_LIGHTEN_MAX_TINT bleaches ANY colour to pure white, which shows up
-// as a white line on dark themes, so lighten only moderately there.
-static inline rgb_color HeaderHighlight()
-{
-	const rgb_color base = ui_color(B_PANEL_BACKGROUND_COLOR);
-	const bool dark = (0.299f*base.red + 0.587f*base.green + 0.114f*base.blue) < 128.0f;
-	return tint_color(base, dark ? B_LIGHTEN_1_TINT : B_LIGHTEN_MAX_TINT);
-}
-static inline rgb_color HeaderShadow()    { return tint_color(ui_color(B_PANEL_BACKGROUND_COLOR), B_DARKEN_2_TINT); }
+// Use the system shine/shadow colours directly so the column headers respect
+// whatever the user configured in Appearance preferences.
+static inline rgb_color HeaderHighlight() { return ui_color(B_SHINE_COLOR); }
+static inline rgb_color HeaderShadow()    { return ui_color(B_SHADOW_COLOR); }
 static inline rgb_color HeaderFocus()     { return ui_color(B_NAVIGATION_BASE_COLOR); }
 
 
