@@ -1921,35 +1921,34 @@ ShareWindow :: ShareWindow(uint64 installID, BMessage & settingsMsg, const char 
 
    _resultsView->AddColumn(new CLVColumn("", 20.0f, CLV_LOCK_AT_BEGINNING | CLV_NOT_MOVABLE | CLV_NOT_RESIZABLE));
 
-   const float pageButtonWidth = 25.0f;
-   BView * dlButtonView = new BView(BRect(resultsFrame.left+2+pageButtonWidth, resultsView->Bounds().Height()-(fontHeight+vMargin+2),resultsFrame.right-(2+pageButtonWidth),resultsFrame.Height()-2), NULL, B_FOLLOW_LEFT_RIGHT | B_FOLLOW_BOTTOM, 0);
+   const float buttonBarHeight = fontHeight + vMargin + 2;
+   BRect buttonBarFrame(0, resultsView->Bounds().Height() - buttonBarHeight, resultsView->Bounds().Width(), resultsView->Bounds().Height());
+   BView * dlButtonView = new BView(buttonBarFrame, NULL, B_FOLLOW_LEFT_RIGHT | B_FOLLOW_BOTTOM, 0);
+   dlButtonView->SetViewUIColor(B_PANEL_BACKGROUND_COLOR);
    AddBorderView(dlButtonView);
    resultsView->AddChild(dlButtonView);
 
-   float clearButtonWidth = dlButtonView->StringWidth(str(STR_CLEAR_FINISHED_FAILED_TRANSFERS))+20.0f;
-   float infoButtonWidth = dlButtonView->StringWidth("Information")+20.0f;
-   BRect dlBounds = dlButtonView->Bounds();
-
-   _requestInfoButton = new BButton(BRect(0, 0, infoButtonWidth, dlBounds.Height()), NULL, "Information", new BMessage(SHAREWINDOW_COMMAND_REQUEST_INFO), B_FOLLOW_LEFT | B_FOLLOW_TOP_BOTTOM);
-   AddBorderView(_requestInfoButton);
-   dlButtonView->AddChild(_requestInfoButton);
-
-   _requestDownloadsButton = new BButton(BRect(infoButtonWidth+hMargin, 0, dlBounds.Width()-(clearButtonWidth+hMargin), dlBounds.Height()), NULL, str(STR_DOWNLOAD_SELECTED_FILES), new BMessage(SHAREWINDOW_COMMAND_BEGIN_DOWNLOADS), B_FOLLOW_ALL_SIDES, B_WILL_DRAW|B_NAVIGABLE|B_FULL_UPDATE_ON_RESIZE);
-   AddBorderView(_requestDownloadsButton);
-   dlButtonView->AddChild(_requestDownloadsButton);
-
-   _clearFinishedDownloadsButton = new BButton(BRect(dlBounds.Width()-clearButtonWidth, 0, dlBounds.Width(), dlBounds.Height()), NULL, str(STR_CLEAR_FINISHED_FAILED_TRANSFERS), new BMessage(SHAREWINDOW_COMMAND_CLEAR_FINISHED_DOWNLOADS), B_FOLLOW_RIGHT | B_FOLLOW_TOP_BOTTOM);
-   AddBorderView(_clearFinishedDownloadsButton);
-   dlButtonView->AddChild(_clearFinishedDownloadsButton);
-
-   BRect dlFrame = dlButtonView->Frame();
-   _prevPageButton = new BButton(BRect(resultsFrame.left, dlFrame.top, dlFrame.left - hMargin, dlFrame.bottom), NULL, "<", new BMessage(SHAREWINDOW_COMMAND_PREVIOUS_PAGE), B_FOLLOW_LEFT | B_FOLLOW_BOTTOM);
+   _prevPageButton = new BButton(NULL, "<", new BMessage(SHAREWINDOW_COMMAND_PREVIOUS_PAGE));
    AddBorderView(_prevPageButton);
-   resultsView->AddChild(_prevPageButton);
-   
-   _nextPageButton = new BButton(BRect(dlFrame.right + vMargin, dlFrame.top, resultsFrame.right, dlFrame.bottom), NULL, ">", new BMessage(SHAREWINDOW_COMMAND_NEXT_PAGE), B_FOLLOW_RIGHT | B_FOLLOW_BOTTOM);
+
+   _requestInfoButton = new BButton(NULL, "Information", new BMessage(SHAREWINDOW_COMMAND_REQUEST_INFO));
+   AddBorderView(_requestInfoButton);
+
+   _requestDownloadsButton = new BButton(NULL, str(STR_DOWNLOAD_SELECTED_FILES), new BMessage(SHAREWINDOW_COMMAND_BEGIN_DOWNLOADS));
+   AddBorderView(_requestDownloadsButton);
+
+   _clearFinishedDownloadsButton = new BButton(NULL, str(STR_CLEAR_FINISHED_FAILED_TRANSFERS), new BMessage(SHAREWINDOW_COMMAND_CLEAR_FINISHED_DOWNLOADS));
+   AddBorderView(_clearFinishedDownloadsButton);
+
+   _nextPageButton = new BButton(NULL, ">", new BMessage(SHAREWINDOW_COMMAND_NEXT_PAGE));
    AddBorderView(_nextPageButton);
-   resultsView->AddChild(_nextPageButton);
+
+   BLayoutBuilder::Group<>(dlButtonView, B_HORIZONTAL, B_USE_SMALL_SPACING)
+      .Add(_prevPageButton, 0.0f)
+      .Add(_requestInfoButton, 0.0f)
+      .Add(_requestDownloadsButton, 1.0f)
+      .Add(_clearFinishedDownloadsButton, 0.0f)
+      .Add(_nextPageButton, 0.0f);
 
    BRect transferFrame(resultsFrame.right+hMargin, resultsFrame.top+3, middleFrame.Width()-hMargin, middleFrame.bottom-30);
    BView * transferView = new BView(transferFrame, NULL, B_FOLLOW_RIGHT | B_FOLLOW_TOP_BOTTOM, 0);
