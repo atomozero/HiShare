@@ -110,7 +110,7 @@ else # not beos
       ifeq ($(shell uname -m),x86_64)
          CXXFLAGS += -DMUSCLE_64_BIT_PLATFORM
       endif
-      LIBS = -lbe -lnetwork -lbnetapi -lroot -ltranslation -lmedia -lshared $(SSL_LIBS)
+      LIBS = -lbe -lnetwork -lbnetapi -lroot -ltranslation -lmedia -lcolumnlistview -lshared $(SSL_LIBS)
     else
         ifneq (,$(findstring g++,$(CXX)))
           # not using g++ don't need $GCCFLAGS
