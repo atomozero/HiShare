@@ -14,22 +14,36 @@ enum {
    REMOTE_USER_COLUMN_BANDWIDTH,
    REMOTE_USER_COLUMN_LOAD,
    REMOTE_USER_COLUMN_CLIENT,
-   REMOTE_USER_COLUMN_SERVER,   // keep last: saved column widths/orders index by position
+   REMOTE_USER_COLUMN_SERVER,
    NUM_REMOTE_USER_COLUMNS
 };
+
+void
+RemoteUserItem ::
+UpdateField(int32 column, const char * text)
+{
+   BStringField * field = (BStringField *)GetField(column);
+   if (field)
+      field->SetString(text);
+   else
+      SetField(new BStringField(text), column);
+}
 
 RemoteUserItem ::
 RemoteUserItem(ShareWindow * owner, const char * sessionID)
    : _owner(owner), _conn(NULL), _sessionID(sessionID), _handle(str(STR_ANONYMOUS)), _displayHandle(str(STR_ANONYMOUS)), _port(0), _firewalled(false), _isBot(false), _supportsPartialHash(false), _supportsSSL(false), _supportsRanges(false), _bandwidthLabel(str(STR_UNKNOWN)), _bandwidth(0), _installID(0)
 {
- 
    String text = GetUserString();
-   text += str(STR_IS_NOW_CONNECTED); 
+   text += str(STR_IS_NOW_CONNECTED);
    _owner->LogMessage(LOG_USER_EVENT_MESSAGE, text());
 
-   SetColumnContent(REMOTE_USER_COLUMN_HANDLE, _displayHandle(), false, false);
-   SetColumnContent(REMOTE_USER_COLUMN_STATUS, _displayStatus(), false, false);
-   SetColumnContent(REMOTE_USER_COLUMN_ID,     _sessionID(), false, true);
+   UpdateField(REMOTE_USER_COLUMN_HANDLE, _displayHandle());
+   UpdateField(REMOTE_USER_COLUMN_STATUS, _displayStatus());
+   UpdateField(REMOTE_USER_COLUMN_ID, _sessionID());
+   UpdateField(REMOTE_USER_COLUMN_BANDWIDTH, "");
+   UpdateField(REMOTE_USER_COLUMN_LOAD, "");
+   UpdateField(REMOTE_USER_COLUMN_CLIENT, "");
+   UpdateField(REMOTE_USER_COLUMN_SERVER, "");
    SetNumSharedFiles(-1);
    SetUploadStats(NO_FILE_LIMIT, NO_FILE_LIMIT);
 }
@@ -49,14 +63,12 @@ SetConn(ServerConnection * conn)
 {
    _conn = conn;
 
-   // Build the table key "<connID>:<sessionID>" so that identical session IDs
-   // seen on different servers stay distinct.  Must match ShareWindow::MakeUserKey().
    char buf[32];
    sprintf(buf, "%ld:", conn ? (long) conn->GetConnID() : -1L);
    _userKey = buf;
    _userKey += _sessionID;
 
-   SetColumnContent(REMOTE_USER_COLUMN_SERVER, conn ? conn->GetServerName()() : "", false, false);
+   UpdateField(REMOTE_USER_COLUMN_SERVER, conn ? conn->GetServerName()() : "");
 }
 
 String
@@ -89,17 +101,14 @@ SetHandle(const char * handle, const char * displayHandle)
       _handle = handle;
       _displayHandle = displayHandle;
 
-      SetColumnContent(REMOTE_USER_COLUMN_HANDLE, _displayHandle(), false, false);
+      UpdateField(REMOTE_USER_COLUMN_HANDLE, _displayHandle());
       _owner->RefreshUserItem(this);
       _owner->RefreshTransfersFor(this);
 
-      // Make sure all our files refresh too, in case the "owner name" column is visible
       RemoteFileItem * next;
       HashtableIterator<const char *, RemoteFileItem *> iter = _files.GetIterator();
       while(iter.GetNextValue(next) == B_NO_ERROR) _owner->RefreshFileItem(next);
    }
-
-   
 }
 
 void
@@ -113,7 +122,7 @@ SetStatus(const char * status, const char * displayStatus)
 
    _status = status;
    _displayStatus = displayStatus;
-   SetColumnContent(REMOTE_USER_COLUMN_STATUS, _displayStatus(), false, false);
+   UpdateField(REMOTE_USER_COLUMN_STATUS, _displayStatus());
    _owner->RefreshUserItem(this);
 }
 
@@ -122,14 +131,14 @@ RemoteUserItem ::
 SetNumSharedFiles(int32 bw)
 {
    _numSharedFiles = bw;
-  
+
    char temp[100] = "?";
-   if (_numSharedFiles >= 0) 
+   if (_numSharedFiles >= 0)
    {
       if ((_firewalled)&&(_owner->GetFirewalled())) sprintf(temp, "(%li)", (long int) _numSharedFiles);
                                                else sprintf(temp, "%li", (long int) _numSharedFiles);
    }
-   SetColumnContent(REMOTE_USER_COLUMN_FILES, temp, false, true);
+   UpdateField(REMOTE_USER_COLUMN_FILES, temp);
    _owner->RefreshUserItem(this);
 }
 
@@ -148,7 +157,7 @@ SetUploadStats(uint32 cu, uint32 mu)
    }
    else strcpy(temp, "?");
 
-   SetColumnContent(REMOTE_USER_COLUMN_LOAD, temp, false, true);
+   UpdateField(REMOTE_USER_COLUMN_LOAD, temp);
    _owner->RefreshUserItem(this);
 }
 
@@ -159,12 +168,11 @@ SetBandwidth(const char * bandwidthLabel, uint32 bps)
    _bandwidthLabel = bandwidthLabel;
    _bandwidth = bps;
 
-   // Make sure all our files refresh too, in case the "owner bps" column is visible
    RemoteFileItem * next;
    HashtableIterator<const char *, RemoteFileItem *> iter = _files.GetIterator();
    while(iter.GetNextValue(next) == B_NO_ERROR) _owner->RefreshFileItem(next);
 
-   SetColumnContent(REMOTE_USER_COLUMN_BANDWIDTH, _bandwidthLabel(), false, false);
+   UpdateField(REMOTE_USER_COLUMN_BANDWIDTH, _bandwidthLabel());
    _owner->RefreshUserItem(this);
 }
 
@@ -174,7 +182,7 @@ SetClient(const char * client, const char * displayClient)
 {
    _client = client;
    _displayClient = displayClient;
-   SetColumnContent(REMOTE_USER_COLUMN_CLIENT, _displayClient(), false, false);
+   UpdateField(REMOTE_USER_COLUMN_CLIENT, _displayClient());
 }
 
 void
@@ -183,7 +191,7 @@ ClearFiles()
 {
    HashtableIterator<const char *, RemoteFileItem *> iter = _files.GetIterator();
    RemoteFileItem * next;
-   while(iter.GetNextValue(next) == B_NO_ERROR) 
+   while(iter.GetNextValue(next) == B_NO_ERROR)
    {
       _owner->RemoveFileItem(next);
       delete next;
@@ -201,7 +209,6 @@ PutFile(const char * fileName, const MessageRef & fileAttrs)
    _owner->AddFileItem(item);
 }
 
-
 void
 RemoteUserItem ::
 RemoveFile(const char * fileName)
@@ -214,7 +221,6 @@ RemoveFile(const char * fileName)
    }
 }
 
-
 void
 RemoteUserItem ::
 SetFirewalled(bool fw)
@@ -222,50 +228,7 @@ SetFirewalled(bool fw)
    if (fw != _firewalled)
    {
       _firewalled = fw;
-      SetNumSharedFiles(GetNumSharedFiles());  // force update
-   }
-}
-
-void 
-RemoteUserItem :: 
-DrawItemColumn(BView* owner, BRect rect, int32 col, bool complete)
-{
-   if ((_isBot)&&(col == 0))
-   {
-      BFont f;
-      owner->GetFont(&f);
-      font_family family; 
-      font_style style;
-      f.GetFamilyAndStyle(&family, &style);
-      f.SetFamilyAndStyle(family, "Italic");
-      owner->SetFont(&f);
-      CLVEasyItem::DrawItemColumn(owner, rect, col, complete);
-      f.SetFamilyAndStyle(family, style);
-      owner->SetFont(&f);
-   }
-   else CLVEasyItem::DrawItemColumn(owner, rect, col, complete);
-}
-
-int 
-RemoteUserItem ::
-Compare(const RemoteUserItem * u2, int32 sortKey) const
-{
-   switch(sortKey)
-   {
-      case REMOTE_USER_COLUMN_HANDLE:    return strcasecmp(GetDisplayHandle(), u2->GetDisplayHandle());
-      case REMOTE_USER_COLUMN_STATUS:    return strcasecmp(GetDisplayStatus(), u2->GetDisplayStatus());
-      case REMOTE_USER_COLUMN_SERVER:    return strcasecmp(GetConn() ? GetConn()->GetServerName()() : "", u2->GetConn() ? u2->GetConn()->GetServerName()() : "");
-      case REMOTE_USER_COLUMN_ID:        return atol(GetSessionID())-atol(u2->GetSessionID());
-      case REMOTE_USER_COLUMN_FILES:     return (GetNumSharedFiles() > u2->GetNumSharedFiles()) ? -1 : ((GetNumSharedFiles() == u2->GetNumSharedFiles()) ? 0 : 1);
-      case REMOTE_USER_COLUMN_BANDWIDTH: return (GetBandwidth() > u2->GetBandwidth()) ? -1 : ((GetBandwidth() == u2->GetBandwidth()) ? 0 : 1);
-      case REMOTE_USER_COLUMN_LOAD:      
-      {
-         float diff = GetLoadFactor()-u2->GetLoadFactor();
-         return (diff > 0.0f) ? 1 : ((diff < 0.0f) ? -1 : 0);
-      }
-      break;
-      case REMOTE_USER_COLUMN_CLIENT: return strcasecmp(GetDisplayClient(), u2->GetDisplayClient());
-      default: return 0;
+      SetNumSharedFiles(GetNumSharedFiles());
    }
 }
 

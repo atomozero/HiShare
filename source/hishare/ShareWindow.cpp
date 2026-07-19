@@ -645,126 +645,6 @@ private:
 #endif
 };
 
-class UserListView : public ColumnListView
-{
-public:
-   UserListView(uint32 replyWhat, BRect Frame, CLVContainerView** ContainerView, const char* Name = NULL, uint32 ResizingMode = B_FOLLOW_LEFT | B_FOLLOW_TOP, uint32 flags = B_WILL_DRAW | B_FRAME_EVENTS | B_NAVIGABLE, list_view_type Type = B_SINGLE_SELECTION_LIST, bool hierarchical = false, bool horizontal = true, bool vertical = true, bool scroll_view_corner = true, border_style border = B_NO_BORDER, const BFont* LabelFont = be_plain_font) : ColumnListView(Frame, ContainerView, Name, ResizingMode, flags, Type, hierarchical, horizontal, vertical, scroll_view_corner, border, LabelFont), _replyWhat(replyWhat) {/* empty */}
-
-   virtual void Draw(BRect ur)
-   {
-      ColumnListView::Draw(ur);
-      if (CountItems() == 0)
-      {
-         BRect b = Bounds();
-         BFont f(be_plain_font); SetFont(&f);
-         font_height fh; f.GetHeight(&fh);
-         SetHighColor(HeaderBanner::Blend(ui_color(B_LIST_ITEM_TEXT_COLOR), ui_color(B_LIST_BACKGROUND_COLOR), 0.58f));
-         const char * msg = "No users online";
-         float tw = f.StringWidth(msg);
-         DrawString(msg, BPoint((b.left + b.right - tw) / 2.0f, (b.top + b.bottom) / 2.0f + (fh.ascent - fh.descent) / 2.0f));
-      }
-   }
-   virtual bool AddItem(BListItem * item)
-   {
-      bool r = ColumnListView::AddItem(item);
-      if (r && (CountItems() == 1)) Invalidate();
-      return r;
-   }
-   virtual bool RemoveItem(BListItem * item)
-   {
-      bool r = ColumnListView::RemoveItem(item);
-      if (r && (CountItems() == 0)) Invalidate();
-      return r;
-   }
-   virtual BListItem * RemoveItem(int32 index)
-   {
-      BListItem * r = ColumnListView::RemoveItem(index);
-      if (r && (CountItems() == 0)) Invalidate();
-      return r;
-   }
-   virtual void MakeEmpty()
-   {
-      bool had = (CountItems() > 0);
-      ColumnListView::MakeEmpty();
-      if (had) Invalidate();
-   }
-
-   virtual void MouseDown(BPoint where)
-   {
-      BPoint pt;
-      uint32 buttons;
-
-      GetMouse(&pt, &buttons);
-      if (buttons & B_SECONDARY_MOUSE_BUTTON) 
-      {
-         String handles, sessionIDs;
-         if (CurrentSelection(1) < 0) Select(IndexOf(pt)); // no multiple selection? select what's under the mouse
-         int32 next;
-         bool truncate = false;
-         bool truncated = false;
-         for (int i=0; (next = CurrentSelection(i))>=0; i++)
-         {
-            RemoteUserItem * user = (RemoteUserItem*)ItemAt(next);
-            if (i > 0) 
-            {
-               if (truncate == false) handles += ", ";
-               sessionIDs += ", ";
-            }
-            if (truncate == false) handles += user->GetDisplayHandle();
-            sessionIDs += user->GetSessionID();
-
-            if ((truncate)&&(!truncated))
-            {
-               truncated = true;
-               handles += ", ...";
-            }
-            if (handles.Length() > 25) truncate = true;
-         }
-         if (handles.Length() > 0)
-         {
-            BPopUpMenu * popup = new BPopUpMenu((const char *)NULL);
-
-            String s(str(STR_CHAT_WITH));
-            s += ' ';
-            s += handles;
-            BMenuItem * mi = new BMenuItem(s(), NULL);
-            popup->AddItem(mi);
-
-            popup->AddSeparatorItem();
-
-            String s2(str(STR_WATCH));
-            s2 += ' ';
-            s2 += handles;
-            BMenuItem * mi2 = new BMenuItem(s2(), NULL);
-            popup->AddItem(mi2);
-
-            ConvertToScreen(&pt);
-            BMenuItem * result = popup->Go(pt);
-            if (result == mi)
-            {
-               BMessage msg(_replyWhat);
-               msg.AddString("users", sessionIDs());
-               Window()->PostMessage(&msg);
-            }
-            else if (result == mi2)
-            {
-               String mi2text;
-               mi2text = "/watch ";
-               mi2text += sessionIDs();
-               ((ShareWindow*)Looper())->SendChatText(mi2text, NULL);
-            }
-
-            delete popup;
-            return;
-         }
-      }
-      ColumnListView::MouseDown(where);
-   }
-
-private:
-   uint32 _replyWhat;
-};
-
 // Any servers in this list will *always* be added to the server menu on startup.
 // Most servers need not be listed here, as the auto-server-updater-thingy will
 // add them at run time based on the servers.txt file it downloads
@@ -1977,16 +1857,13 @@ ShareWindow :: ShareWindow(uint64 installID, BMessage & settingsMsg, const char 
    BView * userListView = new BView(BRect(chatViewFrame.right+hMargin, bottomFrame.top, bottomFrame.right, bottomFrame.bottom), NULL, B_FOLLOW_RIGHT | B_FOLLOW_BOTTOM, 0);
    AddBorderView(userListView);
 
-   CLVContainerView* userContainerView;
-
-   _usersView = new UserListView(SHAREWINDOW_COMMAND_OPEN_PRIVATE_CHAT_WINDOW, BRect(2, 2, userListView->Bounds().Width()-(B_V_SCROLL_BAR_WIDTH+2), userListView->Bounds().Height()-(B_H_SCROLL_BAR_HEIGHT+2)),&userContainerView,NULL,B_FOLLOW_ALL_SIDES, B_WILL_DRAW|B_FRAME_EVENTS|B_NAVIGABLE,B_MULTIPLE_SELECTION_LIST,false,true,true,true,B_FANCY_BORDER);
-   AddBorderView(userContainerView);
-
-   _usersView->SetSortFunction((CLVCompareFuncPtr) UserCompareFunc);
-   _usersView->SetMessage(new BMessage(SHAREWINDOW_COMMAND_SELECT_USER));
+   _usersView = new BColumnListView(BRect(2, 2, userListView->Bounds().Width()-2, userListView->Bounds().Height()-2), NULL, B_FOLLOW_ALL_SIDES, B_WILL_DRAW|B_FRAME_EVENTS|B_NAVIGABLE, B_FANCY_BORDER);
+   _usersView->SetSelectionMode(B_MULTIPLE_SELECTION_LIST);
+   _usersView->SetSortingEnabled(true);
+   _usersView->SetSelectionMessage(new BMessage(SHAREWINDOW_COMMAND_SELECT_USER));
+   _usersView->SetInvocationMessage(new BMessage(SHAREWINDOW_COMMAND_OPEN_PRIVATE_CHAT_WINDOW));
    _usersView->SetTarget(toMe);
-
-   userListView->AddChild(userContainerView);
+   userListView->AddChild(_usersView);
 
    _chatUsersSplit = new SplitPane(bottomFrame, _chatView, userListView, B_FOLLOW_LEFT_RIGHT | B_FOLLOW_BOTTOM);
    _chatUsersSplit->SetResizeViewOne(true, true);
@@ -2009,38 +1886,44 @@ ShareWindow :: ShareWindow(uint64 installID, BMessage & settingsMsg, const char 
 
    contentView->AddChild(_mainSplit);
 
-   AddUserColumn(settingsMsg, STR_NAME,            0.43f, NULL, 0);
-   AddUserColumn(settingsMsg, STR_STATUS,          0.33f, NULL, 0);
-   AddUserColumn(settingsMsg, STR_ID,              0.24f, NULL, CLV_RIGHT_JUSTIFIED);
-   AddUserColumn(settingsMsg, STR_FILES,           0.38f, NULL, CLV_RIGHT_JUSTIFIED);
-   AddUserColumn(settingsMsg, STR_CONNECTION_KEY,  0.57f, str(STR_CONNECTION_KEY)+2, 0);
-   AddUserColumn(settingsMsg, STR_LOAD,            0.37f, NULL, CLV_RIGHT_JUSTIFIED);
-   AddUserColumn(settingsMsg, STR_CLIENT,          0.37f, NULL, 0);
-   AddUserColumn(settingsMsg, STR_SERVER,          0.45f, "Server", CLV_HIDDEN);  // shown automatically with >1 connections
-
-   int numColumns = _usersView->CountColumns();
-   if (numColumns > 0)
    {
-      {
-         int32 * userDisplayOrder = new int32[numColumns];
-         for (int di=0; di<numColumns; di++) if (settingsMsg.FindInt32("usercolumnsorder", di, &userDisplayOrder[di]) != B_NO_ERROR) userDisplayOrder[di] = di;
-         _usersView->SetDisplayOrder(userDisplayOrder);
-         delete [] userDisplayOrder;
-      }
-      {
-         int32 * sortKeys  = new int32[numColumns];
-         CLVSortMode * sortModes = new CLVSortMode[numColumns];
-         int numSortKeys = 0;
-         for (int di=0; (settingsMsg.FindInt32("usersortkey", di, &sortKeys[di]) == B_NO_ERROR); di++) 
-         {
-            int32 temp;
-            sortModes[di] = (settingsMsg.FindInt32("usersortmode", di, &temp) == B_NO_ERROR) ? (CLVSortMode)temp : NoSort;
-            numSortKeys++;
-         }
-         if (numSortKeys > 0) _usersView->SetSorting(numSortKeys, sortKeys, sortModes);
-         delete [] sortKeys;
-         delete [] sortModes;
-      }
+      float baseW = _usersView->Bounds().Width();
+      float w;
+      char buf[128];
+
+      sprintf(buf, "usercolumnwidth_%i", STR_NAME);
+      w = 0.43f * baseW; settingsMsg.FindFloat(buf, &w);
+      _usersView->AddColumn(new BStringColumn(str(STR_NAME), w, 20, 600, B_TRUNCATE_END), 0);
+
+      sprintf(buf, "usercolumnwidth_%i", STR_STATUS);
+      w = 0.33f * baseW; settingsMsg.FindFloat(buf, &w);
+      _usersView->AddColumn(new BStringColumn(str(STR_STATUS), w, 20, 400, B_TRUNCATE_END), 1);
+
+      sprintf(buf, "usercolumnwidth_%i", STR_ID);
+      w = 0.24f * baseW; settingsMsg.FindFloat(buf, &w);
+      _usersView->AddColumn(new BStringColumn(str(STR_ID), w, 20, 200, B_TRUNCATE_END, B_ALIGN_RIGHT), 2);
+
+      sprintf(buf, "usercolumnwidth_%i", STR_FILES);
+      w = 0.38f * baseW; settingsMsg.FindFloat(buf, &w);
+      _usersView->AddColumn(new BStringColumn(str(STR_FILES), w, 20, 200, B_TRUNCATE_END, B_ALIGN_RIGHT), 3);
+
+      sprintf(buf, "usercolumnwidth_%i", STR_CONNECTION_KEY);
+      w = 0.57f * baseW; settingsMsg.FindFloat(buf, &w);
+      _usersView->AddColumn(new BStringColumn(str(STR_CONNECTION_KEY)+2, w, 20, 400, B_TRUNCATE_END), 4);
+
+      sprintf(buf, "usercolumnwidth_%i", STR_LOAD);
+      w = 0.37f * baseW; settingsMsg.FindFloat(buf, &w);
+      _usersView->AddColumn(new BStringColumn(str(STR_LOAD), w, 20, 200, B_TRUNCATE_END, B_ALIGN_RIGHT), 5);
+
+      sprintf(buf, "usercolumnwidth_%i", STR_CLIENT);
+      w = 0.37f * baseW; settingsMsg.FindFloat(buf, &w);
+      _usersView->AddColumn(new BStringColumn(str(STR_CLIENT), w, 20, 400, B_TRUNCATE_END), 6);
+
+      sprintf(buf, "usercolumnwidth_%i", STR_SERVER);
+      w = 0.45f * baseW; settingsMsg.FindFloat(buf, &w);
+      _usersView->AddColumn(new BStringColumn("Server", w, 20, 400, B_TRUNCATE_END), 7);
+
+      _usersView->SetSortColumn(_usersView->ColumnAt(0), true, true);
    }
 
    // Restore any downloads that were going on when we last quit, and that might even now be resuscitatable.
@@ -2150,25 +2033,13 @@ ShareWindow :: CreatePresetItem(int32 what, int32 which, bool enabled, bool shif
    return mi;
 }
 
-void
-ShareWindow ::
-AddUserColumn(const BMessage & settingsMsg, int labelID, float dw, const char * optLabel, uint32 extraFlags)
-{
-   char buf[128];
-   sprintf(buf, "usercolumnwidth_%i", labelID);
-
-   float width;
-   if (settingsMsg.FindFloat(buf, &width) != B_NO_ERROR) width = dw*_usersView->Bounds().Width();
-   _usersView->AddColumn(new CLVColumn(optLabel ? optLabel : str(labelID), width, CLV_SORT_KEYABLE | extraFlags));
-}
-
 void 
 ShareWindow ::
-SaveUserColumn(BMessage & settingsMsg, int labelID, CLVColumn * col) const
+SaveUserColumn(BMessage & settingsMsg, int labelID, BColumn * col) const
 {
    char buf[128];
    sprintf(buf, "usercolumnwidth_%i", labelID);
-   settingsMsg.AddFloat(buf, col->Width());
+   settingsMsg.AddFloat(buf, col ? col->Width() : 100.0f);
 }
 
 void
@@ -2305,10 +2176,10 @@ SetFirewalledMode(bool firewalled)
       SetQueryEnabled(false, false);
       SetQueryEnabled(true, false);
    }
-   for (int i=_usersView->CountItems()-1; i>=0; i--)
+   for (int i=_usersView->CountRows()-1; i>=0; i--)
    {
-      RemoteUserItem * rui = (RemoteUserItem *)_usersView->ItemAt(i);
-      rui->SetNumSharedFiles(rui->GetNumSharedFiles());  // force update to set/unset parens
+      RemoteUserItem * rui = (RemoteUserItem *)_usersView->RowAt(i);
+      rui->SetNumSharedFiles(rui->GetNumSharedFiles());
    }
    UpdateConnectStatus(false);  // also re-marks the _firewalled menu item
 }
@@ -2508,29 +2379,6 @@ GenerateSettingsMessage(BMessage & settingsMsg)
    SaveUserColumn(settingsMsg, STR_CLIENT,         _usersView->ColumnAt(6));
    SaveUserColumn(settingsMsg, STR_SERVER,         _usersView->ColumnAt(7));
 
-   int numColumns = _usersView->CountColumns();
-   if (numColumns > 0)
-   {
-      {
-         int32 * userDisplayOrder = new int32[numColumns];
-         _usersView->GetDisplayOrder(userDisplayOrder);
-         for (int si=0; si<numColumns; si++) settingsMsg.AddInt32("usercolumnsorder", userDisplayOrder[si]);
-         delete [] userDisplayOrder;
-      }
-      {
-         int32 * sortKeys  = new int32[numColumns];
-         CLVSortMode * sortModes = new CLVSortMode[numColumns];
-         int32 numSortKeys = _usersView->GetSorting(sortKeys, sortModes);
-         for (int si=0; si<numSortKeys; si++)
-         {
-            settingsMsg.AddInt32("usersortkey", sortKeys[si]);
-            settingsMsg.AddInt32("usersortmode", (int32)sortModes[si]);
-         }
-         delete [] sortKeys;
-         delete [] sortModes;
-      }
-   }
-
    // Save any bans we have in effect
    HashtableIterator<uint32,uint64> banIter= _bans.GetIterator();
    uint32 banIP;
@@ -2575,7 +2423,7 @@ ShareWindow ::
 ClearUsers()
 {
    ClearResults();             // no users means no files available
-   _usersView->MakeEmpty();    // for efficiency
+   _usersView->Clear();
    HashtableIterator<const char *, RemoteUserItem *> iter = _users.GetIterator();
    RemoteUserItem * next;
    while(iter.GetNextValue(next) == B_NO_ERROR) delete next;
@@ -3446,13 +3294,15 @@ void ShareWindow :: MessageReceived(BMessage * msg)
          strng += '@';
 
          bool filesThere = false;
-         int32 nextIndex;
-         for (int i=0; ((nextIndex = _usersView->CurrentSelection(i)) >= 0); i++) 
+         BRow * selRow;
+         int i = 0;
+         for (selRow = _usersView->CurrentSelection(NULL); selRow != NULL; selRow = _usersView->CurrentSelection(selRow))
          {
-            RemoteUserItem * next = (RemoteUserItem *)_usersView->ItemAt(nextIndex);
+            RemoteUserItem * next = (RemoteUserItem *)selRow;
             if (i > 0) strng += ',';
             strng += next->GetSessionID(); 
             if ((GetFirewalled() == false)||(next->GetFirewalled() == false)) filesThere = true;
+            i++;
          }
          if (filesThere)
          {
@@ -4266,7 +4116,6 @@ void ShareWindow :: UpdateColors()
    UpdateTextViewColors(_userStatusEntry->TextView());
    UpdateTextViewColors(_fileNameQueryEntry->TextView());
 
-   UpdateColumnListViewColors(_usersView);
    UpdateColumnListViewColors(_resultsView);
 
    UpdatePrivateChatWindowsColors();
@@ -4885,8 +4734,8 @@ UpdateServerColumnVisibility()
    // Users list: fixed column #7 ("Server").
    if (_usersView)
    {
-      CLVColumn * col = _usersView->ColumnAt(7);
-      if ((col)&&(col->IsShown() != multi)) col->SetShown(multi);
+      BColumn * col = _usersView->ColumnAt(7);
+      if (col) col->SetVisible(multi);
    }
 
    // Results list: flip the attribute column through the standard toggle path,
@@ -4934,8 +4783,7 @@ PutUser(ServerConnection * conn, const char * sessionID, const char * userName, 
       user = new RemoteUserItem(this, sessionID);
       user->SetConn(conn);
       _users.Put(user->GetUserKey(), user);
-      _usersView->AddItem(user);
-      _usersView->SortItems();
+      _usersView->AddRow(user);
    }
    bool wasReadyForRestart = ((user->GetInstallID() > 0)&&((user->GetPort() > 0)||(user->GetFirewalled())));
    if (userName) user->SetHandle(userName, SubstituteLabelledURLs(userName).Trim()());
@@ -5047,7 +4895,7 @@ RemoveUser(ServerConnection * conn, const char * sessionID)
          if ((next->IsAccepting())&&(strcmp(next->GetRemoteSessionID(), sessionID) == 0)) next->AbortSession(true, true);
       }
    
-      _usersView->RemoveItem(user);
+      _usersView->RemoveRow(user);
       BMessage msg(PrivateChatWindow::PRIVATE_WINDOW_REMOVE_USER);
       msg.AddString("id", user->GetSessionID());
       SendToPrivateChatWindows(msg, NULL);
@@ -5430,8 +5278,7 @@ void
 ShareWindow ::
 RefreshUserItem(RemoteUserItem * item)
 {
-   _usersView->InvalidateItem(_usersView->IndexOf(item));
-   _usersView->SortItems();
+   _usersView->UpdateRow(item);
 }
 
 void
@@ -5455,12 +5302,6 @@ ShareWindow ::
 CompareFunc(const CLVListItem* item1, const CLVListItem* item2, int32 sortKey)
 {
    return ((RemoteFileItem *)item1)->Compare(((RemoteFileItem *)item2), sortKey);  
-}
-
-int ShareWindow ::
-UserCompareFunc(const CLVListItem * i1, const CLVListItem * i2, int32 sortKey)
-{
-   return ((const RemoteUserItem *) i1)->Compare((const RemoteUserItem *)i2, sortKey);
 }
 
 int 
