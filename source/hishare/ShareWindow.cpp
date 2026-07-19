@@ -19,6 +19,8 @@
 #include <interface/Screen.h>
 #include <interface/ScrollBar.h>
 #include <interface/ScrollView.h>
+#include <interface/GroupLayout.h>
+#include <interface/LayoutBuilder.h>
 #include <interface/Input.h>
 #include <interface/PopUpMenu.h>
 #include <interface/Bitmap.h>
@@ -1762,124 +1764,101 @@ ShareWindow :: ShareWindow(uint64 installID, BMessage & settingsMsg, const char 
       contentView->AddChild(upperView);
 
       {
-         // Fill out the status view
-         BRect statusViewFrame(hMargin, 0, upperView->Bounds().Width()-hMargin, upperView->Bounds().Height());
-         _statusView = new BView(statusViewFrame, NULL, B_FOLLOW_LEFT_RIGHT| B_FOLLOW_TOP_BOTTOM, 0);
+         // Fill out the status view using Haiku's Layout API so the three
+         // groups (Server / User Name / Status) distribute evenly and resize
+         // with the window automatically.
+         BRect statusViewFrame(0, 0, upperView->Bounds().Width(), upperView->Bounds().Height());
+         _statusView = new BView(statusViewFrame, "StatusView", B_FOLLOW_ALL_SIDES, 0);
+         _statusView->SetViewUIColor(B_PANEL_BACKGROUND_COLOR);
          AddBorderView(_statusView);
+
+         // --- Server ---
+         _serverMenu = new BMenu(str(STR_SERVER));
+         _serverMenuField = new BMenuField(NULL, NULL, _serverMenu);
+         AddBorderView(_serverMenuField);
+
+         const char * firstName = NULL;
+         const char * sn = NULL;
+         for (int i=0; (settingsMsg.FindString("serverlist", i, &sn) == B_NO_ERROR); i++)
+         {
+            if (firstName == NULL) firstName = sn;
+            AddServerItem(sn, true, -1);
+         }
+         if (firstName == NULL) firstName = _defaultServers[0];
+         for (uint32 j=0; j<ARRAYITEMS(_defaultServers); j++)
+              AddServerItem(_defaultServers[j], true, (j==0)?0:1);
+
+         if (settingsMsg.FindString("server", &sn) == B_NO_ERROR) firstName = sn;
+         _serverEntry = new BTextControl(NULL, NULL, firstName,
+               new BMessage(SHAREWINDOW_COMMAND_USER_CHANGED_SERVER));
+         AddBorderView(_serverEntry);
+         _serverEntry->SetTarget(toMe);
+
+         // --- User Name ---
+         _userNameMenu = new BMenu(str(STR_USER_NAME_COLON));
+         BMenuField * userNameMenuField = new BMenuField(NULL, NULL, _userNameMenu);
+         AddBorderView(userNameMenuField);
+
+         const char * un = NULL;
+         const char * first = NULL;
+         for (int i=0; (settingsMsg.FindString("usernamelist", i, &un) == B_NO_ERROR); i++)
+         {
+            if (first == NULL) first = un;
+            AddUserNameItem(un);
+         }
+         if (settingsMsg.FindString("username", &un) != B_NO_ERROR)
+              un = first ? first : FACTORY_DEFAULT_USER_NAME;
+         NetClient()->SetLocalUserName(un);
+
+         _userNameEntry = new BTextControl(NULL, NULL, un,
+               new BMessage(SHAREWINDOW_COMMAND_USER_CHANGED_NAME));
+         AddBorderView(_userNameEntry);
+         _userNameEntry->SetTarget(toMe);
+
+         // --- Status ---
+         String statusColon = str(STR_STATUS);
+         statusColon += ':';
+         _userStatusMenu = new BMenu(statusColon());
+         BMenuField * userStatusMenuField = new BMenuField(NULL, NULL, _userStatusMenu);
+         AddBorderView(userStatusMenuField);
+
+         const char * us = NULL;
+         first = NULL;
+         for (int i=0; (settingsMsg.FindString("userstatuslist", i, &us) == B_NO_ERROR); i++)
+         {
+            if (first == NULL) first = us;
+            AddUserStatusItem(us);
+         }
+         if (_userStatusMenu->CountItems() == 0)
+         {
+            AddUserStatusItem(FACTORY_DEFAULT_USER_STATUS);
+            AddUserStatusItem(FACTORY_DEFAULT_USER_AWAY_STATUS);
+         }
+         if (settingsMsg.FindString("userstatus", &us) != B_NO_ERROR)
+              us = first ? first : FACTORY_DEFAULT_USER_STATUS;
+         NetClient()->SetLocalUserStatus(us);
+
+         _userStatusEntry = new BTextControl(NULL, NULL, us,
+               new BMessage(SHAREWINDOW_COMMAND_USER_CHANGED_STATUS));
+         AddBorderView(_userStatusEntry);
+         _userStatusEntry->SetTarget(toMe);
+
+         // Build the layout: three equal groups separated by default spacing.
+         BLayoutBuilder::Group<>(_statusView, B_HORIZONTAL, B_USE_DEFAULT_SPACING)
+            .AddGroup(B_HORIZONTAL, B_USE_SMALL_SPACING)
+               .Add(_serverMenuField, 0.0f)
+               .Add(_serverEntry, 1.0f)
+            .End()
+            .AddGroup(B_HORIZONTAL, B_USE_SMALL_SPACING)
+               .Add(userNameMenuField, 0.0f)
+               .Add(_userNameEntry, 1.0f)
+            .End()
+            .AddGroup(B_HORIZONTAL, B_USE_SMALL_SPACING)
+               .Add(userStatusMenuField, 0.0f)
+               .Add(_userStatusEntry, 1.0f)
+            .End();
+
          upperView->AddChild(_statusView);
-         float extraMenuWidth = _statusView->StringWidth("MMM");
-
-         // Distribute Server / UserName / Status evenly across the available width.
-         const float totalWidth = statusViewFrame.Width();
-         const float gap = 6.0f;   // spacing between groups
-         const float colW = (totalWidth - gap * 2.0f) / 3.0f; // each group gets 1/3
-
-         // Use the system preferred height for BMenuField / BTextControl so they
-         // render at the same size and align properly in any font/theme.
-         float prefW, prefH;
-         BMenuField probe(BRect(0,0,1,1), NULL, NULL, new BMenu("X"));
-         probe.GetPreferredSize(&prefW, &prefH);
-         const float ctrlH = prefH;  // native height for both menus and text controls
-         const float cy = floorf((statusViewFrame.Height() - ctrlH) / 2.0f); // vertically center
-
-         {
-            // --- Server group (1st third) ---
-            float x0 = 0.0f;
-            float serverMenuWidth = _statusView->StringWidth(str(STR_SERVER))+extraMenuWidth;
-            _serverMenu = new BMenu(str(STR_SERVER));
-            _statusView->AddChild(AddBorderView(_serverMenuField =
-                 new BMenuField(BRect(x0, cy, x0+serverMenuWidth, cy+ctrlH), NULL, NULL, _serverMenu)));
-
-            const char * firstName = NULL;
-            const char * sn = NULL;
-            for (int i=0; (settingsMsg.FindString("serverlist", i, &sn) == B_NO_ERROR); i++)
-            {
-               if (firstName == NULL) firstName = sn;
-               AddServerItem(sn, true, -1);
-            }
-
-            // Add any default servers that aren't in the list already
-            if (firstName == NULL) firstName = _defaultServers[0];
-            for (uint32 j=0; j<ARRAYITEMS(_defaultServers); j++)
-                 AddServerItem(_defaultServers[j], true, (j==0)?0:1);
-
-            if (settingsMsg.FindString("server", &sn) == B_NO_ERROR) firstName = sn;
-            _serverEntry = new BTextControl(
-                BRect(x0+serverMenuWidth, cy, x0+colW, cy+ctrlH),
-                 NULL, NULL, firstName,
-                  new BMessage(SHAREWINDOW_COMMAND_USER_CHANGED_SERVER));
-            AddBorderView(_serverEntry);
-            _serverEntry->SetTarget(toMe);
-            _serverEntry->SetDivider(0.0f);
-            _statusView->AddChild(_serverEntry);   
-         }
-
-         {
-            // --- User Name group (2nd third) ---
-            float x0 = colW + gap;
-            float userNameMenuWidth = _statusView->StringWidth(str(STR_USER_NAME_COLON))+extraMenuWidth;
-            _userNameMenu = new BMenu(str(STR_USER_NAME_COLON));
-            _statusView->AddChild(AddBorderView(new BMenuField(
-                BRect(x0, cy, x0+userNameMenuWidth, cy+ctrlH),
-                 NULL, NULL, _userNameMenu)));
-
-            const char * un = NULL;
-            const char * first = NULL;
-            for (int i=0; (settingsMsg.FindString("usernamelist", i, &un) == B_NO_ERROR); i++) 
-            {
-               if (first == NULL) first = un;
-               AddUserNameItem(un);
-            }
-
-            if (settingsMsg.FindString("username", &un) != B_NO_ERROR)
-                 un = first ? first : FACTORY_DEFAULT_USER_NAME;
-            NetClient()->SetLocalUserName(un);
-
-            _userNameEntry = new BTextControl(
-                BRect(x0+userNameMenuWidth, cy, x0+colW, cy+ctrlH),
-                 NULL, NULL, un, new BMessage(SHAREWINDOW_COMMAND_USER_CHANGED_NAME));
-            AddBorderView(_userNameEntry);
-            _userNameEntry->SetTarget(toMe);
-         
-            _statusView->AddChild(_userNameEntry);
-         }
-
-         {
-            // --- Status group (3rd third) ---
-            float x0 = (colW + gap) * 2.0f;
-            String statusColon = str(STR_STATUS);
-            statusColon += ':';
-            float userStatusMenuWidth = _statusView->StringWidth(statusColon())+extraMenuWidth;
-            _userStatusMenu = new BMenu(statusColon());
-            _statusView->AddChild(AddBorderView(new BMenuField(
-                BRect(x0, cy, x0+userStatusMenuWidth, cy+ctrlH),
-                 NULL, NULL, _userStatusMenu)));
-
-            const char * us = NULL;
-            const char * first = NULL;
-            for (int i=0; (settingsMsg.FindString("userstatuslist", i, &us) == B_NO_ERROR); i++) 
-            {
-               if (first == NULL) first = us;
-               AddUserStatusItem(us);
-            }
-            if (_userStatusMenu->CountItems() == 0)
-            {  
-               AddUserStatusItem(FACTORY_DEFAULT_USER_STATUS);
-               AddUserStatusItem(FACTORY_DEFAULT_USER_AWAY_STATUS);
-            }
-
-            if (settingsMsg.FindString("userstatus", &us) != B_NO_ERROR)
-                 us = first ? first : FACTORY_DEFAULT_USER_STATUS;
-            NetClient()->SetLocalUserStatus(us);
-
-            _userStatusEntry = new BTextControl(
-             BRect(x0+userStatusMenuWidth, cy, x0+colW, cy+ctrlH),
-              NULL, NULL, us, new BMessage(SHAREWINDOW_COMMAND_USER_CHANGED_STATUS));
-            AddBorderView(_userStatusEntry);
-            _userStatusEntry->SetTarget(toMe);
-         
-            _statusView->AddChild(_userStatusEntry);
-         }
       }
       
    }
