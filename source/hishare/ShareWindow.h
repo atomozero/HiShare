@@ -467,7 +467,7 @@ private:
 
    // Utility methods for saving/restoring userwindow column widths
    void AddUserColumn(const BMessage & settingsMsg, int labelID, float defaultWidthPercentage, const char * optForceLabel, uint32 extraFlags);
-   void SaveUserColumn(BMessage & settingsMsg, int labelID, CLVColumn * col) const;
+   void SaveUserColumn(BMessage & settingsMsg, int labelID, BColumn * col) const;
 
    void SavePrivateWindowInfo(const BMessage & msg);
 
