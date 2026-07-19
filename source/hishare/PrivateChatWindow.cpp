@@ -181,7 +181,6 @@ void PrivateChatWindow :: MessageReceived(BMessage * msg)
             row->SetField(new BStringField(name), 0);
             row->SetField(new BStringField(id), 1);
             _usersList->AddRow(row);
-            _usersList->SortRows();
          }
       }
       break;
