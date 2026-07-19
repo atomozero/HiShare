@@ -87,6 +87,8 @@ else # not beos
       # Haiku muscle must be told the platform is 64-bit or its uintptr/pointer
       # handling truncates (the same flag the HaikuPorts recipe passes).
       CXXFLAGS += -D_BSD_SOURCE
+      CXXFLAGS += -I/boot/system/develop/headers/private -Wno-deprecated-copy
+      CXXFLAGS += -I/boot/system/develop/headers/private/interface
       # MUSCLE 6.11: IPv4-only ip_address (identical to the well-tested Phase-1
       # build).  NOTE: dropping this to enable IPv6 currently breaks connecting
       # to IPv4-only servers on Haiku (the IPv6 socket can't reach an IPv4 dest);
@@ -155,7 +157,7 @@ HiShare : PortMapper.o ReflowingTextView.o ShareNetClient.o ServerConnection.o S
           ByteBuffer.o ZLibCodec.o ZLibUtilityFunctions.o \
           $(SSL_OBJS) ShareSettingsWindow.o \
           $(SANTAOBJS) $(REGEXOBJS) $(ZLIBOBJS)
-	$(CXX) $(LIBS) $(LFLAGS) -o $@ $^ -llocalestub
+	$(CXX) $(LIBS) $(LFLAGS) -o $@ $^ -llocalestub -lcolumnlistview -lshared
 	xres -o $@ $(RESOURCE)
 	# Embed the English (development) message catalog so the Haiku Locale Kit knows our
 	# signature+fingerprint; str() bridges to it and falls back to the built-in string

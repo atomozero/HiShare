@@ -1,10 +1,12 @@
 #include <stdio.h>
 
 #include <interface/ScrollBar.h>
-#include <interface/ScrollBar.h>
 #include <interface/ScrollView.h>
+#include <interface/Screen.h>
 #include <interface/Input.h>
 #include <interface/PopUpMenu.h>
+#include <interface/ColumnListView.h>
+#include <interface/ColumnTypes.h>
 
 #include <support/Beep.h>
 
@@ -15,14 +17,10 @@
 #include "ShareStrings.h"
 #include "Colors.h"
 
-#include "ColumnListView.h"
-#include "CLVColumn.h"
 #include "SplitPane.h"
-#include "CLVEasyItem.h"
 
 namespace beshare {
 
-// Window sizing constraints
 #define MIN_WIDTH  200
 #define MIN_HEIGHT 125
 #define MAX_WIDTH  65535
@@ -81,7 +79,6 @@ PrivateChatWindow :: PrivateChatWindow(bool loggingEnabled, const BMessage & msg
    AddBorderView(_logEnabled);
    contentView->AddChild(_logEnabled);
 
-   // text control for indicating users stretches all the way across the top of the window
    _usersEntry = new BTextControl(BRect(hMargin, vMargin, logLabelRect.left-hMargin, TEXT_ENTRY_HEIGHT), NULL, str(STR_CHAT_WITH), defaultStr, new BMessage(PRIVATE_WINDOW_USER_TEXT_CHANGED), B_FOLLOW_TOP|B_FOLLOW_LEFT_RIGHT);
    _usersEntry->SetDivider(_usersEntry->StringWidth(str(STR_CHAT_WITH))+4.0f);
    _usersEntry->SetTarget(toMe);
@@ -89,39 +86,29 @@ PrivateChatWindow :: PrivateChatWindow(bool loggingEnabled, const BMessage & msg
    AddBorderView(_usersEntry);
    contentView->AddChild(_usersEntry);
 
-   // Area that the split view will occupy (everything underneath the _usersEntry view)
    BRect splitBounds(hMargin,_usersEntry->Frame().bottom+vMargin,b.Width()-hMargin, b.Height()-vMargin);
 
-   // chat view is the left side of the split...
    _chatView = new BView(BRect(0,0,splitBounds.Width()-USER_LIST_WIDTH,splitBounds.Height()), NULL, B_FOLLOW_ALL_SIDES, 0);
    AddBorderView(_chatView);
 
-   // the user list is the right side of the split
-   const float ID_WIDTH=24.0f;
-   CLVContainerView * cv;
-   _usersList = new ColumnListView(BRect(0, 0, USER_LIST_WIDTH-(B_V_SCROLL_BAR_WIDTH+2), splitBounds.Height()-2),&cv,NULL,B_FOLLOW_ALL_SIDES, B_WILL_DRAW|B_FRAME_EVENTS|B_NAVIGABLE,B_MULTIPLE_SELECTION_LIST,false,false,true,true,B_FANCY_BORDER);
-   AddBorderView(cv);
+   _usersList = new BColumnListView(BRect(0, 0, USER_LIST_WIDTH, splitBounds.Height()), NULL, B_FOLLOW_ALL_SIDES, B_WILL_DRAW|B_FRAME_EVENTS|B_NAVIGABLE, B_FANCY_BORDER);
 
-   _usersList->AddColumn(new CLVColumn(str(STR_NAME), _usersList->Bounds().Width()-ID_WIDTH, CLV_SORT_KEYABLE));
-   _usersList->AddColumn(new CLVColumn(str(STR_ID), ID_WIDTH, CLV_SORT_KEYABLE|CLV_RIGHT_JUSTIFIED));
-   _usersList->SetSortFunction((CLVCompareFuncPtr)CompareFunc);
+   float nameColWidth = USER_LIST_WIDTH - 30.0f;
+   float idColWidth = 30.0f;
    BMessage tableMsg;
-   if (msg.FindMessage("table", &tableMsg) == B_NO_ERROR) 
+   if (msg.FindMessage("table", &tableMsg) == B_NO_ERROR)
    {
-      int numColumns = _usersList->CountColumns();
-      int32 * order = new int32[numColumns];
-      for (int i=0; i<numColumns; i++)
-      {
-         float width;
-         if (msg.FindInt32("colorder", i, &order[i]) != B_NO_ERROR) order[i] = i;
-         if (msg.FindFloat("colwidth", i, &width) == B_NO_ERROR) _usersList->ColumnAt(i)->SetWidth(width);
-      }
-      _usersList->SetDisplayOrder(order);
-      delete [] order;
+      float w;
+      if (msg.FindFloat("colwidth", 0, &w) == B_NO_ERROR) nameColWidth = w;
+      if (msg.FindFloat("colwidth", 1, &w) == B_NO_ERROR) idColWidth = w;
    }
 
-   // And the split itself
-   _split = new SplitPane(splitBounds, _chatView, cv, B_FOLLOW_ALL_SIDES);
+   _usersList->AddColumn(new BStringColumn(str(STR_NAME), nameColWidth, 20, 500, B_TRUNCATE_END), 0);
+   _usersList->AddColumn(new BStringColumn(str(STR_ID), idColWidth, 20, 100, B_TRUNCATE_END, B_ALIGN_RIGHT), 1);
+   _usersList->SetSortingEnabled(true);
+   _usersList->SetSortColumn(_usersList->ColumnAt(0), true, true);
+
+   _split = new SplitPane(splitBounds, _chatView, _usersList, B_FOLLOW_ALL_SIDES);
    _split->SetResizeViewOne(true, true);
    _split->SetBarPosition(BPoint(splitBounds.right-(B_V_SCROLL_BAR_WIDTH+USER_LIST_WIDTH), splitBounds.bottom-30.0f));
    BMessage splitMsg;
@@ -157,19 +144,13 @@ SaveStateTo(BMessage & msg) const
    BMessage sp;
    _split->GetState(sp);
    msg.AddMessage("split", &sp);
-   msg.AddInt32("index", _index);  // not persistent, but needed by ShareWindow
+   msg.AddInt32("index", _index);
 
    BMessage table;
-   int numColumns = _usersList->CountColumns();
-   int32 * order = new int32[numColumns];
-   _usersList->GetDisplayOrder(order);
-   for (int i=0; i<numColumns; i++)
-   {
-      msg.AddInt32("colorder", order[i]);
-      msg.AddFloat("colwidth", _usersList->ColumnAt(i)->Width());
-   }
-   delete [] order;
-
+   BColumn * col0 = _usersList->ColumnAt(0);
+   BColumn * col1 = _usersList->ColumnAt(1);
+   msg.AddFloat("colwidth", col0 ? col0->Width() : 100.0f);
+   msg.AddFloat("colwidth", col1 ? col1->Width() : 30.0f);
    msg.AddMessage("table", &table);
    msg.AddFloat("fontsize", GetFontSize());
    msg.AddString("font", GetFont()());
@@ -196,11 +177,10 @@ void PrivateChatWindow :: MessageReceived(BMessage * msg)
          if ((msg->FindString("name", &name) == B_NO_ERROR)&&
              (msg->FindString("id",   &id)   == B_NO_ERROR))
          {
-            CLVEasyItem * item = new CLVEasyItem;
-            item->SetColumnContent(0, name, false);
-            item->SetColumnContent(1, id, false, true);
-            _usersList->AddItem(item);
-            _usersList->SortItems();
+            BRow * row = new BRow();
+            row->SetField(new BStringField(name), 0);
+            row->SetField(new BStringField(id), 1);
+            _usersList->AddRow(row);
          }
       }
       break;
@@ -210,14 +190,15 @@ void PrivateChatWindow :: MessageReceived(BMessage * msg)
          const char * id;
          if (msg->FindString("id", &id) != B_NO_ERROR) id = NULL;
 
-         for (int i=_usersList->CountItems()-1; i>=0; i--)
+         for (int i = _usersList->CountRows()-1; i >= 0; i--)
          {
-            CLVEasyItem * item = (CLVEasyItem *) _usersList->ItemAt(i);
-            if ((id == NULL)||(strcmp(id, item->GetColumnContentText(1)) == 0))
+            BRow * row = _usersList->RowAt(i);
+            BStringField * idField = (BStringField *)row->GetField(1);
+            if ((id == NULL)||(strcmp(id, idField->String()) == 0))
             {
-               _usersList->RemoveItem(i);
-               delete item;
-               if (id) break;  // since we are removing one, and id's are unique....
+               _usersList->RemoveRow(row);
+               delete row;
+               if (id) break;
             }
          }
       }
@@ -280,7 +261,7 @@ void PrivateChatWindow :: GetLocalSessionID(String & retLocalSessionID) const
 }
 
 
-bool PrivateChatWindow :: OkayToLog(LogMessageType /*messageType*/, LogDestinationType destType, bool /*isPrivate*/) const
+bool PrivateChatWindow :: OkayToLog(LogMessageType, LogDestinationType destType, bool) const
 {
    switch(destType)
    {
@@ -321,8 +302,6 @@ void PrivateChatWindow :: SendChatText(const String & text, ChatWindow *)
    if ((text.StartsWith("/"))&&(!text.StartsWith("//")))
    {
       _munged = false;
-      // We don't want private /actions to be seen by everyone, so 
-      // we'll transform them into /msg strings!
       int actionKeywordChars = 0;
            if (text.StartsWith("/me "))     actionKeywordChars = 4;
       else if (text.StartsWith("/me's "))   actionKeywordChars = 3;
@@ -351,7 +330,7 @@ void PrivateChatWindow :: SendChatText(const String & text, ChatWindow *)
          String pre("/msg ");
 
          String target(_usersEntry->Text());
-         target.Replace(' ', CLUMP_CHAR);  // keep spaces in target str from being interpreted as delimiters
+         target.Replace(' ', CLUMP_CHAR);
          pre += target;
          pre += ' ';
          
@@ -368,7 +347,7 @@ void PrivateChatWindow :: SendChatText(const String & text, ChatWindow *)
       target = target.Trim();
 
       String temp("/msg ");
-      target.Replace(' ', CLUMP_CHAR);  // keep spaces in target str from being interpreted as delimiters
+      target.Replace(' ', CLUMP_CHAR);
       temp += target;
       temp += ' ';
       useAltText = true;
@@ -394,20 +373,6 @@ ExpandAlias(const String & str, String & retStr) const
    }
    return ret;
 }
-
-int
-PrivateChatWindow ::
-CompareFunc(const CLVListItem* item1, const CLVListItem* item2, int32 sortKey)
-{
-   CLVEasyItem * e1 = (CLVEasyItem *) item1;
-   CLVEasyItem * e2 = (CLVEasyItem *) item2;
-   switch(sortKey)
-   {
-      case 0:  return strcasecmp(e1->GetColumnContentText(0), e2->GetColumnContentText(0));
-      case 1:  return atoi(e1->GetColumnContentText(1))-atoi(e2->GetColumnContentText(1));
-   }
-   return 0;
-}   
 
 void
 PrivateChatWindow ::
@@ -460,8 +425,6 @@ PrivateChatWindow ::
 UpdateColors()
 {
    ChatWindow::UpdateColors();
-
-   UpdateColumnListViewColors(_usersList);
    UpdateTextViewColors(_usersEntry->TextView());
 }
 

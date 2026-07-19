@@ -19,6 +19,8 @@
 #include <interface/Screen.h>
 #include <interface/ScrollBar.h>
 #include <interface/ScrollView.h>
+#include <interface/GroupLayout.h>
+#include <interface/LayoutBuilder.h>
 #include <interface/Input.h>
 #include <interface/PopUpMenu.h>
 #include <interface/Bitmap.h>
@@ -641,126 +643,6 @@ private:
 #if SAVE_BEOS
    BBitmap * _sbe;
 #endif
-};
-
-class UserListView : public ColumnListView
-{
-public:
-   UserListView(uint32 replyWhat, BRect Frame, CLVContainerView** ContainerView, const char* Name = NULL, uint32 ResizingMode = B_FOLLOW_LEFT | B_FOLLOW_TOP, uint32 flags = B_WILL_DRAW | B_FRAME_EVENTS | B_NAVIGABLE, list_view_type Type = B_SINGLE_SELECTION_LIST, bool hierarchical = false, bool horizontal = true, bool vertical = true, bool scroll_view_corner = true, border_style border = B_NO_BORDER, const BFont* LabelFont = be_plain_font) : ColumnListView(Frame, ContainerView, Name, ResizingMode, flags, Type, hierarchical, horizontal, vertical, scroll_view_corner, border, LabelFont), _replyWhat(replyWhat) {/* empty */}
-
-   virtual void Draw(BRect ur)
-   {
-      ColumnListView::Draw(ur);
-      if (CountItems() == 0)
-      {
-         BRect b = Bounds();
-         BFont f(be_plain_font); SetFont(&f);
-         font_height fh; f.GetHeight(&fh);
-         SetHighColor(HeaderBanner::Blend(ui_color(B_LIST_ITEM_TEXT_COLOR), ui_color(B_LIST_BACKGROUND_COLOR), 0.58f));
-         const char * msg = "No users online";
-         float tw = f.StringWidth(msg);
-         DrawString(msg, BPoint((b.left + b.right - tw) / 2.0f, (b.top + b.bottom) / 2.0f + (fh.ascent - fh.descent) / 2.0f));
-      }
-   }
-   virtual bool AddItem(BListItem * item)
-   {
-      bool r = ColumnListView::AddItem(item);
-      if (r && (CountItems() == 1)) Invalidate();
-      return r;
-   }
-   virtual bool RemoveItem(BListItem * item)
-   {
-      bool r = ColumnListView::RemoveItem(item);
-      if (r && (CountItems() == 0)) Invalidate();
-      return r;
-   }
-   virtual BListItem * RemoveItem(int32 index)
-   {
-      BListItem * r = ColumnListView::RemoveItem(index);
-      if (r && (CountItems() == 0)) Invalidate();
-      return r;
-   }
-   virtual void MakeEmpty()
-   {
-      bool had = (CountItems() > 0);
-      ColumnListView::MakeEmpty();
-      if (had) Invalidate();
-   }
-
-   virtual void MouseDown(BPoint where)
-   {
-      BPoint pt;
-      uint32 buttons;
-
-      GetMouse(&pt, &buttons);
-      if (buttons & B_SECONDARY_MOUSE_BUTTON) 
-      {
-         String handles, sessionIDs;
-         if (CurrentSelection(1) < 0) Select(IndexOf(pt)); // no multiple selection? select what's under the mouse
-         int32 next;
-         bool truncate = false;
-         bool truncated = false;
-         for (int i=0; (next = CurrentSelection(i))>=0; i++)
-         {
-            RemoteUserItem * user = (RemoteUserItem*)ItemAt(next);
-            if (i > 0) 
-            {
-               if (truncate == false) handles += ", ";
-               sessionIDs += ", ";
-            }
-            if (truncate == false) handles += user->GetDisplayHandle();
-            sessionIDs += user->GetSessionID();
-
-            if ((truncate)&&(!truncated))
-            {
-               truncated = true;
-               handles += ", ...";
-            }
-            if (handles.Length() > 25) truncate = true;
-         }
-         if (handles.Length() > 0)
-         {
-            BPopUpMenu * popup = new BPopUpMenu((const char *)NULL);
-
-            String s(str(STR_CHAT_WITH));
-            s += ' ';
-            s += handles;
-            BMenuItem * mi = new BMenuItem(s(), NULL);
-            popup->AddItem(mi);
-
-            popup->AddSeparatorItem();
-
-            String s2(str(STR_WATCH));
-            s2 += ' ';
-            s2 += handles;
-            BMenuItem * mi2 = new BMenuItem(s2(), NULL);
-            popup->AddItem(mi2);
-
-            ConvertToScreen(&pt);
-            BMenuItem * result = popup->Go(pt);
-            if (result == mi)
-            {
-               BMessage msg(_replyWhat);
-               msg.AddString("users", sessionIDs());
-               Window()->PostMessage(&msg);
-            }
-            else if (result == mi2)
-            {
-               String mi2text;
-               mi2text = "/watch ";
-               mi2text += sessionIDs();
-               ((ShareWindow*)Looper())->SendChatText(mi2text, NULL);
-            }
-
-            delete popup;
-            return;
-         }
-      }
-      ColumnListView::MouseDown(where);
-   }
-
-private:
-   uint32 _replyWhat;
 };
 
 // Any servers in this list will *always* be added to the server menu on startup.
@@ -1762,110 +1644,95 @@ ShareWindow :: ShareWindow(uint64 installID, BMessage & settingsMsg, const char 
       contentView->AddChild(upperView);
 
       {
-         // Fill out the status view
-         BRect statusViewFrame(hMargin, 0, upperView->Bounds().Width()-hMargin, upperView->Bounds().Height());
-         _statusView = new BView(statusViewFrame, NULL, B_FOLLOW_LEFT_RIGHT| B_FOLLOW_TOP_BOTTOM, 0);
+         BRect statusViewFrame(0, 0, upperView->Bounds().Width(), upperView->Bounds().Height());
+         _statusView = new BView(statusViewFrame, "StatusView", B_FOLLOW_ALL_SIDES, 0);
+         _statusView->SetViewUIColor(B_PANEL_BACKGROUND_COLOR);
          AddBorderView(_statusView);
+
+         _serverMenu = new BMenu(str(STR_SERVER));
+         _serverMenuField = new BMenuField(NULL, NULL, _serverMenu);
+         AddBorderView(_serverMenuField);
+
+         const char * firstName = NULL;
+         const char * sn = NULL;
+         for (int i=0; (settingsMsg.FindString("serverlist", i, &sn) == B_NO_ERROR); i++)
+         {
+            if (firstName == NULL) firstName = sn;
+            AddServerItem(sn, true, -1);
+         }
+         if (firstName == NULL) firstName = _defaultServers[0];
+         for (uint32 j=0; j<ARRAYITEMS(_defaultServers); j++)
+              AddServerItem(_defaultServers[j], true, (j==0)?0:1);
+
+         if (settingsMsg.FindString("server", &sn) == B_NO_ERROR) firstName = sn;
+         _serverEntry = new BTextControl(NULL, NULL, firstName,
+               new BMessage(SHAREWINDOW_COMMAND_USER_CHANGED_SERVER));
+         AddBorderView(_serverEntry);
+         _serverEntry->SetTarget(toMe);
+
+         _userNameMenu = new BMenu(str(STR_USER_NAME_COLON));
+         BMenuField * userNameMenuField = new BMenuField(NULL, NULL, _userNameMenu);
+         AddBorderView(userNameMenuField);
+
+         const char * un = NULL;
+         const char * first = NULL;
+         for (int i=0; (settingsMsg.FindString("usernamelist", i, &un) == B_NO_ERROR); i++)
+         {
+            if (first == NULL) first = un;
+            AddUserNameItem(un);
+         }
+         if (settingsMsg.FindString("username", &un) != B_NO_ERROR)
+              un = first ? first : FACTORY_DEFAULT_USER_NAME;
+         NetClient()->SetLocalUserName(un);
+
+         _userNameEntry = new BTextControl(NULL, NULL, un,
+               new BMessage(SHAREWINDOW_COMMAND_USER_CHANGED_NAME));
+         AddBorderView(_userNameEntry);
+         _userNameEntry->SetTarget(toMe);
+
+         String statusColon = str(STR_STATUS);
+         statusColon += ':';
+         _userStatusMenu = new BMenu(statusColon());
+         BMenuField * userStatusMenuField = new BMenuField(NULL, NULL, _userStatusMenu);
+         AddBorderView(userStatusMenuField);
+
+         const char * us = NULL;
+         first = NULL;
+         for (int i=0; (settingsMsg.FindString("userstatuslist", i, &us) == B_NO_ERROR); i++)
+         {
+            if (first == NULL) first = us;
+            AddUserStatusItem(us);
+         }
+         if (_userStatusMenu->CountItems() == 0)
+         {
+            AddUserStatusItem(FACTORY_DEFAULT_USER_STATUS);
+            AddUserStatusItem(FACTORY_DEFAULT_USER_AWAY_STATUS);
+         }
+         if (settingsMsg.FindString("userstatus", &us) != B_NO_ERROR)
+              us = first ? first : FACTORY_DEFAULT_USER_STATUS;
+         NetClient()->SetLocalUserStatus(us);
+
+         _userStatusEntry = new BTextControl(NULL, NULL, us,
+               new BMessage(SHAREWINDOW_COMMAND_USER_CHANGED_STATUS));
+         AddBorderView(_userStatusEntry);
+         _userStatusEntry->SetTarget(toMe);
+
+         BLayoutBuilder::Group<>(_statusView, B_HORIZONTAL, B_USE_DEFAULT_SPACING)
+            .AddGroup(B_HORIZONTAL, B_USE_SMALL_SPACING, 1.0f)
+               .Add(_serverMenuField, 0.0f)
+               .Add(_serverEntry, 1.0f)
+            .End()
+            .AddGroup(B_HORIZONTAL, B_USE_SMALL_SPACING, 1.0f)
+               .Add(userNameMenuField, 0.0f)
+               .Add(_userNameEntry, 1.0f)
+            .End()
+            .AddGroup(B_HORIZONTAL, B_USE_SMALL_SPACING, 1.0f)
+               .Add(userStatusMenuField, 0.0f)
+               .Add(_userStatusEntry, 1.0f)
+            .End()
+            .AddGlue(1.0f);
+
          upperView->AddChild(_statusView);
-         float extraMenuWidth = _statusView->StringWidth("MMM");
-
-         {
-            // Fill out the Server menu and text control
-            float serverMenuWidth = _statusView->StringWidth(str(STR_SERVER))+extraMenuWidth;
-            _serverMenu = new BMenu(str(STR_SERVER));
-            _statusView->AddChild(AddBorderView(_serverMenuField =
-                 new BMenuField(BRect(0,4,serverMenuWidth,statusViewFrame.Height()), NULL, NULL, _serverMenu)));
-
-            const char * firstName = NULL;
-            const char * sn = NULL;
-            for (int i=0; (settingsMsg.FindString("serverlist", i, &sn) == B_NO_ERROR); i++)
-            {
-               if (firstName == NULL) firstName = sn;
-               AddServerItem(sn, true, -1);
-            }
-
-            // Add any default servers that aren't in the list already
-            if (firstName == NULL) firstName = _defaultServers[0];
-            for (uint32 j=0; j<ARRAYITEMS(_defaultServers); j++)
-                 AddServerItem(_defaultServers[j], true, (j==0)?0:1);
-
-            if (settingsMsg.FindString("server", &sn) == B_NO_ERROR) firstName = sn;
-            _serverEntry = new BTextControl(
-                BRect(serverMenuWidth, 6, STATUS_VIEW_WIDTH-(USER_ENTRY_WIDTH+USER_STATUS_WIDTH+hMargin),
-                 statusViewFrame.Height()), NULL, NULL, firstName,
-                  new BMessage(SHAREWINDOW_COMMAND_USER_CHANGED_SERVER));
-            AddBorderView(_serverEntry);
-            _serverEntry->SetTarget(toMe);
-            _serverEntry->SetDivider(0.0f);
-            _statusView->AddChild(_serverEntry);   
-         }
-
-         {
-            // Fill out the UserName menu and text control
-            float userNameMenuWidth = _statusView->StringWidth(str(STR_USER_NAME_COLON))+extraMenuWidth;
-            float userNameMenuLeft = STATUS_VIEW_WIDTH-(USER_ENTRY_WIDTH+USER_STATUS_WIDTH);
-            _userNameMenu = new BMenu(str(STR_USER_NAME_COLON));
-            _statusView->AddChild(AddBorderView(new BMenuField(
-                BRect(userNameMenuLeft,4,userNameMenuLeft+userNameMenuWidth,statusViewFrame.Height()),
-                 NULL, NULL, _userNameMenu)));
-
-            const char * un = NULL;
-            const char * first = NULL;
-            for (int i=0; (settingsMsg.FindString("usernamelist", i, &un) == B_NO_ERROR); i++) 
-            {
-               if (first == NULL) first = un;
-               AddUserNameItem(un);
-            }
-
-            if (settingsMsg.FindString("username", &un) != B_NO_ERROR)
-                 un = first ? first : FACTORY_DEFAULT_USER_NAME;
-            NetClient()->SetLocalUserName(un);
-
-            _userNameEntry = new BTextControl(
-                BRect(userNameMenuLeft+userNameMenuWidth,6,STATUS_VIEW_WIDTH-(USER_STATUS_WIDTH+1),
-                 statusViewFrame.Height()), NULL, NULL, un, new BMessage(SHAREWINDOW_COMMAND_USER_CHANGED_NAME));
-            AddBorderView(_userNameEntry);
-            _userNameEntry->SetTarget(toMe);
-         
-            _statusView->AddChild(_userNameEntry);
-         }
-
-         {
-            // Fill out the UserStatus menu and text control
-            String statusColon = str(STR_STATUS);
-            statusColon += ':';
-            float userStatusMenuWidth = _statusView->StringWidth(statusColon())+extraMenuWidth;
-            float userStatusMenuLeft = hMargin+(STATUS_VIEW_WIDTH-USER_STATUS_WIDTH);
-            _userStatusMenu = new BMenu(statusColon());
-            _statusView->AddChild(AddBorderView(new BMenuField(
-                BRect(userStatusMenuLeft,4,userStatusMenuLeft+userStatusMenuWidth,statusViewFrame.Height()),
-                 NULL, NULL, _userStatusMenu)));
-
-            const char * us = NULL;
-            const char * first = NULL;
-            for (int i=0; (settingsMsg.FindString("userstatuslist", i, &us) == B_NO_ERROR); i++) 
-            {
-               if (first == NULL) first = us;
-               AddUserStatusItem(us);
-            }
-            if (_userStatusMenu->CountItems() == 0)
-            {  
-               AddUserStatusItem(FACTORY_DEFAULT_USER_STATUS);
-               AddUserStatusItem(FACTORY_DEFAULT_USER_AWAY_STATUS);
-            }
-
-            if (settingsMsg.FindString("userstatus", &us) != B_NO_ERROR)
-                 us = first ? first : FACTORY_DEFAULT_USER_STATUS;
-            NetClient()->SetLocalUserStatus(us);
-
-            _userStatusEntry = new BTextControl(
-             BRect(userStatusMenuLeft+userStatusMenuWidth,6,STATUS_VIEW_WIDTH-1,statusViewFrame.Height()),
-              NULL, NULL, us, new BMessage(SHAREWINDOW_COMMAND_USER_CHANGED_STATUS));
-            AddBorderView(_userStatusEntry);
-            _userStatusEntry->SetTarget(toMe);
-         
-            _statusView->AddChild(_userStatusEntry);
-         }
       }
       
    }
@@ -1877,49 +1744,40 @@ ShareWindow :: ShareWindow(uint64 installID, BMessage & settingsMsg, const char 
    AddBorderView(resultsView);
 
    {
-         // Fill out the query view
          BRect queryViewFrame(0, 0, resultsFrame.Width(), QUERY_VIEW_HEIGHT);
          _queryView = new BView(queryViewFrame, NULL, B_FOLLOW_LEFT_RIGHT | B_FOLLOW_TOP, 0);
+         _queryView->SetViewUIColor(B_PANEL_BACKGROUND_COLOR);
          AddBorderView(_queryView);
          resultsView->AddChild(_queryView);
-         float extraMenuWidth = _queryView->StringWidth("MMMMM");
-         
+
          const char * q = str(STR_QUERY);
          _queryMenu = new BMenu(q);
-         float qw = _queryView->StringWidth(q)+extraMenuWidth;
-         _queryView->AddChild(AddBorderView(new BMenuField(
-            BRect(hMargin,4,qw,fontHeight), NULL, NULL, _queryMenu)));
-         
-         float right = queryViewFrame.Width()-hMargin;
-         float stringWidth = _queryMenu->StringWidth(str(STR_STOP_QUERY))+extraMenuWidth;
-         _disableQueryButton = new BButton(
-            BRect(right-stringWidth,3,right,fontHeight), NULL, str(STR_STOP_QUERY),
-             new BMessage(SHAREWINDOW_COMMAND_DISABLE_QUERY), B_FOLLOW_RIGHT | B_FOLLOW_TOP);
-         AddBorderView(_disableQueryButton);
-         _queryView->AddChild(_disableQueryButton);
-         right -= (stringWidth + hMargin);
-
-         stringWidth = _queryMenu->StringWidth(str(STR_START_QUERY))+extraMenuWidth;
-         _enableQueryButton = new BButton(
-            BRect(right-stringWidth,3,right,fontHeight), NULL, str(STR_START_QUERY),
-             new BMessage(SHAREWINDOW_COMMAND_ENABLE_QUERY), B_FOLLOW_RIGHT | B_FOLLOW_TOP);
-         AddBorderView(_enableQueryButton);
-         _queryView->AddChild(_enableQueryButton);
-         right -= (stringWidth + hMargin);
+         BMenuField * queryMenuField = new BMenuField(NULL, NULL, _queryMenu);
+         AddBorderView(queryMenuField);
 
          const char * startupQuery;
-         // Default search: Haiku software packages (BeShare is widely used as an .hpkg
-         // repo).  Only applies to fresh installs; a saved "query" setting wins.
          if (settingsMsg.FindString("query", &startupQuery) != B_NO_ERROR) startupQuery = "*.hpkg";
-         _fileNameQueryEntry = new BTextControl(
-            BRect(qw-10.0f,6,right,fontHeight), NULL, NULL, startupQuery,
-             new BMessage(SHAREWINDOW_COMMAND_CHANGE_FILE_NAME_QUERY), B_FOLLOW_ALL_SIDES);
+         _fileNameQueryEntry = new BTextControl(NULL, NULL, startupQuery,
+               new BMessage(SHAREWINDOW_COMMAND_CHANGE_FILE_NAME_QUERY));
          AddBorderView(_fileNameQueryEntry);
          _fileNameQueryEntry->SetTarget(toMe);
-         _queryView->AddChild(_fileNameQueryEntry);
-         // Restore any additional strings....
+
+         _enableQueryButton = new BButton(NULL, str(STR_START_QUERY),
+               new BMessage(SHAREWINDOW_COMMAND_ENABLE_QUERY));
+         AddBorderView(_enableQueryButton);
+
+         _disableQueryButton = new BButton(NULL, str(STR_STOP_QUERY),
+               new BMessage(SHAREWINDOW_COMMAND_DISABLE_QUERY));
+         AddBorderView(_disableQueryButton);
+
+         BLayoutBuilder::Group<>(_queryView, B_HORIZONTAL, B_USE_DEFAULT_SPACING)
+            .Add(queryMenuField, 0.0f)
+            .Add(_fileNameQueryEntry, 1.0f)
+            .Add(_enableQueryButton, 0.0f)
+            .Add(_disableQueryButton, 0.0f);
+
          const char * listQuery;
-         for (int qh=1; (settingsMsg.FindString("query", qh, &listQuery) == B_NO_ERROR); qh++) 
+         for (int qh=1; (settingsMsg.FindString("query", qh, &listQuery) == B_NO_ERROR); qh++)
          {
             BMessage * msg = new BMessage(SHAREWINDOW_COMMAND_CHANGE_FILE_NAME_QUERY);
             msg->AddString("query", listQuery);
@@ -1943,35 +1801,34 @@ ShareWindow :: ShareWindow(uint64 installID, BMessage & settingsMsg, const char 
 
    _resultsView->AddColumn(new CLVColumn("", 20.0f, CLV_LOCK_AT_BEGINNING | CLV_NOT_MOVABLE | CLV_NOT_RESIZABLE));
 
-   const float pageButtonWidth = 25.0f;
-   BView * dlButtonView = new BView(BRect(resultsFrame.left+2+pageButtonWidth, resultsView->Bounds().Height()-(fontHeight+vMargin+2),resultsFrame.right-(2+pageButtonWidth),resultsFrame.Height()-2), NULL, B_FOLLOW_LEFT_RIGHT | B_FOLLOW_BOTTOM, 0);
+   const float buttonBarHeight = fontHeight + vMargin + 2;
+   BRect buttonBarFrame(0, resultsView->Bounds().Height() - buttonBarHeight, resultsView->Bounds().Width(), resultsView->Bounds().Height());
+   BView * dlButtonView = new BView(buttonBarFrame, NULL, B_FOLLOW_LEFT_RIGHT | B_FOLLOW_BOTTOM, 0);
+   dlButtonView->SetViewUIColor(B_PANEL_BACKGROUND_COLOR);
    AddBorderView(dlButtonView);
    resultsView->AddChild(dlButtonView);
 
-   float clearButtonWidth = dlButtonView->StringWidth(str(STR_CLEAR_FINISHED_FAILED_TRANSFERS))+20.0f;
-   float infoButtonWidth = dlButtonView->StringWidth("Information")+20.0f;
-   BRect dlBounds = dlButtonView->Bounds();
-
-   _requestInfoButton = new BButton(BRect(0, 0, infoButtonWidth, dlBounds.Height()), NULL, "Information", new BMessage(SHAREWINDOW_COMMAND_REQUEST_INFO), B_FOLLOW_LEFT | B_FOLLOW_TOP_BOTTOM);
-   AddBorderView(_requestInfoButton);
-   dlButtonView->AddChild(_requestInfoButton);
-
-   _requestDownloadsButton = new BButton(BRect(infoButtonWidth+hMargin, 0, dlBounds.Width()-(clearButtonWidth+hMargin), dlBounds.Height()), NULL, str(STR_DOWNLOAD_SELECTED_FILES), new BMessage(SHAREWINDOW_COMMAND_BEGIN_DOWNLOADS), B_FOLLOW_ALL_SIDES, B_WILL_DRAW|B_NAVIGABLE|B_FULL_UPDATE_ON_RESIZE);
-   AddBorderView(_requestDownloadsButton);
-   dlButtonView->AddChild(_requestDownloadsButton);
-
-   _clearFinishedDownloadsButton = new BButton(BRect(dlBounds.Width()-clearButtonWidth, 0, dlBounds.Width(), dlBounds.Height()), NULL, str(STR_CLEAR_FINISHED_FAILED_TRANSFERS), new BMessage(SHAREWINDOW_COMMAND_CLEAR_FINISHED_DOWNLOADS), B_FOLLOW_RIGHT | B_FOLLOW_TOP_BOTTOM);
-   AddBorderView(_clearFinishedDownloadsButton);
-   dlButtonView->AddChild(_clearFinishedDownloadsButton);
-
-   BRect dlFrame = dlButtonView->Frame();
-   _prevPageButton = new BButton(BRect(resultsFrame.left, dlFrame.top, dlFrame.left - hMargin, dlFrame.bottom), NULL, "<", new BMessage(SHAREWINDOW_COMMAND_PREVIOUS_PAGE), B_FOLLOW_LEFT | B_FOLLOW_BOTTOM);
+   _prevPageButton = new BButton(NULL, "<", new BMessage(SHAREWINDOW_COMMAND_PREVIOUS_PAGE));
    AddBorderView(_prevPageButton);
-   resultsView->AddChild(_prevPageButton);
-   
-   _nextPageButton = new BButton(BRect(dlFrame.right + vMargin, dlFrame.top, resultsFrame.right, dlFrame.bottom), NULL, ">", new BMessage(SHAREWINDOW_COMMAND_NEXT_PAGE), B_FOLLOW_RIGHT | B_FOLLOW_BOTTOM);
+
+   _requestInfoButton = new BButton(NULL, "Information", new BMessage(SHAREWINDOW_COMMAND_REQUEST_INFO));
+   AddBorderView(_requestInfoButton);
+
+   _requestDownloadsButton = new BButton(NULL, str(STR_DOWNLOAD_SELECTED_FILES), new BMessage(SHAREWINDOW_COMMAND_BEGIN_DOWNLOADS));
+   AddBorderView(_requestDownloadsButton);
+
+   _clearFinishedDownloadsButton = new BButton(NULL, str(STR_CLEAR_FINISHED_FAILED_TRANSFERS), new BMessage(SHAREWINDOW_COMMAND_CLEAR_FINISHED_DOWNLOADS));
+   AddBorderView(_clearFinishedDownloadsButton);
+
+   _nextPageButton = new BButton(NULL, ">", new BMessage(SHAREWINDOW_COMMAND_NEXT_PAGE));
    AddBorderView(_nextPageButton);
-   resultsView->AddChild(_nextPageButton);
+
+   BLayoutBuilder::Group<>(dlButtonView, B_HORIZONTAL, B_USE_SMALL_SPACING)
+      .Add(_prevPageButton, 0.0f)
+      .Add(_requestInfoButton, 0.0f)
+      .Add(_requestDownloadsButton, 1.0f)
+      .Add(_clearFinishedDownloadsButton, 0.0f)
+      .Add(_nextPageButton, 0.0f);
 
    BRect transferFrame(resultsFrame.right+hMargin, resultsFrame.top+3, middleFrame.Width()-hMargin, middleFrame.bottom-30);
    BView * transferView = new BView(transferFrame, NULL, B_FOLLOW_RIGHT | B_FOLLOW_TOP_BOTTOM, 0);
@@ -2000,16 +1857,13 @@ ShareWindow :: ShareWindow(uint64 installID, BMessage & settingsMsg, const char 
    BView * userListView = new BView(BRect(chatViewFrame.right+hMargin, bottomFrame.top, bottomFrame.right, bottomFrame.bottom), NULL, B_FOLLOW_RIGHT | B_FOLLOW_BOTTOM, 0);
    AddBorderView(userListView);
 
-   CLVContainerView* userContainerView;
-
-   _usersView = new UserListView(SHAREWINDOW_COMMAND_OPEN_PRIVATE_CHAT_WINDOW, BRect(2, 2, userListView->Bounds().Width()-(B_V_SCROLL_BAR_WIDTH+2), userListView->Bounds().Height()-(B_H_SCROLL_BAR_HEIGHT+2)),&userContainerView,NULL,B_FOLLOW_ALL_SIDES, B_WILL_DRAW|B_FRAME_EVENTS|B_NAVIGABLE,B_MULTIPLE_SELECTION_LIST,false,true,true,true,B_FANCY_BORDER);
-   AddBorderView(userContainerView);
-
-   _usersView->SetSortFunction((CLVCompareFuncPtr) UserCompareFunc);
-   _usersView->SetMessage(new BMessage(SHAREWINDOW_COMMAND_SELECT_USER));
+   _usersView = new BColumnListView(BRect(2, 2, userListView->Bounds().Width()-2, userListView->Bounds().Height()-2), NULL, B_FOLLOW_ALL_SIDES, B_WILL_DRAW|B_FRAME_EVENTS|B_NAVIGABLE, B_FANCY_BORDER);
+   _usersView->SetSelectionMode(B_MULTIPLE_SELECTION_LIST);
+   _usersView->SetSortingEnabled(true);
+   _usersView->SetSelectionMessage(new BMessage(SHAREWINDOW_COMMAND_SELECT_USER));
+   _usersView->SetInvocationMessage(new BMessage(SHAREWINDOW_COMMAND_OPEN_PRIVATE_CHAT_WINDOW));
    _usersView->SetTarget(toMe);
-
-   userListView->AddChild(userContainerView);
+   userListView->AddChild(_usersView);
 
    _chatUsersSplit = new SplitPane(bottomFrame, _chatView, userListView, B_FOLLOW_LEFT_RIGHT | B_FOLLOW_BOTTOM);
    _chatUsersSplit->SetResizeViewOne(true, true);
@@ -2032,38 +1886,44 @@ ShareWindow :: ShareWindow(uint64 installID, BMessage & settingsMsg, const char 
 
    contentView->AddChild(_mainSplit);
 
-   AddUserColumn(settingsMsg, STR_NAME,            0.43f, NULL, 0);
-   AddUserColumn(settingsMsg, STR_STATUS,          0.33f, NULL, 0);
-   AddUserColumn(settingsMsg, STR_ID,              0.24f, NULL, CLV_RIGHT_JUSTIFIED);
-   AddUserColumn(settingsMsg, STR_FILES,           0.38f, NULL, CLV_RIGHT_JUSTIFIED);
-   AddUserColumn(settingsMsg, STR_CONNECTION_KEY,  0.57f, str(STR_CONNECTION_KEY)+2, 0);
-   AddUserColumn(settingsMsg, STR_LOAD,            0.37f, NULL, CLV_RIGHT_JUSTIFIED);
-   AddUserColumn(settingsMsg, STR_CLIENT,          0.37f, NULL, 0);
-   AddUserColumn(settingsMsg, STR_SERVER,          0.45f, "Server", CLV_HIDDEN);  // shown automatically with >1 connections
-
-   int numColumns = _usersView->CountColumns();
-   if (numColumns > 0)
    {
-      {
-         int32 * userDisplayOrder = new int32[numColumns];
-         for (int di=0; di<numColumns; di++) if (settingsMsg.FindInt32("usercolumnsorder", di, &userDisplayOrder[di]) != B_NO_ERROR) userDisplayOrder[di] = di;
-         _usersView->SetDisplayOrder(userDisplayOrder);
-         delete [] userDisplayOrder;
-      }
-      {
-         int32 * sortKeys  = new int32[numColumns];
-         CLVSortMode * sortModes = new CLVSortMode[numColumns];
-         int numSortKeys = 0;
-         for (int di=0; (settingsMsg.FindInt32("usersortkey", di, &sortKeys[di]) == B_NO_ERROR); di++) 
-         {
-            int32 temp;
-            sortModes[di] = (settingsMsg.FindInt32("usersortmode", di, &temp) == B_NO_ERROR) ? (CLVSortMode)temp : NoSort;
-            numSortKeys++;
-         }
-         if (numSortKeys > 0) _usersView->SetSorting(numSortKeys, sortKeys, sortModes);
-         delete [] sortKeys;
-         delete [] sortModes;
-      }
+      float baseW = _usersView->Bounds().Width();
+      float w;
+      char buf[128];
+
+      sprintf(buf, "usercolumnwidth_%i", STR_NAME);
+      w = 0.43f * baseW; settingsMsg.FindFloat(buf, &w);
+      _usersView->AddColumn(new BStringColumn(str(STR_NAME), w, 20, 600, B_TRUNCATE_END), 0);
+
+      sprintf(buf, "usercolumnwidth_%i", STR_STATUS);
+      w = 0.33f * baseW; settingsMsg.FindFloat(buf, &w);
+      _usersView->AddColumn(new BStringColumn(str(STR_STATUS), w, 20, 400, B_TRUNCATE_END), 1);
+
+      sprintf(buf, "usercolumnwidth_%i", STR_ID);
+      w = 0.24f * baseW; settingsMsg.FindFloat(buf, &w);
+      _usersView->AddColumn(new BStringColumn(str(STR_ID), w, 20, 200, B_TRUNCATE_END, B_ALIGN_RIGHT), 2);
+
+      sprintf(buf, "usercolumnwidth_%i", STR_FILES);
+      w = 0.38f * baseW; settingsMsg.FindFloat(buf, &w);
+      _usersView->AddColumn(new BStringColumn(str(STR_FILES), w, 20, 200, B_TRUNCATE_END, B_ALIGN_RIGHT), 3);
+
+      sprintf(buf, "usercolumnwidth_%i", STR_CONNECTION_KEY);
+      w = 0.57f * baseW; settingsMsg.FindFloat(buf, &w);
+      _usersView->AddColumn(new BStringColumn(str(STR_CONNECTION_KEY)+2, w, 20, 400, B_TRUNCATE_END), 4);
+
+      sprintf(buf, "usercolumnwidth_%i", STR_LOAD);
+      w = 0.37f * baseW; settingsMsg.FindFloat(buf, &w);
+      _usersView->AddColumn(new BStringColumn(str(STR_LOAD), w, 20, 200, B_TRUNCATE_END, B_ALIGN_RIGHT), 5);
+
+      sprintf(buf, "usercolumnwidth_%i", STR_CLIENT);
+      w = 0.37f * baseW; settingsMsg.FindFloat(buf, &w);
+      _usersView->AddColumn(new BStringColumn(str(STR_CLIENT), w, 20, 400, B_TRUNCATE_END), 6);
+
+      sprintf(buf, "usercolumnwidth_%i", STR_SERVER);
+      w = 0.45f * baseW; settingsMsg.FindFloat(buf, &w);
+      _usersView->AddColumn(new BStringColumn("Server", w, 20, 400, B_TRUNCATE_END), 7);
+
+      _usersView->SetSortColumn(_usersView->ColumnAt(0), true, true);
    }
 
    // Restore any downloads that were going on when we last quit, and that might even now be resuscitatable.
@@ -2173,25 +2033,13 @@ ShareWindow :: CreatePresetItem(int32 what, int32 which, bool enabled, bool shif
    return mi;
 }
 
-void
-ShareWindow ::
-AddUserColumn(const BMessage & settingsMsg, int labelID, float dw, const char * optLabel, uint32 extraFlags)
-{
-   char buf[128];
-   sprintf(buf, "usercolumnwidth_%i", labelID);
-
-   float width;
-   if (settingsMsg.FindFloat(buf, &width) != B_NO_ERROR) width = dw*_usersView->Bounds().Width();
-   _usersView->AddColumn(new CLVColumn(optLabel ? optLabel : str(labelID), width, CLV_SORT_KEYABLE | extraFlags));
-}
-
 void 
 ShareWindow ::
-SaveUserColumn(BMessage & settingsMsg, int labelID, CLVColumn * col) const
+SaveUserColumn(BMessage & settingsMsg, int labelID, BColumn * col) const
 {
    char buf[128];
    sprintf(buf, "usercolumnwidth_%i", labelID);
-   settingsMsg.AddFloat(buf, col->Width());
+   settingsMsg.AddFloat(buf, col ? col->Width() : 100.0f);
 }
 
 void
@@ -2328,10 +2176,10 @@ SetFirewalledMode(bool firewalled)
       SetQueryEnabled(false, false);
       SetQueryEnabled(true, false);
    }
-   for (int i=_usersView->CountItems()-1; i>=0; i--)
+   for (int i=_usersView->CountRows()-1; i>=0; i--)
    {
-      RemoteUserItem * rui = (RemoteUserItem *)_usersView->ItemAt(i);
-      rui->SetNumSharedFiles(rui->GetNumSharedFiles());  // force update to set/unset parens
+      RemoteUserItem * rui = (RemoteUserItem *)_usersView->RowAt(i);
+      rui->SetNumSharedFiles(rui->GetNumSharedFiles());
    }
    UpdateConnectStatus(false);  // also re-marks the _firewalled menu item
 }
@@ -2531,29 +2379,6 @@ GenerateSettingsMessage(BMessage & settingsMsg)
    SaveUserColumn(settingsMsg, STR_CLIENT,         _usersView->ColumnAt(6));
    SaveUserColumn(settingsMsg, STR_SERVER,         _usersView->ColumnAt(7));
 
-   int numColumns = _usersView->CountColumns();
-   if (numColumns > 0)
-   {
-      {
-         int32 * userDisplayOrder = new int32[numColumns];
-         _usersView->GetDisplayOrder(userDisplayOrder);
-         for (int si=0; si<numColumns; si++) settingsMsg.AddInt32("usercolumnsorder", userDisplayOrder[si]);
-         delete [] userDisplayOrder;
-      }
-      {
-         int32 * sortKeys  = new int32[numColumns];
-         CLVSortMode * sortModes = new CLVSortMode[numColumns];
-         int32 numSortKeys = _usersView->GetSorting(sortKeys, sortModes);
-         for (int si=0; si<numSortKeys; si++)
-         {
-            settingsMsg.AddInt32("usersortkey", sortKeys[si]);
-            settingsMsg.AddInt32("usersortmode", (int32)sortModes[si]);
-         }
-         delete [] sortKeys;
-         delete [] sortModes;
-      }
-   }
-
    // Save any bans we have in effect
    HashtableIterator<uint32,uint64> banIter= _bans.GetIterator();
    uint32 banIP;
@@ -2597,11 +2422,14 @@ void
 ShareWindow ::
 ClearUsers()
 {
-   ClearResults();             // no users means no files available
-   _usersView->MakeEmpty();    // for efficiency
+   ClearResults();
    HashtableIterator<const char *, RemoteUserItem *> iter = _users.GetIterator();
    RemoteUserItem * next;
-   while(iter.GetNextValue(next) == B_NO_ERROR) delete next;
+   while(iter.GetNextValue(next) == B_NO_ERROR)
+   {
+      _usersView->RemoveRow(next);
+      delete next;
+   }
    _users.Clear();
 
    BMessage msg(PrivateChatWindow::PRIVATE_WINDOW_REMOVE_USER);
@@ -3469,13 +3297,15 @@ void ShareWindow :: MessageReceived(BMessage * msg)
          strng += '@';
 
          bool filesThere = false;
-         int32 nextIndex;
-         for (int i=0; ((nextIndex = _usersView->CurrentSelection(i)) >= 0); i++) 
+         BRow * selRow;
+         int i = 0;
+         for (selRow = _usersView->CurrentSelection(NULL); selRow != NULL; selRow = _usersView->CurrentSelection(selRow))
          {
-            RemoteUserItem * next = (RemoteUserItem *)_usersView->ItemAt(nextIndex);
+            RemoteUserItem * next = (RemoteUserItem *)selRow;
             if (i > 0) strng += ',';
             strng += next->GetSessionID(); 
             if ((GetFirewalled() == false)||(next->GetFirewalled() == false)) filesThere = true;
+            i++;
          }
          if (filesThere)
          {
@@ -4289,7 +4119,6 @@ void ShareWindow :: UpdateColors()
    UpdateTextViewColors(_userStatusEntry->TextView());
    UpdateTextViewColors(_fileNameQueryEntry->TextView());
 
-   UpdateColumnListViewColors(_usersView);
    UpdateColumnListViewColors(_resultsView);
 
    UpdatePrivateChatWindowsColors();
@@ -4908,8 +4737,8 @@ UpdateServerColumnVisibility()
    // Users list: fixed column #7 ("Server").
    if (_usersView)
    {
-      CLVColumn * col = _usersView->ColumnAt(7);
-      if ((col)&&(col->IsShown() != multi)) col->SetShown(multi);
+      BColumn * col = _usersView->ColumnAt(7);
+      if (col) col->SetVisible(multi);
    }
 
    // Results list: flip the attribute column through the standard toggle path,
@@ -4957,8 +4786,7 @@ PutUser(ServerConnection * conn, const char * sessionID, const char * userName, 
       user = new RemoteUserItem(this, sessionID);
       user->SetConn(conn);
       _users.Put(user->GetUserKey(), user);
-      _usersView->AddItem(user);
-      _usersView->SortItems();
+      _usersView->AddRow(user);
    }
    bool wasReadyForRestart = ((user->GetInstallID() > 0)&&((user->GetPort() > 0)||(user->GetFirewalled())));
    if (userName) user->SetHandle(userName, SubstituteLabelledURLs(userName).Trim()());
@@ -5070,7 +4898,7 @@ RemoveUser(ServerConnection * conn, const char * sessionID)
          if ((next->IsAccepting())&&(strcmp(next->GetRemoteSessionID(), sessionID) == 0)) next->AbortSession(true, true);
       }
    
-      _usersView->RemoveItem(user);
+      _usersView->RemoveRow(user);
       BMessage msg(PrivateChatWindow::PRIVATE_WINDOW_REMOVE_USER);
       msg.AddString("id", user->GetSessionID());
       SendToPrivateChatWindows(msg, NULL);
@@ -5453,8 +5281,7 @@ void
 ShareWindow ::
 RefreshUserItem(RemoteUserItem * item)
 {
-   _usersView->InvalidateItem(_usersView->IndexOf(item));
-   _usersView->SortItems();
+   _usersView->UpdateRow(item);
 }
 
 void
@@ -5478,12 +5305,6 @@ ShareWindow ::
 CompareFunc(const CLVListItem* item1, const CLVListItem* item2, int32 sortKey)
 {
    return ((RemoteFileItem *)item1)->Compare(((RemoteFileItem *)item2), sortKey);  
-}
-
-int ShareWindow ::
-UserCompareFunc(const CLVListItem * i1, const CLVListItem * i2, int32 sortKey)
-{
-   return ((const RemoteUserItem *) i1)->Compare((const RemoteUserItem *)i2, sortKey);
 }
 
 int 
@@ -6870,31 +6691,6 @@ void ShareWindow :: SetSplit(int which, int pos, bool isPercent, char dir)
 void ShareWindow :: FrameResized(float w, float h)
 {
    ChatWindow::FrameResized(w, h);
-
-   // Show or hide some of the less-necessary top-view controls so that things
-   // don't look too messy when the window has been made skinny
-
-   bool queryShouldBeHidden = (_fileNameQueryEntry->Bounds().Width() < 5.0f);
-   if (queryShouldBeHidden != _queryView->IsHidden())
-   {
-      if (queryShouldBeHidden) _queryView->Hide();
-                          else _queryView->Show();
-   }
-
-   bool serverShouldBeHidden = (_statusView->Frame().left < 5.0f);
-   if (serverShouldBeHidden != _serverMenuField->IsHidden())
-   {
-      if (serverShouldBeHidden) 
-      {
-         _serverMenuField->Hide();
-         _serverEntry->Hide();
-      }
-      else
-      {
-         _serverMenuField->Show();
-         _serverEntry->Show();
-      }
-   }
 }
 
 };  // end namespace beshare

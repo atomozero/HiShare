@@ -7,11 +7,10 @@
 #include <interface/ScrollView.h>
 #include <interface/TextControl.h>
 #include <interface/TextView.h>
+#include <interface/ColumnListView.h>
 
 #include "ShareConstants.h"
 #include "ShareWindow.h"
-
-class ColumnListView;
 
 namespace beshare {
 
@@ -60,14 +59,12 @@ protected:
    virtual const char * GetLogFileNamePrefix() const {return "Private";}
    
 private:
-   static int CompareFunc(const CLVListItem * i1, const CLVListItem * i2, int32 sortKey);
-
    uint32 _index;
    BView * _chatView;
    ShareWindow * _mainWindow;
    BTextControl * _usersEntry;
    BCheckBox * _logEnabled;
-   ColumnListView * _usersList;
+   BColumnListView * _usersList;
    SplitPane * _split;
    bool _munged;
 };

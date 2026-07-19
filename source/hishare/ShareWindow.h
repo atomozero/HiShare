@@ -11,6 +11,8 @@
 #include <interface/MenuField.h>
 #include <interface/MenuItem.h>
 #include <storage/Directory.h>
+#include <interface/ColumnListView.h>
+#include <interface/ColumnTypes.h>
 
 #include "util/Queue.h"
 #include "message/Message.h"
@@ -294,7 +296,6 @@ private:
    void RestartDownloadsFor(const RemoteUserItem * user);
 
    static int CompareFunc(const CLVListItem* item1, const CLVListItem* item2, int32 sort_key);
-   static int UserCompareFunc(const CLVListItem* item1, const CLVListItem* item2, int32 sort_key);
    int Compare(const RemoteFileItem * rf1, const RemoteFileItem * rf2, int32 sort_key) const;
 
    friend class RemoteUserItem; 
@@ -394,7 +395,7 @@ private:
    BMenuItem * _colorItem;
                
    ColumnListView * _resultsView;
-   ColumnListView * _usersView;
+   BColumnListView * _usersView;
 
    Queue<Hashtable<RemoteFileItem *, bool> * > _resultsPages;
    uint32 _currentPage;
@@ -466,7 +467,7 @@ private:
 
    // Utility methods for saving/restoring userwindow column widths
    void AddUserColumn(const BMessage & settingsMsg, int labelID, float defaultWidthPercentage, const char * optForceLabel, uint32 extraFlags);
-   void SaveUserColumn(BMessage & settingsMsg, int labelID, CLVColumn * col) const;
+   void SaveUserColumn(BMessage & settingsMsg, int labelID, BColumn * col) const;
 
    void SavePrivateWindowInfo(const BMessage & msg);
 

@@ -1170,6 +1170,7 @@ void ChatWindow :: SetViewColor(BView * view, const rgb_color & c)
 void ChatWindow :: UpdateColors()
 {
    UpdateTextViewColors(_textEntry->TextView());
+   _textEntry->SetHighColor(GetColor(COLOR_TEXT));
    SetViewColor(_chatText, GetColor(IsScrollBarNearBottom() ? COLOR_BG : COLOR_SCROLLBG));
 
    for (int32 i=_borderViews.GetNumItems()-1; i>=0; i--) SetViewColor(_borderViews[i], GetColor(COLOR_BORDERS));
@@ -1272,7 +1273,7 @@ void ChatWindow :: ReadyToRun()
 
    String chat(str(STR_CHAT_VERB));
    chat += ':';
-   _textEntry = new BTextControl(BRect(0, chatViewBounds.Height()-TEXT_ENTRY_HEIGHT, chatViewBounds.Width(), chatViewBounds.Height()), NULL, chat(), NULL, NULL, B_FOLLOW_LEFT_RIGHT | B_FOLLOW_BOTTOM);
+   _textEntry = new BTextControl(BRect(0, chatViewBounds.Height()-TEXT_ENTRY_HEIGHT, chatViewBounds.Width(), chatViewBounds.Height()-1), NULL, chat(), NULL, NULL, B_FOLLOW_LEFT_RIGHT | B_FOLLOW_BOTTOM);
    AddBorderView(_textEntry);
 
    _textEntry->TextView()->AddFilter(new PasteMessageFilter(CHATWINDOW_COMMAND_SEND_CHAT_TEXT, _textEntry));

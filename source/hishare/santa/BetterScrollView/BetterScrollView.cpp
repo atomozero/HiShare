@@ -198,12 +198,7 @@ void BetterScrollView::UpdateScrollBars(bool scrolling_allowed)
 	{
 		rgb_color cur_color = m_scroll_view_corner->ViewColor();
 		rgb_color new_color;
-		// Follow the system theme instead of the old fixed BeOS greys, so the
-		// corner doesn't show up as a light square in dark mode.
-		if(active_scroller)
-			new_color = ui_color(B_PANEL_BACKGROUND_COLOR);
-		else
-			new_color = tint_color(ui_color(B_PANEL_BACKGROUND_COLOR), B_LIGHTEN_1_TINT);
+		new_color = ui_color(B_PANEL_BACKGROUND_COLOR);
 		if(new_color.red != cur_color.red || new_color.green != cur_color.green ||
 			new_color.blue != cur_color.blue || new_color.alpha != cur_color.alpha)
 		{

@@ -1,8 +1,10 @@
 #ifndef REMOTE_USER_H
 #define REMOTE_USER_H
 
+#include <interface/ColumnListView.h>
+#include <interface/ColumnTypes.h>
+
 #include "message/Message.h"
-#include "CLVEasyItem.h"
 #include "BeShareNameSpace.h"
 
 class BBitmap;
@@ -13,8 +15,7 @@ class RemoteFileItem;
 class ShareWindow;
 class ServerConnection;
 
-// This class represents a single remote user and his current matching file set
-class RemoteUserItem : public CLVEasyItem
+class RemoteUserItem : public BRow
 {
 public:
    RemoteUserItem(ShareWindow * owner, const char * sessionID);
@@ -30,8 +31,6 @@ public:
    void SetSupportsPartialHash(bool sph) {_supportsPartialHash = sph;}
    void SetSupportsSSL(bool s) {_supportsSSL = s;}
    void SetSupportsRanges(bool s) {_supportsRanges = s;}
-
-   virtual void DrawItemColumn(BView* owner, BRect item_column_rect, int32 column_index, bool complete);
 
    void PutFile(const char * fileName, const MessageRef & fileAttrs);
    void RemoveFile(const char * fileName);
@@ -54,17 +53,11 @@ public:
    bool GetSupportsSSL() const {return _supportsSSL;}
    bool GetSupportsRanges() const {return _supportsRanges;}
 
-   int Compare(const RemoteUserItem * i2, int32 sortKey) const;
-
    ShareWindow * GetOwner() const {return _owner;}
 
-   /* The server connection this user was seen on. */
    void SetConn(ServerConnection * conn);
    ServerConnection * GetConn() const {return _conn;}
 
-   /* The key under which this user is stored in ShareWindow's user table:
-    * "<connID>:<sessionID>", so that identical session IDs on different
-    * servers don't collide.  Valid once SetConn() has been called. */
    const char * GetUserKey() const {return _userKey();}
 
    String GetUserString() const;
@@ -84,6 +77,7 @@ public:
    void SetUploadStats(uint32 curUploads, uint32 maxUploads);
 
 private:
+   void UpdateField(int32 column, const char * text);
    float GetLoadFactor() const;
 
    ShareWindow * _owner;
