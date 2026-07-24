@@ -524,6 +524,17 @@ NodeRemoved(const node_ref & node)
 
 void
 ShareNetClient ::
+SetAdvertisedPort(int32 port)
+{
+   if ((port > 0)&&(port != _localSharePort))
+   {
+      _localSharePort = port;
+      SetLocalUserName(_localUserName());  // re-publishes the name node, which carries the "port" field
+   }
+}
+
+void
+ShareNetClient ::
 SetFileSharingEnabled(bool enabled)
 {
    AbortScanSharesThread();

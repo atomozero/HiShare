@@ -131,6 +131,7 @@ PortMapper::PortMapper(const BMessenger& target, uint16 internalPort)
 	, _gatewayIP(0)
 	, _activeMethod(METHOD_NONE)
 	, _upnpPort(0)
+	, _upnpRouterResponded(false)
 	, _mappedExternalPort(0)
 	, _stateLock("port mapper state")
 	// (_pcpNonce is filled in lazily by _PCPMap)
@@ -273,7 +274,11 @@ PortMapper::_ThreadLoop()
 			} else {
 				if (!everMapped)
 					_Report(PORT_MAP_STATE_FAILED, "",
-					        "No NAT-PMP/PCP/UPnP router found; incoming transfers may need manual forwarding.",
+					        _upnpRouterResponded
+					          ? "A UPnP router answered the discovery, but its control service is not responding "
+					            "(the router's UPnP daemon may be stuck - rebooting the router usually fixes it). "
+					            "Incoming transfers may need manual forwarding."
+					          : "No NAT-PMP/PCP/UPnP router found; incoming transfers may need manual forwarding.",
 					        "", 0);
 				nextAttempt = NowMicros() + (uint64)RETRY_SECONDS * 1000000ULL;
 			}
@@ -761,9 +766,22 @@ bool
 PortMapper::_UPnPDiscover(String& outControlURL, String& outServiceType,
                           String& outBaseHost, uint16& outBasePort)
 {
+	_upnpRouterResponded = false;
+
 	int sock = socket(AF_INET, SOCK_DGRAM, 0);
 	if (sock < 0) return false;
 	SetNonBlocking(sock);
+
+	// Send the M-SEARCH out of the interface that faces the gateway: without an
+	// explicit IP_MULTICAST_IF the kernel picks its default multicast interface,
+	// which is not necessarily the right one (and on some drivers the send then
+	// goes nowhere without any error).
+	if (_localIP != 0) {
+		struct in_addr mif; mif.s_addr = htonl(_localIP);
+		(void)setsockopt(sock, IPPROTO_IP, IP_MULTICAST_IF, &mif, sizeof(mif));
+	}
+	unsigned char ttl = 2;
+	(void)setsockopt(sock, IPPROTO_IP, IP_MULTICAST_TTL, &ttl, sizeof(ttl));
 
 	sockaddr_in mcast; memset(&mcast, 0, sizeof(mcast));
 	mcast.sin_family = AF_INET;
@@ -776,8 +794,14 @@ PortMapper::_UPnPDiscover(String& outControlURL, String& outServiceType,
 		"urn:schemas-upnp-org:device:InternetGatewayDevice:1"
 	};
 
-	String location;
-	for (uint32 t = 0; t < 3 && location.Length() == 0 && _keepRunning; t++) {
+	// Collect every distinct LOCATION we hear (routers can announce several,
+	// and the first one is not always the one whose description is reachable).
+	enum { MAX_LOCATIONS = 4 };
+	String locations[MAX_LOCATIONS];
+	uint32 numLocations = 0;
+	int    sendFailures = 0, sendAttempts = 0;
+
+	for (uint32 t = 0; t < 3 && numLocations == 0 && _keepRunning; t++) {
 		char msearch[512];
 		snprintf(msearch, sizeof(msearch),
 		         "M-SEARCH * HTTP/1.1\r\n"
@@ -787,51 +811,72 @@ PortMapper::_UPnPDiscover(String& outControlURL, String& outServiceType,
 		         "ST: %s\r\n"
 		         "\r\n", targets[t]);
 
-		for (int rep = 0; rep < 2; rep++)
-			sendto(sock, msearch, strlen(msearch), 0, (sockaddr*)&mcast, sizeof(mcast));
+		for (int rep = 0; rep < 2; rep++) {
+			sendAttempts++;
+			if (sendto(sock, msearch, strlen(msearch), 0, (sockaddr*)&mcast, sizeof(mcast)) < 0) {
+				sendFailures++;
+				PMLOG("SSDP sendto failed: %s", strerror(errno));
+			}
+		}
+		if (sendFailures == sendAttempts) continue;  // nothing went out; listening is pointless
 
 		uint64 deadline = NowMicros() + 3000000ULL;
-		while (NowMicros() < deadline && location.Length() == 0) {
+		while (NowMicros() < deadline && numLocations < MAX_LOCATIONS) {
 			if (!WaitReadable(sock, deadline - NowMicros())) break;
 			char resp[2048];
 			int n = recvfrom(sock, resp, sizeof(resp) - 1, 0, NULL, NULL);
 			if (n <= 0) continue;
 			resp[n] = '\0';
 			String loc = HttpHeaderValue(String(resp), "\nlocation:");
-			if (loc.StartsWith("http://")) location = loc;
+			if (loc.StartsWith("http://") == false) continue;
+			bool known = false;
+			for (uint32 k = 0; k < numLocations; k++) if (locations[k] == loc) { known = true; break; }
+			if (!known) locations[numLocations++] = loc;
 		}
 	}
 	close(sock);
 
-	if (location.Length() == 0) { PMLOG("SSDP: no IGD LOCATION found"); return false; }
-	PMLOG("SSDP: IGD LOCATION = %s", location.Cstr());
+	if (sendFailures == sendAttempts && sendAttempts > 0) {
+		PMLOG("SSDP: every M-SEARCH send failed; multicast may be broken on this interface");
+		return false;
+	}
+	if (numLocations == 0) { PMLOG("SSDP: no IGD LOCATION found"); return false; }
+	_upnpRouterResponded = true;
 
-	String host, path; uint16 port = 80;
-	if (!ParseHttpURL(location, host, port, path)) return false;
-	outBaseHost = host; outBasePort = port;
-
-	String xml;
-	if (!_HttpRequest(host.Cstr(), port, "GET", path.Cstr(), "", "", xml)) { PMLOG("HTTP GET description failed"); return false; }
-	PMLOG("device description fetched (%lu bytes)", (unsigned long)xml.Length());
-
+	// Try each announced LOCATION until one yields a usable description.
 	const char* svcTypes[] = {
 		"urn:schemas-upnp-org:service:WANIPConnection:1",
 		"urn:schemas-upnp-org:service:WANPPPConnection:1"
 	};
-	for (uint32 s = 0; s < 2; s++) {
-		int svcIdx = xml.IndexOf(svcTypes[s]);
-		if (svcIdx < 0) continue;
-		int ctlIdx = xml.IndexOf("<controlURL>", (uint32)svcIdx);
-		if (ctlIdx < 0) continue;
-		int open  = xml.IndexOf('>', (uint32)ctlIdx) + 1;
-		int close = xml.IndexOf("</controlURL>", (uint32)open);
-		if (close < 0) continue;
-		outControlURL  = xml.Substring((uint32)open, (uint32)close).Trim();
-		outServiceType = svcTypes[s];
-		PMLOG("found service %s controlURL=%s", svcTypes[s], outControlURL.Cstr());
-		return (outControlURL.Length() > 0);
+	for (uint32 li = 0; li < numLocations && _keepRunning; li++) {
+		PMLOG("SSDP: IGD LOCATION = %s", locations[li].Cstr());
+
+		String host, path; uint16 port = 80;
+		if (!ParseHttpURL(locations[li], host, port, path)) continue;
+
+		String xml;
+		if (!_HttpRequest(host.Cstr(), port, "GET", path.Cstr(), "", "", xml)) { PMLOG("HTTP GET description failed"); continue; }
+		PMLOG("device description fetched (%lu bytes)", (unsigned long)xml.Length());
+
+		for (uint32 s = 0; s < 2; s++) {
+			int svcIdx = xml.IndexOf(svcTypes[s]);
+			if (svcIdx < 0) continue;
+			int ctlIdx = xml.IndexOf("<controlURL>", (uint32)svcIdx);
+			if (ctlIdx < 0) continue;
+			int open  = xml.IndexOf('>', (uint32)ctlIdx) + 1;
+			int close = xml.IndexOf("</controlURL>", (uint32)open);
+			if (close < 0) continue;
+			outControlURL  = xml.Substring((uint32)open, (uint32)close).Trim();
+			outServiceType = svcTypes[s];
+			if (outControlURL.Length() > 0) {
+				outBaseHost = host; outBasePort = port;
+				PMLOG("found service %s controlURL=%s", svcTypes[s], outControlURL.Cstr());
+				return true;
+			}
+		}
+		PMLOG("no WAN{IP,PPP}Connection service/controlURL in this description");
 	}
-	PMLOG("no WAN{IP,PPP}Connection service/controlURL found");
+	PMLOG("a router answered SSDP but no usable IGD description was found");
 	return false;
 }
 
@@ -860,6 +905,13 @@ PortMapper::_UPnPSoap(const char* action, const String& argsXml, String& outResp
 	return _HttpRequest(host.Cstr(), port, "POST", path.Cstr(), headers, bodyXml, outResponse);
 }
 
+// Extracts the numeric <errorCode> from a SOAP fault body (0 if absent).
+static int SoapErrorCode(const String& resp)
+{
+	String ec = XmlTagValue(resp, "errorCode");
+	return (ec.Length() > 0) ? atoi(ec.Cstr()) : 0;
+}
+
 bool
 PortMapper::_UPnPMap(uint32 lifetimeSecs, String& outExternalIP, uint16& outExternalPort)
 {
@@ -874,28 +926,54 @@ PortMapper::_UPnPMap(uint32 lifetimeSecs, String& outExternalIP, uint16& outExte
 	if (_UPnPSoap("GetExternalIPAddress", "", resp))
 		outExternalIP = XmlTagValue(resp, "NewExternalIPAddress");
 
-	char args[512];
-	for (int attempt = 0; attempt < 2; attempt++) {
-		uint32 lease = (attempt == 0) ? lifetimeSecs : 0;
-		snprintf(args, sizeof(args),
-		         "<NewRemoteHost></NewRemoteHost>"
-		         "<NewExternalPort>%u</NewExternalPort>"
-		         "<NewProtocol>TCP</NewProtocol>"
-		         "<NewInternalPort>%u</NewInternalPort>"
-		         "<NewInternalClient>%s</NewInternalClient>"
-		         "<NewEnabled>1</NewEnabled>"
-		         "<NewPortMappingDescription>BeShare</NewPortMappingDescription>"
-		         "<NewLeaseDuration>%lu</NewLeaseDuration>",
-		         _internalPort, _internalPort, localIpStr.Cstr(), (unsigned long)lease);
+	// External-port candidates.  The natural choice (same as the internal port)
+	// goes first, but the router may already have a mapping there — a static
+	// forward to another host, or a stale entry — which miniupnpd rejects with
+	// SOAP error 718 ConflictInMappingEntry (some stacks return a generic 501).
+	// In that case we retry on alternative external ports; the caller then
+	// advertises whatever port was actually granted.
+	const uint16 candidates[3] = {
+		_internalPort,
+		(uint16)(_internalPort + 100),
+		(uint16)(27000 + (_internalPort % 1000))
+	};
 
-		String mapResp;
-		bool sent = _UPnPSoap("AddPortMapping", String(args), mapResp);
-		PMLOG("AddPortMapping(lease=%lu) sent=%d resp=%lu bytes", (unsigned long)lease, sent, (unsigned long)mapResp.Length());
-		if (sent && mapResp.IndexOfIgnoreCase("AddPortMappingResponse") >= 0
-		         && mapResp.IndexOf("<s:Fault>") < 0
-		         && mapResp.IndexOfIgnoreCase("faultstring") < 0) {
-			outExternalPort = _internalPort;
-			return true;
+	char args[512];
+	for (uint32 c = 0; c < 3; c++) {
+		for (int attempt = 0; attempt < 2; attempt++) {
+			uint32 lease = (attempt == 0) ? lifetimeSecs : 0;  // second try: some routers only accept permanent leases
+			snprintf(args, sizeof(args),
+			         "<NewRemoteHost></NewRemoteHost>"
+			         "<NewExternalPort>%u</NewExternalPort>"
+			         "<NewProtocol>TCP</NewProtocol>"
+			         "<NewInternalPort>%u</NewInternalPort>"
+			         "<NewInternalClient>%s</NewInternalClient>"
+			         "<NewEnabled>1</NewEnabled>"
+			         "<NewPortMappingDescription>BeShare</NewPortMappingDescription>"
+			         "<NewLeaseDuration>%lu</NewLeaseDuration>",
+			         candidates[c], _internalPort, localIpStr.Cstr(), (unsigned long)lease);
+
+			String mapResp;
+			bool sent = _UPnPSoap("AddPortMapping", String(args), mapResp);
+			if (!sent) { PMLOG("AddPortMapping: SOAP transport failed"); return false; }
+
+			if (mapResp.IndexOfIgnoreCase("AddPortMappingResponse") >= 0
+			         && mapResp.IndexOf("<s:Fault>") < 0
+			         && mapResp.IndexOfIgnoreCase("faultstring") < 0) {
+				outExternalPort = candidates[c];
+				PMLOG("AddPortMapping ok: external port %u (lease=%lu)", candidates[c], (unsigned long)lease);
+				return true;
+			}
+
+			int ec = SoapErrorCode(mapResp);
+			PMLOG("AddPortMapping ext=%u lease=%lu rejected (errorCode=%d, resp=%lu bytes)",
+			      candidates[c], (unsigned long)lease, ec, (unsigned long)mapResp.Length());
+
+			// 725 OnlyPermanentLeasesSupported: retry same port with lease 0 (the
+			// inner loop's second pass).  Conflict-style errors (718, or 501/402/729
+			// as some routers report them): no point retrying this port, move on.
+			if (ec == 725) continue;
+			if (ec == 718 || ec == 501 || ec == 402 || ec == 729) break;
 		}
 	}
 	return false;

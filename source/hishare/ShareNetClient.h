@@ -62,6 +62,11 @@ public:
    /* Changes the user's status */
    void SetLocalUserStatus(const char * newStatus);
 
+   /* Changes the port we advertise to peers (e.g. when the router granted an
+    * external port different from our local accept port) and re-publishes the
+    * name node so peers pick the new value up.  No-op if unchanged. */
+   void SetAdvertisedPort(int32 port);
+
    /* Changes the local user's advertised upload bandwidth */
    void SetUploadBandwidth(const char * label, uint32 bps);
 

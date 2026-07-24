@@ -82,6 +82,7 @@ ShareSettingsWindow::ShareSettingsWindow(const BMessenger & target, const BMessa
 	, _target(target)
 	, _categories(NULL)
 	, _cards(NULL)
+	, _reachLabel(NULL)
 {
 	SetLayout(new BGroupLayout(B_HORIZONTAL));
 
@@ -140,10 +141,28 @@ ShareSettingsWindow::MessageReceived(BMessage * msg)
 			PostMessage(B_QUIT_REQUESTED);
 		break;
 
+		case MSG_REACH_UPDATE:
+			if (_reachLabel) {
+				char statusText[160];
+				_FormatReachText(msg->GetInt32("reachable", -1), msg->GetString("internetip", ""),
+				                 msg->GetInt32("extport", 0), statusText, sizeof(statusText));
+				_reachLabel->SetText(statusText);
+				_reachLabel->InvalidateLayout();
+			}
+		break;
+
 		default:
 			BWindow::MessageReceived(msg);
 		break;
 	}
+}
+
+void
+ShareSettingsWindow::_FormatReachText(int32 reach, const char * ip, int32 extport, char * buf, size_t bufSize)
+{
+	if (reach == 1)      snprintf(buf, bufSize, "Reachable: %s:%ld is open to the internet.", ip, (long)extport);
+	else if (reach == 0) snprintf(buf, bufSize, "Not reachable from the internet (NAT). Public IP %s.", (ip && ip[0]) ? ip : "unknown");
+	else                 snprintf(buf, bufSize, "Reachability not tested yet.");
 }
 
 // Wrap a card's controls in a padded vertical group inside a titled box.
@@ -173,9 +192,7 @@ ShareSettingsWindow::_MakeNetworkCard(const BMessage & s)
 #endif
 
 	char statusText[160];
-	if (reach == 1)      snprintf(statusText, sizeof(statusText), "Reachable: %s:%ld is open to the internet.", ip, (long)extport);
-	else if (reach == 0) snprintf(statusText, sizeof(statusText), "Not reachable from the internet (NAT). Public IP %s.", ip[0]?ip:"unknown");
-	else                 snprintf(statusText, sizeof(statusText), "Reachability not tested yet.");
+	_FormatReachText(reach, ip, extport, statusText, sizeof(statusText));
 
 	BButton * testBtn = new BButton("test", "Test now", new BMessage(ShareWindow::SHAREWINDOW_COMMAND_TEST_REACHABILITY));
 	testBtn->SetTarget(_target);
@@ -186,7 +203,7 @@ ShareSettingsWindow::_MakeNetworkCard(const BMessage & s)
 		.Add(NewHint("Makes you reachable from outside your home NAT without manual configuration."))
 		.AddStrut(4)
 		.AddGroup(B_HORIZONTAL)
-			.Add(new BStringView("st", statusText))
+			.Add(_reachLabel = new BStringView("st", statusText))
 			.AddGlue()
 			.Add(testBtn)
 		.End()

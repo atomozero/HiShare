@@ -3577,7 +3577,9 @@ void ShareWindow :: MessageReceived(BMessage * msg)
             st.AddString("internetip",  _portMapper->GetInternetIP()());
             st.AddInt32("extport",      _portMapper->GetExternalPort());
          }
-         (new ShareSettingsWindow(BMessenger(this), st))->Show();
+         ShareSettingsWindow * sw = new ShareSettingsWindow(BMessenger(this), st);
+         _settingsMessenger = BMessenger(sw);   // so reachability verdicts can refresh its status line live
+         sw->Show();
       }
       break;
 
@@ -3641,6 +3643,16 @@ void ShareWindow :: MessageReceived(BMessage * msg)
                                               : "Reachability unknown",
                              text ? text : "");
 
+            // Refresh the Settings window's status line, if one is open (a dead
+            // messenger just drops the message).
+            {
+               BMessage up(ShareSettingsWindow::MSG_REACH_UPDATE);
+               up.AddInt32("reachable", reachable);
+               up.AddString("internetip", netIP ? netIP : "");
+               up.AddInt32("extport", rport);
+               (void) _settingsMessenger.SendMessage(&up);
+            }
+
             // The reachability probe — NOT the mere presence of a router mapping — is
             // the real test of whether peers can connect to us directly.  A mapping
             // can "succeed" on the router yet leave us unreachable behind CGNAT, so
@@ -3682,6 +3694,12 @@ void ShareWindow :: MessageReceived(BMessage * msg)
             _publicMappingStr = buf;
             UpdateTitleBar();
 
+            // Advertise the port peers can actually reach: normally our accept
+            // port, but the router may have granted a different external one
+            // (e.g. after a conflict with an existing mapping on our port).
+            if (extPort > 0)
+               for (uint32 ci=0; ci<_connections.GetNumItems(); ci++) _connections[ci]->Client()->SetAdvertisedPort(extPort);
+
             // NOTE: a router mapping does NOT by itself mean we are reachable (CGNAT
             // can still block us), so we do NOT clear "I'm Firewalled" here.  The
             // external-reachability probe that runs right after mapping is the real
@@ -3691,6 +3709,11 @@ void ShareWindow :: MessageReceived(BMessage * msg)
          {
             _publicMappingStr = "";
             UpdateTitleBar();
+
+            // The mapping (and with it any router-granted external port) is gone:
+            // go back to advertising our local accept port.
+            if (_acceptThread.GetPort() > 0)
+               for (uint32 ci=0; ci<_connections.GetNumItems(); ci++) _connections[ci]->Client()->SetAdvertisedPort((int32)_acceptThread.GetPort());
 
             // If we had automatically turned "I'm Firewalled" off, put it back to
             // the user's own preference now that the mapping is gone, so they are

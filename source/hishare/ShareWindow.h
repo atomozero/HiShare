@@ -367,6 +367,7 @@ private:
 
    BMenuBar * _menuBar;
    BMenu * _connectionsMenu;   // dynamic list of server connections, rebuilt in MenusBeginning()
+   BMessenger _settingsMessenger;   // the open Settings window, if any (for live reachability updates)
    HeaderBanner * _headerBanner;
    ToolButton * _connectToolButton;
 

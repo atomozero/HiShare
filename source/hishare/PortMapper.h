@@ -132,6 +132,7 @@ private:
 	String _upnpServiceType;
 	String _upnpHost;
 	uint16 _upnpPort;
+	bool   _upnpRouterResponded;   // SSDP got answers this cycle (even if unusable) — used to pick the failure message
 	uint16 _mappedExternalPort;
 	uint8  _pcpNonce[12];   // PCP mapping nonce (RFC 6887), kept so we can delete the same mapping
 
