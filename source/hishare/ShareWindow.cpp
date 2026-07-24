@@ -3614,8 +3614,15 @@ void ShareWindow :: MessageReceived(BMessage * msg)
          const char * text = NULL;
          if (msg->FindString("message", &text) == B_NO_ERROR)
          {
-            LogMessageType lt = ((state == PORT_MAP_STATE_FAILED)||(isReachReport && reachable == 0)) ? LOG_WARNING_MESSAGE : LOG_INFORMATION_MESSAGE;
-            LogMessage(lt, text);
+            // The mapper retries every RETRY_SECONDS and reports the same failure
+            // each time; don't spam the chat log with identical consecutive lines
+            // (reachability verdicts still always show, as they are user-driven).
+            if ((isReachReport)||(_lastPortMapLogMsg != text))
+            {
+               LogMessageType lt = ((state == PORT_MAP_STATE_FAILED)||(isReachReport && reachable == 0)) ? LOG_WARNING_MESSAGE : LOG_INFORMATION_MESSAGE;
+               LogMessage(lt, text);
+               if (!isReachReport) _lastPortMapLogMsg = text;
+            }
          }
 
          if (isReachReport)

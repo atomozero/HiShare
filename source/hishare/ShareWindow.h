@@ -596,6 +596,7 @@ private:
    PortMapper * _portMapper;       // asks the router (UPnP/NAT-PMP) to forward our accept port; NULL if disabled
    bool _autoPortForwardEnabled;   // persisted user preference
    String _publicMappingStr;       // "ip:port" the router forwards to us, shown in the title bar (empty if none)
+   String _lastPortMapLogMsg;      // last port-mapper status line logged, to suppress identical 60s-retry repeats
    // "I'm Firewalled" auto-management.  The mapper turns firewalled off while a
    // port mapping is active and restores it if the mapping is later lost, unless
    // the user has taken manual control via the menu.
