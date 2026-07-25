@@ -1,5 +1,26 @@
 # Changelog
 
+## HiShare 1.1-3 (July 2026)
+
+Automatic router port-forwarding fixes (from a field report where the mapping
+was never created behind a Firewalla/Hyper-V setup):
+
+- **Mapping conflicts are handled**: when the router already forwards our port
+  to another host, the UPnP `AddPortMapping` now reads the SOAP `errorCode` and,
+  on a conflict (718, or 501/402/729 as some routers report it), retries on
+  alternative external ports; the port the router actually granted is then
+  advertised to peers.
+- **More robust SSDP discovery**: the M-SEARCH is sent out of the correct
+  interface (`IP_MULTICAST_IF`/`TTL`), send failures are detected instead of
+  silently ignored, and every announced device LOCATION is tried until one
+  serves a usable description (routers sometimes advertise URLs they don't serve).
+- **Clearer diagnostics**: when a router answers discovery but its UPnP control
+  service is dead, HiShare says so (and suggests a router reboot) instead of the
+  misleading "no router found"; and the repeated once-a-minute retry warning is
+  no longer spammed to the chat log when nothing changed.
+- The Settings window's reachability line now updates live when a probe verdict
+  arrives, instead of showing a stale snapshot.
+
 ## HiShare 1.1-2 (July 2026)
 
 Packaging-only revision, no code changes:
