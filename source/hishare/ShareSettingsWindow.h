@@ -8,6 +8,7 @@
 class BListView;
 class BCardLayout;
 class BStringView;
+class BTextControl;
 
 namespace beshare {
 
@@ -31,9 +32,15 @@ public:
 	// Fields: "reachable" (int32), "internetip" (string), "extport" (int32).
 	enum { MSG_REACH_UPDATE = 'stRe' };
 
-private:
-	enum { MSG_CATEGORY = 'stCa', MSG_CLOSE = 'stCl' };
+	// Sent by ShareWindow when the local name/status changes elsewhere (/nick,
+	// auto-away, …) so the Profile card's fields stay in sync while open.
+	// Fields (optional): "username" (string), "userstatus" (string).
+	enum { MSG_PROFILE_UPDATE = 'stPu' };
 
+private:
+	enum { MSG_CATEGORY = 'stCa', MSG_CLOSE = 'stCl', MSG_APPLY_NAME = 'stAn', MSG_APPLY_STATUS = 'stAs' };
+
+	BView * _MakeProfileCard(const BMessage & s);
 	BView * _MakeNetworkCard(const BMessage & s);
 	BView * _MakeTransfersCard(const BMessage & s);
 	BView * _MakeInterfaceCard(const BMessage & s);
@@ -45,6 +52,8 @@ private:
 	BListView * _categories;
 	BCardLayout * _cards;
 	BStringView * _reachLabel;
+	BTextControl * _userNameField;
+	BTextControl * _userStatusField;
 };
 
 };  // namespace beshare

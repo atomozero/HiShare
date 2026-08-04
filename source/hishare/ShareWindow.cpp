@@ -81,6 +81,7 @@ public:
    HeaderBanner(BRect frame)
       : BView(frame, "headerBanner", B_FOLLOW_LEFT_RIGHT | B_FOLLOW_TOP, B_WILL_DRAW | B_FULL_UPDATE_ON_RESIZE)
       , _icon(NULL), _state(0), _iconClicks(0), _lastIconClick(0)
+      , _statusMenu(NULL)
    {
       SetViewUIColor(B_PANEL_BACKGROUND_COLOR);
       BResources * rsrc = be_app->AppResources();
@@ -95,7 +96,7 @@ public:
          }
       }
    }
-   virtual ~HeaderBanner() { delete _icon; }
+   virtual ~HeaderBanner() { delete _icon; delete _statusMenu; }
 
    // state: 0 = offline, 1 = connecting, 2 = connected
    void SetInfo(const char * name, const char * sub, int state)
@@ -105,6 +106,13 @@ public:
       _state = state;
       Invalidate();
    }
+
+   // The user-presence string shown on the quick-status chip (dot + text + arrow),
+   // drawn in the same visual language as the connection indicator.
+   void SetStatus(const char * status) { _userStatus = status ? status : ""; Invalidate(); }
+
+   // The popup opened when the status chip is clicked (owned here).
+   void SetStatusMenu(BPopUpMenu * m) { delete _statusMenu; _statusMenu = m; }
 
    static rgb_color Blend(const rgb_color & a, const rgb_color & b, float t)
    {
@@ -167,6 +175,32 @@ public:
       DrawString(slabel, BPoint(rx, midY + 4.0f));
       SetHighColor(sdot);
       FillEllipse(BRect(rx - 17.0f, midY - 4.0f, rx - 9.0f, midY + 4.0f));
+
+      // Quick user-status chip (presence dot + text + arrow), grouped just left of the
+      // connection indicator, in the same flat style.  (rx / the connection dot were
+      // computed just above; the chip ends a small gap before that dot.)
+      if (_userStatus.Length() > 0)
+      {
+         BFont uf(be_plain_font); uf.SetSize(12.0f); SetFont(&uf);
+         const char * arrow = "\xE2\x96\xBE";                 // ▾
+         const float dotW = 8.0f, g1 = 6.0f, g2 = 5.0f;
+         float tw = uf.StringWidth(_userStatus());
+         float aw = uf.StringWidth(arrow);
+         float chipRight = (rx - 17.0f) - 14.0f;              // just left of the connection dot
+         float chipLeft  = chipRight - (dotW + g1 + tw + g2 + aw);
+         float ty = midY + 4.0f;
+         // Green when present, amber when away — mirrors the connection dot's language.
+         bool away = (strcasecmp(_userStatus(), "away") == 0);
+         rgb_color pdot = away ? (rgb_color){ 225, 165, 45, 255 } : (rgb_color){ 60, 175, 85, 255 };
+         SetHighColor(pdot);
+         FillEllipse(BRect(chipLeft, midY - 4.0f, chipLeft + dotW, midY + 4.0f));
+         SetHighColor(Blend(text, base, 0.15f));
+         DrawString(_userStatus(), BPoint(chipLeft + dotW + g1, ty));
+         SetHighColor(Blend(text, base, 0.40f));
+         DrawString(arrow, BPoint(chipLeft + dotW + g1 + tw + g2, ty));
+         _statusChipRect.Set(chipLeft - 4.0f, midY - 12.0f, chipRight + 2.0f, midY + 12.0f);
+      }
+      else _statusChipRect = BRect();
    }
 
    // Easter egg: 10 clicks on the app icon opens the pirate cracktro.
@@ -185,6 +219,13 @@ public:
             (new PirateDemoWindow())->Show();
          }
       }
+      else if ((_statusMenu != NULL)&&(_statusChipRect.IsValid())&&(_statusChipRect.Contains(where)))
+      {
+         // Open the quick-status popup just below the chip; items deliver to their
+         // targets asynchronously (set via SetTargetForItems in ShareWindow).
+         BPoint pt = ConvertToScreen(BPoint(_statusChipRect.left, _statusChipRect.bottom + 2.0f));
+         _statusMenu->Go(pt, true, false, true);
+      }
       else BView::MouseDown(where);
    }
 
@@ -194,6 +235,9 @@ private:
    int       _state;
    int       _iconClicks;
    bigtime_t _lastIconClick;
+   String       _userStatus;
+   BPopUpMenu * _statusMenu;
+   BRect        _statusChipRect;
 };
 
 // A small flat icon button for the quick-action toolbar.  Renders an HVIF vector
@@ -383,6 +427,53 @@ public:
          {
             BMessage toWin(ShareWindow::SHAREWINDOW_COMMAND_CONNECT_ADDITIONAL_SERVER);
             toWin.AddString("server", _entry->Text());
+            _target.SendMessage(&toWin);
+         }
+         PostMessage(B_QUIT_REQUESTED);
+      }
+      else BWindow::MessageReceived(msg);
+   }
+
+private:
+   BMessenger _target;
+   BTextControl * _entry;
+};
+
+// Small prompt for the header status menu's "Custom…" item: asks for an arbitrary
+// presence string and applies it through the same command the status presets use.
+class StatusPromptWindow : public BWindow
+{
+public:
+   StatusPromptWindow(const BMessenger & target, const char * initialText)
+      : BWindow(BRect(0, 0, 320, 72), "Set your status", B_TITLED_WINDOW_LOOK, B_MODAL_APP_WINDOW_FEEL, B_NOT_RESIZABLE | B_NOT_ZOOMABLE | B_AUTO_UPDATE_SIZE_LIMITS)
+      , _target(target)
+   {
+      BView * bg = new BView(Bounds(), NULL, B_FOLLOW_ALL_SIDES, 0);
+      bg->SetViewUIColor(B_PANEL_BACKGROUND_COLOR);
+      AddChild(bg);
+
+      BRect b = bg->Bounds().InsetByCopy(10, 10);
+      _entry = new BTextControl(BRect(b.left, b.top, b.right, b.top + 20), NULL, "Status:", initialText, NULL, B_FOLLOW_LEFT_RIGHT | B_FOLLOW_TOP);
+      _entry->SetDivider(be_plain_font->StringWidth("Status:") + 8.0f);
+      bg->AddChild(_entry);
+
+      BButton * cancel = new BButton(BRect(b.right - 170, b.bottom - 24, b.right - 90, b.bottom), NULL, "Cancel", new BMessage(B_QUIT_REQUESTED), B_FOLLOW_RIGHT | B_FOLLOW_BOTTOM);
+      BButton * ok     = new BButton(BRect(b.right - 80, b.bottom - 24, b.right, b.bottom), NULL, "OK", new BMessage('ssta'), B_FOLLOW_RIGHT | B_FOLLOW_BOTTOM);
+      bg->AddChild(cancel);
+      bg->AddChild(ok);
+      SetDefaultButton(ok);
+      _entry->MakeFocus();
+      CenterOnScreen();
+   }
+
+   virtual void MessageReceived(BMessage * msg)
+   {
+      if (msg->what == 'ssta')
+      {
+         if (_entry->Text()[0])
+         {
+            BMessage toWin(ShareWindow::SHAREWINDOW_COMMAND_USER_SELECTED_USER_STATUS);
+            toWin.AddString("userstatus", _entry->Text());
             _target.SendMessage(&toWin);
          }
          PostMessage(B_QUIT_REQUESTED);
@@ -791,8 +882,13 @@ static const char * _defaultServers[] =
 // Size constants for the non-resizable parts of the GUI
 #define USER_LIST_WIDTH    125
 #define STATUS_VIEW_WIDTH  750
-#define UPPER_VIEW_HEIGHT  (fontHeight+7.0f)
-#define QUERY_VIEW_HEIGHT  UPPER_VIEW_HEIGHT
+// The old Server/Name/Status row is gone: the Server field moved onto the query
+// (Ricerca) row, and Name/Status editing moved into the Settings window.  So the
+// upper row now has zero height (its 0-height view still hosts the hidden
+// _userNameEntry/_userStatusEntry controls, which remain the local-identity model).
+#define UPPER_VIEW_HEIGHT  0.0f
+#define QUERY_VIEW_HEIGHT  (fontHeight+7.0f)
+#define SERVER_ENTRY_WIDTH 175.0f
 #define CHAT_VIEW_HEIGHT   125
 #define USER_ENTRY_WIDTH   250
 #define USER_STATUS_WIDTH  250
@@ -1729,8 +1825,24 @@ ShareWindow :: ShareWindow(uint64 installID, BMessage & settingsMsg, const char 
       const float bs   = TOOLBUTTON_SIZE;
       const float by   = (HEADER_BANNER_HEIGHT - bs) / 2.0f;
       const float gap  = 4.0f;
-      const float statusAreaW = 130.0f;       // reserved for the status dot + label
+      const float statusAreaW = 205.0f;       // reserved for the status chip + connection dot/label
       float bx = hw - statusAreaW - (3.0f*bs + 2.0f*gap);
+
+      // Quick user-status popup (Here / Away / Custom…), drawn by the banner as a
+      // flat "dot + text" chip just left of the action buttons — same visual language
+      // as the connection indicator.  Items reuse the status command the old pop-up
+      // used; the chip's label is kept in sync by _SetHeaderStatusLabel().
+      {
+         BPopUpMenu * sm = new BPopUpMenu("status", false, false);
+         BMessage * hm = new BMessage(SHAREWINDOW_COMMAND_USER_SELECTED_USER_STATUS); hm->AddString("userstatus", FACTORY_DEFAULT_USER_STATUS);
+         BMessage * am = new BMessage(SHAREWINDOW_COMMAND_USER_SELECTED_USER_STATUS); am->AddString("userstatus", FACTORY_DEFAULT_USER_AWAY_STATUS);
+         sm->AddItem(new BMenuItem(FACTORY_DEFAULT_USER_STATUS, hm));
+         sm->AddItem(new BMenuItem(FACTORY_DEFAULT_USER_AWAY_STATUS, am));
+         sm->AddSeparatorItem();
+         sm->AddItem(new BMenuItem("Custom\xE2\x80\xA6", new BMessage(SHAREWINDOW_COMMAND_PROMPT_USER_STATUS)));
+         sm->SetTargetForItems(toMe);
+         _headerBanner->SetStatusMenu(sm);
+      }
 
       _connectToolButton = new ToolButton(BRect(bx, by, bx+bs, by+bs), ToolButton::GLYPH_CONNECT, 0, "Connect");
       bx += bs + gap;
@@ -1769,36 +1881,10 @@ ShareWindow :: ShareWindow(uint64 installID, BMessage & settingsMsg, const char 
          upperView->AddChild(_statusView);
          float extraMenuWidth = _statusView->StringWidth("MMM");
 
-         {
-            // Fill out the Server menu and text control
-            float serverMenuWidth = _statusView->StringWidth(str(STR_SERVER))+extraMenuWidth;
-            _serverMenu = new BMenu(str(STR_SERVER));
-            _statusView->AddChild(AddBorderView(_serverMenuField =
-                 new BMenuField(BRect(0,4,serverMenuWidth,statusViewFrame.Height()), NULL, NULL, _serverMenu)));
-
-            const char * firstName = NULL;
-            const char * sn = NULL;
-            for (int i=0; (settingsMsg.FindString("serverlist", i, &sn) == B_NO_ERROR); i++)
-            {
-               if (firstName == NULL) firstName = sn;
-               AddServerItem(sn, true, -1);
-            }
-
-            // Add any default servers that aren't in the list already
-            if (firstName == NULL) firstName = _defaultServers[0];
-            for (uint32 j=0; j<ARRAYITEMS(_defaultServers); j++)
-                 AddServerItem(_defaultServers[j], true, (j==0)?0:1);
-
-            if (settingsMsg.FindString("server", &sn) == B_NO_ERROR) firstName = sn;
-            _serverEntry = new BTextControl(
-                BRect(serverMenuWidth, 6, STATUS_VIEW_WIDTH-(USER_ENTRY_WIDTH+USER_STATUS_WIDTH+hMargin),
-                 statusViewFrame.Height()), NULL, NULL, firstName,
-                  new BMessage(SHAREWINDOW_COMMAND_USER_CHANGED_SERVER));
-            AddBorderView(_serverEntry);
-            _serverEntry->SetTarget(toMe);
-            _serverEntry->SetDivider(0.0f);
-            _statusView->AddChild(_serverEntry);   
-         }
+         // NOTE: the Server menu/field are no longer created here — they now live on
+         // the query (Ricerca) row below.  The UserName/Status controls below are kept
+         // as the hidden local-identity model (edited from the Settings window); the
+         // whole _statusView is hidden and takes no vertical space (UPPER_VIEW_HEIGHT==0).
 
          {
             // Fill out the UserName menu and text control
@@ -1866,10 +1952,18 @@ ShareWindow :: ShareWindow(uint64 installID, BMessage & settingsMsg, const char 
          
             _statusView->AddChild(_userStatusEntry);
          }
+
+         // The Name/Status controls above are kept only as the local-identity model
+         // (queried/updated from the Settings window and various handlers).  Hide the
+         // whole row: it occupies no vertical space and is never shown to the user.
+         _statusView->Hide();
       }
-      
+
+      // Show the current status on the header's quick-status menu.
+      _SetHeaderStatusLabel(NetClient()->GetLocalUserStatus());
+
    }
-    
+
    BRect middleFrame(2, UPPER_VIEW_HEIGHT, contentFrame.Width()-hMargin, contentFrame.Height()-CHAT_VIEW_HEIGHT);
 
    BRect resultsFrame(0, UPPER_VIEW_HEIGHT, middleFrame.Width()-(USER_LIST_WIDTH+hMargin), middleFrame.Height());
@@ -1883,13 +1977,50 @@ ShareWindow :: ShareWindow(uint64 installID, BMessage & settingsMsg, const char 
          AddBorderView(_queryView);
          resultsView->AddChild(_queryView);
          float extraMenuWidth = _queryView->StringWidth("MMMMM");
-         
+
+         // --- Server menu + text control (moved here from the old status row) -------
+         // Typing an address here and pressing Enter (re)connects the primary server.
+         {
+            float serverMenuWidth = _queryView->StringWidth(str(STR_SERVER))+_queryView->StringWidth("MMM");
+            _serverMenu = new BMenu(str(STR_SERVER));
+            _queryView->AddChild(AddBorderView(_serverMenuField =
+                 new BMenuField(BRect(hMargin,4,hMargin+serverMenuWidth,fontHeight), NULL, NULL, _serverMenu)));
+
+            const char * firstName = NULL;
+            const char * sn = NULL;
+            for (int i=0; (settingsMsg.FindString("serverlist", i, &sn) == B_NO_ERROR); i++)
+            {
+               if (firstName == NULL) firstName = sn;
+               AddServerItem(sn, true, -1);
+            }
+
+            // Add any default servers that aren't in the list already
+            if (firstName == NULL) firstName = _defaultServers[0];
+            for (uint32 j=0; j<ARRAYITEMS(_defaultServers); j++)
+                 AddServerItem(_defaultServers[j], true, (j==0)?0:1);
+
+            if (settingsMsg.FindString("server", &sn) == B_NO_ERROR) firstName = sn;
+
+            float serverEntryLeft = hMargin+serverMenuWidth;
+            _serverEntry = new BTextControl(
+                BRect(serverEntryLeft, 6, serverEntryLeft+SERVER_ENTRY_WIDTH, fontHeight),
+                 NULL, NULL, firstName, new BMessage(SHAREWINDOW_COMMAND_USER_CHANGED_SERVER),
+                  B_FOLLOW_LEFT | B_FOLLOW_TOP);
+            AddBorderView(_serverEntry);
+            _serverEntry->SetTarget(toMe);
+            _serverEntry->SetDivider(0.0f);
+            _queryView->AddChild(_serverEntry);
+         }
+         // The query menu/field start to the right of the Server field.
+         float queryLeft = hMargin+_queryView->StringWidth(str(STR_SERVER))+_queryView->StringWidth("MMM")+SERVER_ENTRY_WIDTH+hMargin;
+         // --------------------------------------------------------------------------
+
          const char * q = str(STR_QUERY);
          _queryMenu = new BMenu(q);
          float qw = _queryView->StringWidth(q)+extraMenuWidth;
          _queryView->AddChild(AddBorderView(new BMenuField(
-            BRect(hMargin,4,qw,fontHeight), NULL, NULL, _queryMenu)));
-         
+            BRect(queryLeft,4,queryLeft+qw,fontHeight), NULL, NULL, _queryMenu)));
+
          float right = queryViewFrame.Width()-hMargin;
          float stringWidth = _queryMenu->StringWidth(str(STR_STOP_QUERY))+extraMenuWidth;
          _disableQueryButton = new BButton(
@@ -1912,7 +2043,7 @@ ShareWindow :: ShareWindow(uint64 installID, BMessage & settingsMsg, const char 
          // repo).  Only applies to fresh installs; a saved "query" setting wins.
          if (settingsMsg.FindString("query", &startupQuery) != B_NO_ERROR) startupQuery = "*.hpkg";
          _fileNameQueryEntry = new BTextControl(
-            BRect(qw-10.0f,6,right,fontHeight), NULL, NULL, startupQuery,
+            BRect(queryLeft+qw-10.0f,6,right,fontHeight), NULL, NULL, startupQuery,
              new BMessage(SHAREWINDOW_COMMAND_CHANGE_FILE_NAME_QUERY), B_FOLLOW_ALL_SIDES);
          AddBorderView(_fileNameQueryEntry);
          _fileNameQueryEntry->SetTarget(toMe);
@@ -3544,6 +3675,11 @@ void ShareWindow :: MessageReceived(BMessage * msg)
          else LogMessage(LOG_WARNING_MESSAGE, "Could not start the reachability probe.");
       break;
 
+      case SHAREWINDOW_COMMAND_PROMPT_USER_STATUS:
+         // Header status menu "Custom…": ask for an arbitrary presence string.
+         (new StatusPromptWindow(BMessenger(this), NetClient()->GetLocalUserStatus()))->Show();
+      break;
+
       case SHAREWINDOW_COMMAND_OPEN_SETTINGS:
       {
          // Snapshot the current settings for the window's controls; every control targets us
@@ -3571,6 +3707,8 @@ void ShareWindow :: MessageReceived(BMessage * msg)
          st.AddInt32("pagesize",         (int32)_pageSize);
          st.AddInt32("autoaway",         (int32)_idleTimeoutMinutes);
          st.AddInt32("complevel",        (int32)_compressionLevel);
+         st.AddString("username",        NetClient()->GetLocalUserName());
+         st.AddString("userstatus",      NetClient()->GetLocalUserStatus());
          if (_portMapper)
          {
             st.AddInt32("reachable",    _portMapper->GetReachability());
@@ -4201,8 +4339,23 @@ void ShareWindow :: MessageReceived(BMessage * msg)
       }
       break;
  
-      case SHAREWINDOW_COMMAND_USER_CHANGED_SERVER:  // user entered new server text
-         UpdateConnectStatus(false);
+      case SHAREWINDOW_COMMAND_USER_CHANGED_SERVER:  // user committed new server text (Enter / focus-out)
+      {
+         // Committing a new address in the server field means "(re)connect to it".
+         // Only tear down an existing connection when the typed address actually
+         // differs from the server the primary connection is on, so clicking away
+         // (focus-out) without a real change — or re-entering the same address —
+         // doesn't needlessly drop the current connection.
+         const char * typed = _serverEntry->Text();
+         ServerConnection * pc = PrimaryConnection();
+         const bool differs = ((pc == NULL)||(strcasecmp(typed, pc->GetServerName()()) != 0));
+         if ((strlen(typed) > 0)&&((IsConnected() == false)||(differs)))
+         {
+            ResetAutoReconnectState(pc, true);  // user intervened, so reset count
+            PostMessage(SHAREWINDOW_COMMAND_RECONNECT_TO_SERVER);
+         }
+         else UpdateConnectStatus(false);
+      }
       break;
 
       case SHAREWINDOW_COMMAND_USER_SELECTED_SERVER:  // user selected server from pop-up
@@ -6700,6 +6853,15 @@ ShareWindow :: SetLocalUserName(const char * name)
    String s(str(STR_YOUR_NAME_HAS_BEEN_CHANGED_TO));
    s += NetClient()->GetLocalUserName();
    LogMessage(LOG_USER_EVENT_MESSAGE, s());
+
+   // Keep the Settings window's Profile field in sync (e.g. name changed via /nick).
+   if (_settingsMessenger.IsValid())
+   {
+      BMessage up(ShareSettingsWindow::MSG_PROFILE_UPDATE);
+      up.AddString("username", name);
+      (void) _settingsMessenger.SendMessage(&up);
+   }
+
    _resultsView->MakeFocus();  // so that when the user presses a key, it drops to the _textEntry
 }
 
@@ -6715,7 +6877,24 @@ ShareWindow :: SetLocalUserStatus(const char * status)
    String s(str(STR_YOUR_STATUS_HAS_BEEN_CHANGED_TO));
    s += NetClient()->GetLocalUserStatus();
    LogMessage(LOG_USER_EVENT_MESSAGE, s());
+
+   _SetHeaderStatusLabel(status);   // reflect it on the header's quick-status menu
+
+   // Keep the Settings window's Profile field in sync (e.g. auto-away).
+   if (_settingsMessenger.IsValid())
+   {
+      BMessage up(ShareSettingsWindow::MSG_PROFILE_UPDATE);
+      up.AddString("userstatus", status);
+      (void) _settingsMessenger.SendMessage(&up);
+   }
+
    _resultsView->MakeFocus();  // so that when the user presses a key, it drops to the _textEntry
+}
+
+void
+ShareWindow :: _SetHeaderStatusLabel(const char * status)
+{
+   if (_headerBanner) _headerBanner->SetStatus((status && status[0]) ? status : FACTORY_DEFAULT_USER_STATUS);
 }
 
 void ShareWindow :: SetServer(const char * server)
@@ -6904,26 +7083,13 @@ void ShareWindow :: FrameResized(float w, float h)
    // Show or hide some of the less-necessary top-view controls so that things
    // don't look too messy when the window has been made skinny
 
+   // The Server field now lives on the query row, so it hides/shows together with
+   // the whole query view when the window gets too narrow.
    bool queryShouldBeHidden = (_fileNameQueryEntry->Bounds().Width() < 5.0f);
    if (queryShouldBeHidden != _queryView->IsHidden())
    {
       if (queryShouldBeHidden) _queryView->Hide();
                           else _queryView->Show();
-   }
-
-   bool serverShouldBeHidden = (_statusView->Frame().left < 5.0f);
-   if (serverShouldBeHidden != _serverMenuField->IsHidden())
-   {
-      if (serverShouldBeHidden) 
-      {
-         _serverMenuField->Hide();
-         _serverEntry->Hide();
-      }
-      else
-      {
-         _serverMenuField->Show();
-         _serverEntry->Show();
-      }
    }
 }
 

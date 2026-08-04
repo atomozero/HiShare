@@ -273,6 +273,7 @@ public:
       SHAREWINDOW_COMMAND_TOGGLE_AUTO_PORT_FORWARD,
       SHAREWINDOW_COMMAND_TEST_REACHABILITY,
       SHAREWINDOW_COMMAND_OPEN_SETTINGS,
+      SHAREWINDOW_COMMAND_PROMPT_USER_STATUS,   // header status menu "Custom…" -> open a text prompt
       SHAREWINDOW_COMMAND_TOGGLE_REQUIRE_TLS,
       SHAREWINDOW_COMMAND_TOGGLE_NOTIFICATIONS,
       SHAREWINDOW_COMMAND_TOGGLE_CUSTOM_COLORS,
@@ -315,6 +316,7 @@ private:
    const BBitmap * GetBitmap(const RemoteFileItem * file, int32 columnIndex) const;
 
    void UpdateConnectStatus(bool updateTitleToo);
+   void _SetHeaderStatusLabel(const char * status);   // refresh the header status menu's label
    void UpdateQueryEnabledStatus();
    void SetQueryEnabled(bool enabled, bool putInQueryMenu = true);
 

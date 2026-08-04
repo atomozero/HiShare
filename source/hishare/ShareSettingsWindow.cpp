@@ -18,6 +18,7 @@
 #include <ScrollView.h>
 #include <SeparatorView.h>
 #include <StringView.h>
+#include <TextControl.h>
 
 #include <stdio.h>
 
@@ -83,11 +84,14 @@ ShareSettingsWindow::ShareSettingsWindow(const BMessenger & target, const BMessa
 	, _categories(NULL)
 	, _cards(NULL)
 	, _reachLabel(NULL)
+	, _userNameField(NULL)
+	, _userStatusField(NULL)
 {
 	SetLayout(new BGroupLayout(B_HORIZONTAL));
 
 	// left: category list
 	_categories = new BListView("categories", B_SINGLE_SELECTION_LIST);
+	_categories->AddItem(new BStringItem("Profile"));
 	_categories->AddItem(new BStringItem("Network"));
 	_categories->AddItem(new BStringItem("Transfers"));
 	_categories->AddItem(new BStringItem("Interface"));
@@ -102,6 +106,7 @@ ShareSettingsWindow::ShareSettingsWindow(const BMessenger & target, const BMessa
 	BView * cardHost = new BView("cardHost", 0);
 	_cards = new BCardLayout();
 	cardHost->SetLayout(_cards);
+	_cards->AddView(_MakeProfileCard(state));
 	_cards->AddView(_MakeNetworkCard(state));
 	_cards->AddView(_MakeTransfersCard(state));
 	_cards->AddView(_MakeInterfaceCard(state));
@@ -141,6 +146,31 @@ ShareSettingsWindow::MessageReceived(BMessage * msg)
 			PostMessage(B_QUIT_REQUESTED);
 		break;
 
+		// The Profile text fields don't carry their text in the invocation message,
+		// so read it here and hand it to the main window via the same commands the
+		// old user-name/status pop-up menus used.
+		case MSG_APPLY_NAME:
+			if (_userNameField && _userNameField->Text()[0]) {
+				BMessage m(ShareWindow::SHAREWINDOW_COMMAND_USER_SELECTED_USER_NAME);
+				m.AddString("username", _userNameField->Text());
+				_target.SendMessage(&m);
+			}
+		break;
+
+		case MSG_APPLY_STATUS:
+			if (_userStatusField && _userStatusField->Text()[0]) {
+				BMessage m(ShareWindow::SHAREWINDOW_COMMAND_USER_SELECTED_USER_STATUS);
+				m.AddString("userstatus", _userStatusField->Text());
+				_target.SendMessage(&m);
+			}
+		break;
+
+		case MSG_PROFILE_UPDATE: {
+			const char * v;
+			if (_userNameField   && (msg->FindString("username",   &v) == B_OK)) _userNameField->SetText(v);
+			if (_userStatusField && (msg->FindString("userstatus", &v) == B_OK)) _userStatusField->SetText(v);
+		} break;
+
 		case MSG_REACH_UPDATE:
 			if (_reachLabel) {
 				char statusText[160];
@@ -177,6 +207,33 @@ Card(const char * title, BView * content)
 	gl->AddView(content);
 	gl->AddItem(BSpaceLayoutItem::CreateGlue());
 	return box;
+}
+
+BView *
+ShareSettingsWindow::_MakeProfileCard(const BMessage & s)
+{
+	// These fields don't carry their text in the invocation message; MessageReceived
+	// reads Text() on MSG_APPLY_* and forwards it to the main window.  BTextControl
+	// invokes on Enter and on focus-out when the text changed, so both apply the value.
+	_userNameField = new BTextControl("name", "Your name:", s.GetString("username", ""),
+	                                  new BMessage(MSG_APPLY_NAME));
+	_userNameField->SetTarget(this);
+
+	_userStatusField = new BTextControl("status", "Status:", s.GetString("userstatus", ""),
+	                                    new BMessage(MSG_APPLY_STATUS));
+	_userStatusField->SetTarget(this);
+
+	BView * v = new BView("profile", 0);
+	BLayoutBuilder::Group<>(v, B_VERTICAL, B_USE_SMALL_SPACING)
+		.Add(NewSectionLabel("IDENTITY ON THE SERVER"))
+		.Add(_userNameField)
+		.Add(NewHint("The name other users see in chat and file listings."))
+		.AddStrut(6)
+		.Add(_userStatusField)
+		.Add(NewHint("Your presence line, e.g. \"here\" or \"away\". Press Enter to apply."))
+		.AddGlue()
+		.SetInsets(0);
+	return Card("Profile", v);
 }
 
 BView *
