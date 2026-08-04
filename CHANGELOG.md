@@ -1,5 +1,38 @@
 # Changelog
 
+## HiShare 1.1-4 (August 2026)
+
+Interface polish, full Italian localization, and a shutdown-hang safeguard.
+
+### Interface
+- **Streamlined header bar.** The separate Server / Name / Status row is gone,
+  reclaiming a full row: the **Server field moved onto the search row**, and
+  **Name and Status editing moved into the Settings window** (new *Profile*
+  card). The results list now sits directly under the header banner.
+- **Quick status menu in the header** — a flat "dot + text" chip next to the
+  connection indicator (Here / Away / Custom…), kept in sync with `/status`,
+  `/away` and auto-away. Its dot is **blue** (vs. the green connection dot) so
+  the two adjacent indicators read as distinct.
+- **Typing a new server address + Enter now (re)connects** to it while already
+  connected, instead of only updating the labels — no need to disconnect first.
+  An unchanged address doesn't needlessly drop the current connection.
+- **Alignment fixes**: the search-row controls (menus, fields, buttons) now
+  share one baseline; result-list column headers are no longer truncated
+  (e.g. "Dimensione" instead of "Dime…").
+
+### Localization
+- The header states, the empty-transfers hint, the **Information** button and
+  the **entire Settings window and prompt dialogs** are now localized (Italian
+  provided; other languages fall back to English).
+- The string resolver gained a **universal English fallback**, so a string
+  missing from a language table shows English instead of nothing.
+
+### Robustness
+- **No more hang on quit.** Settings are now saved *before* the network/thread
+  teardown (so a stalled router/socket can't cost you your settings), and a
+  watchdog guarantees the process exits even if a teardown thread stalls — the
+  app can no longer appear to "hang" after its window has closed.
+
 ## HiShare 1.1-3 (July 2026)
 
 Automatic router port-forwarding fixes (from a field report where the mapping

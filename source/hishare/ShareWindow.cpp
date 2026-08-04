@@ -7,6 +7,7 @@
 #include <app/Roster.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <OS.h>
 
 #include <interface/Alert.h>
 #include <interface/Box.h>
@@ -164,7 +165,7 @@ public:
       DrawString(_sub(), BPoint(x, midY + 13.0f));
 
       // Status dot + label, right-aligned.
-      const char * slabel = (_state == 2) ? "Connected" : (_state == 1) ? "Connecting\xE2\x80\xA6" : "Offline";
+      const char * slabel = (_state == 2) ? str(STR_STATUS_CONNECTED) : (_state == 1) ? str(STR_STATUS_CONNECTING) : str(STR_STATUS_OFFLINE);
       rgb_color sdot = (_state == 2) ? (rgb_color){  60, 175,  85, 255 }
                      : (_state == 1) ? (rgb_color){ 225, 165,  45, 255 }
                                      : (rgb_color){ 180,  75,  75, 255 };
@@ -189,9 +190,10 @@ public:
          float chipRight = (rx - 17.0f) - 14.0f;              // just left of the connection dot
          float chipLeft  = chipRight - (dotW + g1 + tw + g2 + aw);
          float ty = midY + 4.0f;
-         // Green when present, amber when away — mirrors the connection dot's language.
+         // Blue when present, amber when away — deliberately NOT the connection dot's
+         // green, so the two adjacent indicators read as distinct things.
          bool away = (strcasecmp(_userStatus(), "away") == 0);
-         rgb_color pdot = away ? (rgb_color){ 225, 165, 45, 255 } : (rgb_color){ 60, 175, 85, 255 };
+         rgb_color pdot = away ? (rgb_color){ 225, 165, 45, 255 } : (rgb_color){ 70, 130, 205, 255 };
          SetHighColor(pdot);
          FillEllipse(BRect(chipLeft, midY - 4.0f, chipLeft + dotW, midY + 4.0f));
          SetHighColor(Blend(text, base, 0.15f));
@@ -398,7 +400,7 @@ class AddServerWindow : public BWindow
 {
 public:
    AddServerWindow(const BMessenger & target, const char * initialText)
-      : BWindow(BRect(0, 0, 320, 72), "Connect to additional server", B_TITLED_WINDOW_LOOK, B_MODAL_APP_WINDOW_FEEL, B_NOT_RESIZABLE | B_NOT_ZOOMABLE | B_AUTO_UPDATE_SIZE_LIMITS)
+      : BWindow(BRect(0, 0, 320, 72), str(STR_ST_ADD_SERVER_TITLE), B_TITLED_WINDOW_LOOK, B_MODAL_APP_WINDOW_FEEL, B_NOT_RESIZABLE | B_NOT_ZOOMABLE | B_AUTO_UPDATE_SIZE_LIMITS)
       , _target(target)
    {
       BView * bg = new BView(Bounds(), NULL, B_FOLLOW_ALL_SIDES, 0);
@@ -410,8 +412,8 @@ public:
       _entry->SetDivider(be_plain_font->StringWidth("Server:") + 8.0f);
       bg->AddChild(_entry);
 
-      BButton * cancel  = new BButton(BRect(b.right - 170, b.bottom - 24, b.right - 90, b.bottom), NULL, "Cancel", new BMessage(B_QUIT_REQUESTED), B_FOLLOW_RIGHT | B_FOLLOW_BOTTOM);
-      BButton * connect = new BButton(BRect(b.right - 80, b.bottom - 24, b.right, b.bottom), NULL, "Connect", new BMessage('acsv'), B_FOLLOW_RIGHT | B_FOLLOW_BOTTOM);
+      BButton * cancel  = new BButton(BRect(b.right - 170, b.bottom - 24, b.right - 90, b.bottom), NULL, str(STR_ST_CANCEL), new BMessage(B_QUIT_REQUESTED), B_FOLLOW_RIGHT | B_FOLLOW_BOTTOM);
+      BButton * connect = new BButton(BRect(b.right - 80, b.bottom - 24, b.right, b.bottom), NULL, str(STR_ST_CONNECT_BTN), new BMessage('acsv'), B_FOLLOW_RIGHT | B_FOLLOW_BOTTOM);
       bg->AddChild(cancel);
       bg->AddChild(connect);
       SetDefaultButton(connect);
@@ -445,20 +447,21 @@ class StatusPromptWindow : public BWindow
 {
 public:
    StatusPromptWindow(const BMessenger & target, const char * initialText)
-      : BWindow(BRect(0, 0, 320, 72), "Set your status", B_TITLED_WINDOW_LOOK, B_MODAL_APP_WINDOW_FEEL, B_NOT_RESIZABLE | B_NOT_ZOOMABLE | B_AUTO_UPDATE_SIZE_LIMITS)
+      : BWindow(BRect(0, 0, 320, 72), str(STR_ST_SET_STATUS_TITLE), B_TITLED_WINDOW_LOOK, B_MODAL_APP_WINDOW_FEEL, B_NOT_RESIZABLE | B_NOT_ZOOMABLE | B_AUTO_UPDATE_SIZE_LIMITS)
       , _target(target)
    {
       BView * bg = new BView(Bounds(), NULL, B_FOLLOW_ALL_SIDES, 0);
       bg->SetViewUIColor(B_PANEL_BACKGROUND_COLOR);
       AddChild(bg);
 
+      const char * lbl = str(STR_ST_STATUS);
       BRect b = bg->Bounds().InsetByCopy(10, 10);
-      _entry = new BTextControl(BRect(b.left, b.top, b.right, b.top + 20), NULL, "Status:", initialText, NULL, B_FOLLOW_LEFT_RIGHT | B_FOLLOW_TOP);
-      _entry->SetDivider(be_plain_font->StringWidth("Status:") + 8.0f);
+      _entry = new BTextControl(BRect(b.left, b.top, b.right, b.top + 20), NULL, lbl, initialText, NULL, B_FOLLOW_LEFT_RIGHT | B_FOLLOW_TOP);
+      _entry->SetDivider(be_plain_font->StringWidth(lbl) + 8.0f);
       bg->AddChild(_entry);
 
-      BButton * cancel = new BButton(BRect(b.right - 170, b.bottom - 24, b.right - 90, b.bottom), NULL, "Cancel", new BMessage(B_QUIT_REQUESTED), B_FOLLOW_RIGHT | B_FOLLOW_BOTTOM);
-      BButton * ok     = new BButton(BRect(b.right - 80, b.bottom - 24, b.right, b.bottom), NULL, "OK", new BMessage('ssta'), B_FOLLOW_RIGHT | B_FOLLOW_BOTTOM);
+      BButton * cancel = new BButton(BRect(b.right - 170, b.bottom - 24, b.right - 90, b.bottom), NULL, str(STR_ST_CANCEL), new BMessage(B_QUIT_REQUESTED), B_FOLLOW_RIGHT | B_FOLLOW_BOTTOM);
+      BButton * ok     = new BButton(BRect(b.right - 80, b.bottom - 24, b.right, b.bottom), NULL, str(STR_ST_OK), new BMessage('ssta'), B_FOLLOW_RIGHT | B_FOLLOW_BOTTOM);
       bg->AddChild(cancel);
       bg->AddChild(ok);
       SetDefaultButton(ok);
@@ -970,7 +973,7 @@ public:
          BFont f(be_plain_font); SetFont(&f);
          font_height fh; f.GetHeight(&fh);
          SetHighColor(HeaderBanner::Blend(tx, bg, 0.5f));
-         const char * msg = "No transfers";
+         const char * msg = str(STR_NO_TRANSFERS);
          float tw = f.StringWidth(msg);
          DrawString(msg, BPoint((b.left + b.right - tw) / 2.0f, (b.top + b.bottom) / 2.0f + (fh.ascent - fh.descent) / 2.0f));
       }
@@ -1839,7 +1842,7 @@ ShareWindow :: ShareWindow(uint64 installID, BMessage & settingsMsg, const char 
          sm->AddItem(new BMenuItem(FACTORY_DEFAULT_USER_STATUS, hm));
          sm->AddItem(new BMenuItem(FACTORY_DEFAULT_USER_AWAY_STATUS, am));
          sm->AddSeparatorItem();
-         sm->AddItem(new BMenuItem("Custom\xE2\x80\xA6", new BMessage(SHAREWINDOW_COMMAND_PROMPT_USER_STATUS)));
+         sm->AddItem(new BMenuItem(str(STR_ST_CUSTOM), new BMessage(SHAREWINDOW_COMMAND_PROMPT_USER_STATUS)));
          sm->SetTargetForItems(toMe);
          _headerBanner->SetStatusMenu(sm);
       }
@@ -2003,7 +2006,7 @@ ShareWindow :: ShareWindow(uint64 installID, BMessage & settingsMsg, const char 
 
             float serverEntryLeft = hMargin+serverMenuWidth;
             _serverEntry = new BTextControl(
-                BRect(serverEntryLeft, 6, serverEntryLeft+SERVER_ENTRY_WIDTH, fontHeight),
+                BRect(serverEntryLeft, 4, serverEntryLeft+SERVER_ENTRY_WIDTH, fontHeight),
                  NULL, NULL, firstName, new BMessage(SHAREWINDOW_COMMAND_USER_CHANGED_SERVER),
                   B_FOLLOW_LEFT | B_FOLLOW_TOP);
             AddBorderView(_serverEntry);
@@ -2024,7 +2027,7 @@ ShareWindow :: ShareWindow(uint64 installID, BMessage & settingsMsg, const char 
          float right = queryViewFrame.Width()-hMargin;
          float stringWidth = _queryMenu->StringWidth(str(STR_STOP_QUERY))+extraMenuWidth;
          _disableQueryButton = new BButton(
-            BRect(right-stringWidth,3,right,fontHeight), NULL, str(STR_STOP_QUERY),
+            BRect(right-stringWidth,4,right,fontHeight), NULL, str(STR_STOP_QUERY),
              new BMessage(SHAREWINDOW_COMMAND_DISABLE_QUERY), B_FOLLOW_RIGHT | B_FOLLOW_TOP);
          AddBorderView(_disableQueryButton);
          _queryView->AddChild(_disableQueryButton);
@@ -2032,7 +2035,7 @@ ShareWindow :: ShareWindow(uint64 installID, BMessage & settingsMsg, const char 
 
          stringWidth = _queryMenu->StringWidth(str(STR_START_QUERY))+extraMenuWidth;
          _enableQueryButton = new BButton(
-            BRect(right-stringWidth,3,right,fontHeight), NULL, str(STR_START_QUERY),
+            BRect(right-stringWidth,4,right,fontHeight), NULL, str(STR_START_QUERY),
              new BMessage(SHAREWINDOW_COMMAND_ENABLE_QUERY), B_FOLLOW_RIGHT | B_FOLLOW_TOP);
          AddBorderView(_enableQueryButton);
          _queryView->AddChild(_enableQueryButton);
@@ -2043,7 +2046,7 @@ ShareWindow :: ShareWindow(uint64 installID, BMessage & settingsMsg, const char 
          // repo).  Only applies to fresh installs; a saved "query" setting wins.
          if (settingsMsg.FindString("query", &startupQuery) != B_NO_ERROR) startupQuery = "*.hpkg";
          _fileNameQueryEntry = new BTextControl(
-            BRect(queryLeft+qw-10.0f,6,right,fontHeight), NULL, NULL, startupQuery,
+            BRect(queryLeft+qw-10.0f,4,right,fontHeight), NULL, NULL, startupQuery,
              new BMessage(SHAREWINDOW_COMMAND_CHANGE_FILE_NAME_QUERY), B_FOLLOW_ALL_SIDES);
          AddBorderView(_fileNameQueryEntry);
          _fileNameQueryEntry->SetTarget(toMe);
@@ -2080,10 +2083,11 @@ ShareWindow :: ShareWindow(uint64 installID, BMessage & settingsMsg, const char 
    resultsView->AddChild(dlButtonView);
 
    float clearButtonWidth = dlButtonView->StringWidth(str(STR_CLEAR_FINISHED_FAILED_TRANSFERS))+20.0f;
-   float infoButtonWidth = dlButtonView->StringWidth("Information")+20.0f;
+   const char * infoLabel = str(STR_INFORMATION);
+   float infoButtonWidth = dlButtonView->StringWidth(infoLabel)+20.0f;
    BRect dlBounds = dlButtonView->Bounds();
 
-   _requestInfoButton = new BButton(BRect(0, 0, infoButtonWidth, dlBounds.Height()), NULL, "Information", new BMessage(SHAREWINDOW_COMMAND_REQUEST_INFO), B_FOLLOW_LEFT | B_FOLLOW_TOP_BOTTOM);
+   _requestInfoButton = new BButton(BRect(0, 0, infoButtonWidth, dlBounds.Height()), NULL, infoLabel, new BMessage(SHAREWINDOW_COMMAND_REQUEST_INFO), B_FOLLOW_LEFT | B_FOLLOW_TOP_BOTTOM);
    AddBorderView(_requestInfoButton);
    dlButtonView->AddChild(_requestInfoButton);
 
@@ -2478,6 +2482,16 @@ SaveSplitPane(BMessage & settingsMsg, const SplitPane * sp, const char * name) c
 
 ShareWindow :: ~ShareWindow()
 {
+   // Persist settings FIRST, before any of the network/thread teardown below: those
+   // (StopPortMapper, MTT/accept thread joins) can stall on a slow or unresponsive
+   // router/socket, and we don't want a stalled teardown to also cost us the user's
+   // saved settings.  SaveSettings() writes to disk synchronously.
+   {
+      BMessage temp;
+      GenerateSettingsMessage(temp);
+      if (AreMessagesEqual(temp, _stateMessage) == false) ((ShareApplication*)be_app)->SaveSettings(temp);
+   }
+
    if (_colorPicker->Lock()) _colorPicker->Quit();
 
    for (uint32 i=0; i<_connections.GetNumItems(); i++) ResetAutoReconnectState(_connections[i], true);  // make sure no autoreconnect runner survives us
@@ -2498,9 +2512,7 @@ ShareWindow :: ~ShareWindow()
    HashtableIterator<ShareMIMEInfo *, bool> miter = _emptyMimeInfos.GetIterator();
    while(miter.GetNextKey(mi) == B_NO_ERROR) delete mi;
 
-   BMessage temp;
-   GenerateSettingsMessage(temp);  // _settingMsg is saved to disk by the application object later (we are only holding a reference to it)
-   if (AreMessagesEqual(temp, _stateMessage) == false) ((ShareApplication*)be_app)->SaveSettings(temp);
+   // (settings were already saved at the top of this destructor)
 
    // Close all private chat windows
    HashtableIterator<PrivateChatWindow *, String> iter = _privateChatWindows.GetIterator();
@@ -4894,6 +4906,22 @@ UpdateDownloadButtonStatus()
    _cancelTransfersButton->SetEnabled(_transferList->CurrentSelection() >= 0);
 }
 
+static int32
+_QuitWatchdog(void *)
+{
+   // Safety net: main() exits via _exit(0) as soon as BApplication::Run() returns,
+   // i.e. once teardown (settings save, port-unmapping, network/accept thread joins)
+   // has finished.  If one of those joins stalls on a slow/unresponsive router or a
+   // half-open socket, Run() never returns and the app would appear to "hang" after
+   // its window has already closed.  This detached thread guarantees the process
+   // exits regardless.  5s is ample for a healthy teardown, so it only ever fires on
+   // a genuine stall.  Settings are already saved at the top of ~ShareWindow.
+   snooze(5000000);
+   fflush(NULL);
+   _exit(0);
+   return 0;
+}
+
 bool
 ShareWindow ::
 QuitRequested()
@@ -4921,6 +4949,17 @@ QuitRequested()
       BMessage msg(SHAREWINDOW_COMMAND_UNIDLE);
       MessageReceived(&msg);  // important to do this synchronously, so we can't just PostMessage()
    }
+
+   // Arm the exit watchdog (once): guarantees the process terminates even if a
+   // network/thread teardown stalls and BApplication::Run() never returns.
+   static bool watchdogArmed = false;
+   if (watchdogArmed == false)
+   {
+      watchdogArmed = true;
+      thread_id wd = spawn_thread(_QuitWatchdog, "hishare quit watchdog", B_LOW_PRIORITY, NULL);
+      if (wd >= 0) resume_thread(wd);
+   }
+
    return true;
 }
 
@@ -5532,7 +5571,12 @@ CreateColumn(ShareMIMEInfo * optMimeInfo, const char * attrName, bool remote)
          }
       }
 
-      ShareColumn * column = new ShareColumn(type, attrName, label, 80.0f);
+      // Default width: at least 80px, but always wide enough that the (translated)
+      // header label isn't truncated to "…" (accounts for cell padding + sort arrow).
+      float colW = 80.0f;
+      float labelW = be_plain_font->StringWidth(label) + 34.0f;
+      if (labelW > colW) colW = labelW;
+      ShareColumn * column = new ShareColumn(type, attrName, label, colW);
       _columns.Put(column->GetAttributeName(), column);
 
       BMessage * msg = new BMessage(SHAREWINDOW_COMMAND_TOGGLE_COLUMN);

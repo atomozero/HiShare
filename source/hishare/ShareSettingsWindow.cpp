@@ -91,11 +91,11 @@ ShareSettingsWindow::ShareSettingsWindow(const BMessenger & target, const BMessa
 
 	// left: category list
 	_categories = new BListView("categories", B_SINGLE_SELECTION_LIST);
-	_categories->AddItem(new BStringItem("Profile"));
-	_categories->AddItem(new BStringItem("Network"));
-	_categories->AddItem(new BStringItem("Transfers"));
-	_categories->AddItem(new BStringItem("Interface"));
-	_categories->AddItem(new BStringItem("Chat"));
+	_categories->AddItem(new BStringItem(str(STR_ST_PROFILE)));
+	_categories->AddItem(new BStringItem(str(STR_ST_NETWORK)));
+	_categories->AddItem(new BStringItem(str(STR_ST_TRANSFERS)));
+	_categories->AddItem(new BStringItem(str(STR_ST_INTERFACE)));
+	_categories->AddItem(new BStringItem(str(STR_ST_CHAT)));
 	_categories->SetSelectionMessage(new BMessage(MSG_CATEGORY));
 	_categories->SetTarget(this);
 	BScrollView * catScroll = new BScrollView("catScroll", _categories, 0, false, false);
@@ -112,7 +112,7 @@ ShareSettingsWindow::ShareSettingsWindow(const BMessenger & target, const BMessa
 	_cards->AddView(_MakeInterfaceCard(state));
 	_cards->AddView(_MakeChatCard(state));
 
-	BButton * close = new BButton("close", "Close", new BMessage(MSG_CLOSE));
+	BButton * close = new BButton("close", str(STR_ST_CLOSE), new BMessage(MSG_CLOSE));
 
 	BLayoutBuilder::Group<>(this, B_HORIZONTAL, 0)
 		.Add(catScroll)
@@ -215,25 +215,25 @@ ShareSettingsWindow::_MakeProfileCard(const BMessage & s)
 	// These fields don't carry their text in the invocation message; MessageReceived
 	// reads Text() on MSG_APPLY_* and forwards it to the main window.  BTextControl
 	// invokes on Enter and on focus-out when the text changed, so both apply the value.
-	_userNameField = new BTextControl("name", "Your name:", s.GetString("username", ""),
+	_userNameField = new BTextControl("name", str(STR_ST_YOUR_NAME), s.GetString("username", ""),
 	                                  new BMessage(MSG_APPLY_NAME));
 	_userNameField->SetTarget(this);
 
-	_userStatusField = new BTextControl("status", "Status:", s.GetString("userstatus", ""),
+	_userStatusField = new BTextControl("status", str(STR_ST_STATUS), s.GetString("userstatus", ""),
 	                                    new BMessage(MSG_APPLY_STATUS));
 	_userStatusField->SetTarget(this);
 
 	BView * v = new BView("profile", 0);
 	BLayoutBuilder::Group<>(v, B_VERTICAL, B_USE_SMALL_SPACING)
-		.Add(NewSectionLabel("IDENTITY ON THE SERVER"))
+		.Add(NewSectionLabel(str(STR_ST_IDENTITY)))
 		.Add(_userNameField)
-		.Add(NewHint("The name other users see in chat and file listings."))
+		.Add(NewHint(str(STR_ST_NAME_HINT)))
 		.AddStrut(6)
 		.Add(_userStatusField)
-		.Add(NewHint("Your presence line, e.g. \"here\" or \"away\". Press Enter to apply."))
+		.Add(NewHint(str(STR_ST_STATUS_HINT)))
 		.AddGlue()
 		.SetInsets(0);
-	return Card("Profile", v);
+	return Card(str(STR_ST_CARD_PROFILE), v);
 }
 
 BView *
@@ -251,54 +251,54 @@ ShareSettingsWindow::_MakeNetworkCard(const BMessage & s)
 	char statusText[160];
 	_FormatReachText(reach, ip, extport, statusText, sizeof(statusText));
 
-	BButton * testBtn = new BButton("test", "Test now", new BMessage(ShareWindow::SHAREWINDOW_COMMAND_TEST_REACHABILITY));
+	BButton * testBtn = new BButton("test", str(STR_ST_TEST_NOW), new BMessage(ShareWindow::SHAREWINDOW_COMMAND_TEST_REACHABILITY));
 	testBtn->SetTarget(_target);
 
 	BView * v = new BView("net", 0);
 	BLayoutBuilder::Group<>(v, B_VERTICAL, B_USE_SMALL_SPACING)
-		.Add(NewCheck("Open the router port automatically (UPnP / NAT-PMP / PCP)", ShareWindow::SHAREWINDOW_COMMAND_TOGGLE_AUTO_PORT_FORWARD, apf, _target))
-		.Add(NewHint("Makes you reachable from outside your home NAT without manual configuration."))
+		.Add(NewCheck(str(STR_ST_AUTO_PORT), ShareWindow::SHAREWINDOW_COMMAND_TOGGLE_AUTO_PORT_FORWARD, apf, _target))
+		.Add(NewHint(str(STR_ST_AUTO_PORT_HINT)))
 		.AddStrut(4)
 		.AddGroup(B_HORIZONTAL)
 			.Add(_reachLabel = new BStringView("st", statusText))
 			.AddGlue()
 			.Add(testBtn)
 		.End()
-		.Add(NewCheck("I'm behind a firewall", ShareWindow::SHAREWINDOW_COMMAND_TOGGLE_FIREWALLED, fw, _target))
+		.Add(NewCheck(str(STR_ST_FIREWALLED), ShareWindow::SHAREWINDOW_COMMAND_TOGGLE_FIREWALLED, fw, _target))
 		.AddStrut(6)
-		.Add(NewSectionLabel("PRIVACY & ACCOUNT"))
+		.Add(NewSectionLabel(str(STR_ST_PRIVACY_ACCOUNT)))
 #if BESHARE_TLS_ENABLED
 		// Hidden for HiShare 1.0 — TLS downloads crash (see ShareConstants.h / beshare-tls-ssl).
-		.Add(NewCheck("Encrypt file transfers (TLS)", ShareWindow::SHAREWINDOW_COMMAND_TOGGLE_REQUIRE_TLS, tls, _target))
-		.Add(NewHint("Opportunistic encryption with peers that support it; plaintext with older clients."))
+		.Add(NewCheck(str(STR_ST_TLS), ShareWindow::SHAREWINDOW_COMMAND_TOGGLE_REQUIRE_TLS, tls, _target))
+		.Add(NewHint(str(STR_ST_TLS_HINT)))
 #endif
-		.Add(NewCheck("Connect on startup", ShareWindow::SHAREWINDOW_COMMAND_TOGGLE_LOGIN_ON_STARTUP, lo, _target))
-		.Add(NewCheck("Auto-update the server list", ShareWindow::SHAREWINDOW_COMMAND_TOGGLE_AUTOUPDATE_SERVER_LIST, aus, _target))
+		.Add(NewCheck(str(STR_ST_LOGIN_STARTUP), ShareWindow::SHAREWINDOW_COMMAND_TOGGLE_LOGIN_ON_STARTUP, lo, _target))
+		.Add(NewCheck(str(STR_ST_AUTOUPDATE_SERVERS), ShareWindow::SHAREWINDOW_COMMAND_TOGGLE_AUTOUPDATE_SERVER_LIST, aus, _target))
 		.AddGlue()
 		.SetInsets(0);
-	return Card("Network & reachability", v);
+	return Card(str(STR_ST_CARD_NETWORK), v);
 }
 
 BView *
 ShareSettingsWindow::_MakeTransfersCard(const BMessage & s)
 {
-	static const Opt kLimits[] = {{"1",1},{"2",2},{"3",3},{"4",4},{"5",5},{"6",6},{"8",8},{"10",10},{"16",16},{"32",32},{"Unlimited",1000000}};
+	const Opt kLimits[] = {{"1",1},{"2",2},{"3",3},{"4",4},{"5",5},{"6",6},{"8",8},{"10",10},{"16",16},{"32",32},{str(STR_ST_UNLIMITED),1000000}};
 	int nL = sizeof(kLimits)/sizeof(kLimits[0]);
 
 	BView * v = new BView("xfer", 0);
 	BLayoutBuilder::Group<>(v, B_VERTICAL, B_USE_SMALL_SPACING)
-		.Add(NewValueField("Max simultaneous uploads:", ShareWindow::SHAREWINDOW_COMMAND_SET_UPLOAD_LIMIT, "num", kLimits, nL, s.GetInt32("uploads",3), _target))
-		.Add(NewValueField("Max uploads per user:", ShareWindow::SHAREWINDOW_COMMAND_SET_UPLOAD_PER_USER_LIMIT, "num", kLimits, nL, s.GetInt32("uploadsperuser",1), _target))
-		.Add(NewValueField("Max simultaneous downloads:", ShareWindow::SHAREWINDOW_COMMAND_SET_DOWNLOAD_LIMIT, "num", kLimits, nL, s.GetInt32("downloads",2), _target))
-		.Add(NewValueField("Max downloads per user:", ShareWindow::SHAREWINDOW_COMMAND_SET_DOWNLOAD_PER_USER_LIMIT, "num", kLimits, nL, s.GetInt32("downloadsperuser",1), _target))
+		.Add(NewValueField(str(STR_ST_MAX_UP), ShareWindow::SHAREWINDOW_COMMAND_SET_UPLOAD_LIMIT, "num", kLimits, nL, s.GetInt32("uploads",3), _target))
+		.Add(NewValueField(str(STR_ST_MAX_UP_USER), ShareWindow::SHAREWINDOW_COMMAND_SET_UPLOAD_PER_USER_LIMIT, "num", kLimits, nL, s.GetInt32("uploadsperuser",1), _target))
+		.Add(NewValueField(str(STR_ST_MAX_DOWN), ShareWindow::SHAREWINDOW_COMMAND_SET_DOWNLOAD_LIMIT, "num", kLimits, nL, s.GetInt32("downloads",2), _target))
+		.Add(NewValueField(str(STR_ST_MAX_DOWN_USER), ShareWindow::SHAREWINDOW_COMMAND_SET_DOWNLOAD_PER_USER_LIMIT, "num", kLimits, nL, s.GetInt32("downloadsperuser",1), _target))
 		.AddStrut(6)
-		.Add(NewCheck("Share files with others", ShareWindow::SHAREWINDOW_COMMAND_TOGGLE_FILE_SHARING_ENABLED, s.GetBool("sharingenabled",true), _target))
-		.Add(NewCheck("Serve shortest uploads first", ShareWindow::SHAREWINDOW_COMMAND_TOGGLE_SHORTEST_UPLOADS_FIRST, s.GetBool("shortestfirst"), _target))
-		.Add(NewCheck("Auto-clear completed downloads", ShareWindow::SHAREWINDOW_COMMAND_TOGGLE_AUTOCLEAR_COMPLETED_DOWNLOADS, s.GetBool("autoclear"), _target))
-		.Add(NewCheck("Remember original file paths", ShareWindow::SHAREWINDOW_COMMAND_TOGGLE_RETAIN_FILE_PATHS, s.GetBool("retainpaths"), _target))
+		.Add(NewCheck(str(STR_ST_SHARE_FILES), ShareWindow::SHAREWINDOW_COMMAND_TOGGLE_FILE_SHARING_ENABLED, s.GetBool("sharingenabled",true), _target))
+		.Add(NewCheck(str(STR_ST_SHORTEST_FIRST), ShareWindow::SHAREWINDOW_COMMAND_TOGGLE_SHORTEST_UPLOADS_FIRST, s.GetBool("shortestfirst"), _target))
+		.Add(NewCheck(str(STR_ST_AUTOCLEAR), ShareWindow::SHAREWINDOW_COMMAND_TOGGLE_AUTOCLEAR_COMPLETED_DOWNLOADS, s.GetBool("autoclear"), _target))
+		.Add(NewCheck(str(STR_ST_RETAIN_PATHS), ShareWindow::SHAREWINDOW_COMMAND_TOGGLE_RETAIN_FILE_PATHS, s.GetBool("retainpaths"), _target))
 		.AddGlue()
 		.SetInsets(0);
-	return Card("Transfers & sharing", v);
+	return Card(str(STR_ST_CARD_TRANSFERS), v);
 }
 
 BView *
@@ -306,43 +306,43 @@ ShareSettingsWindow::_MakeInterfaceCard(const BMessage & s)
 {
 	static const Opt kPages[] = {{"500",500},{"1000",1000},{"2000",2000},{"3000",3000},{"5000",5000},{"8000",8000},{"10000",10000},{"100000",100000}};
 
-	BButton * colors = new BButton("colors", "Colours\xE2\x80\xA6", new BMessage(ShareWindow::SHAREWINDOW_COMMAND_SHOW_COLOR_PICKER));
+	BButton * colors = new BButton("colors", str(STR_ST_COLORS_BTN), new BMessage(ShareWindow::SHAREWINDOW_COMMAND_SHOW_COLOR_PICKER));
 	colors->SetTarget(_target);
 
 	BView * v = new BView("ui", 0);
 	BLayoutBuilder::Group<>(v, B_VERTICAL, B_USE_SMALL_SPACING)
-		.Add(NewCheck("Show desktop notifications", ShareWindow::SHAREWINDOW_COMMAND_TOGGLE_NOTIFICATIONS, s.GetBool("notifications",true), _target))
-		.Add(NewHint("Finished downloads, private messages and name mentions."))
+		.Add(NewCheck(str(STR_ST_SHOW_NOTIF), ShareWindow::SHAREWINDOW_COMMAND_TOGGLE_NOTIFICATIONS, s.GetBool("notifications",true), _target))
+		.Add(NewHint(str(STR_ST_NOTIF_HINT)))
 		.AddStrut(4)
-		.Add(NewValueField("Query results per page:", ShareWindow::SHAREWINDOW_COMMAND_SET_PAGE_SIZE, "pagesize", kPages, sizeof(kPages)/sizeof(kPages[0]), s.GetInt32("pagesize",1000), _target))
+		.Add(NewValueField(str(STR_ST_PAGE_SIZE), ShareWindow::SHAREWINDOW_COMMAND_SET_PAGE_SIZE, "pagesize", kPages, sizeof(kPages)/sizeof(kPages[0]), s.GetInt32("pagesize",1000), _target))
 		.AddStrut(4)
 		.AddGroup(B_HORIZONTAL)
-			.Add(NewCheck("Use custom colours", ShareWindow::SHAREWINDOW_COMMAND_TOGGLE_CUSTOM_COLORS, s.GetBool("customcolors", true), _target))
+			.Add(NewCheck(str(STR_ST_CUSTOM_COLORS), ShareWindow::SHAREWINDOW_COMMAND_TOGGLE_CUSTOM_COLORS, s.GetBool("customcolors", true), _target))
 			.AddGlue()
 			.Add(colors)
 		.End()
-		.Add(NewHint("When off, windows follow the Haiku system theme. Picking a colour turns this back on."))
+		.Add(NewHint(str(STR_ST_COLORS_HINT)))
 		.AddGlue()
 		.SetInsets(0);
-	return Card("Interface", v);
+	return Card(str(STR_ST_INTERFACE), v);
 }
 
 BView *
 ShareSettingsWindow::_MakeChatCard(const BMessage & s)
 {
-	static const Opt kAway[] = {{"Never",0},{"5 min",5},{"10 min",10},{"15 min",15},{"30 min",30},{"60 min",60}};
-	static const Opt kComp[] = {{"None",0},{"Low",1},{"Medium",6},{"Maximum",9}};
+	const Opt kAway[] = {{str(STR_ST_NEVER),0},{"5 min",5},{"10 min",10},{"15 min",15},{"30 min",30},{"60 min",60}};
+	const Opt kComp[] = {{str(STR_ST_NONE),0},{str(STR_ST_LOW),1},{str(STR_ST_MEDIUM),6},{str(STR_ST_MAXIMUM),9}};
 
 	BView * v = new BView("chat", 0);
 	BLayoutBuilder::Group<>(v, B_VERTICAL, B_USE_SMALL_SPACING)
-		.Add(NewCheck("Show full user queries", ShareWindow::SHAREWINDOW_COMMAND_TOGGLE_FULL_USER_QUERIES, s.GetBool("fulluserqueries"), _target))
-		.Add(NewCheck("Log chat to a file", ShareWindow::SHAREWINDOW_COMMAND_TOGGLE_FILE_LOGGING, s.GetBool("logging"), _target))
+		.Add(NewCheck(str(STR_ST_FULL_QUERIES), ShareWindow::SHAREWINDOW_COMMAND_TOGGLE_FULL_USER_QUERIES, s.GetBool("fulluserqueries"), _target))
+		.Add(NewCheck(str(STR_ST_LOG_CHAT), ShareWindow::SHAREWINDOW_COMMAND_TOGGLE_FILE_LOGGING, s.GetBool("logging"), _target))
 		.AddStrut(4)
-		.Add(NewValueField("Mark me away after:", ShareWindow::SHAREWINDOW_COMMAND_SET_AUTO_AWAY, "autoaway", kAway, sizeof(kAway)/sizeof(kAway[0]), s.GetInt32("autoaway",0), _target))
-		.Add(NewValueField("Data compression:", ShareWindow::SHAREWINDOW_COMMAND_SET_COMPRESSION_LEVEL, "complevel", kComp, sizeof(kComp)/sizeof(kComp[0]), s.GetInt32("complevel",0), _target))
+		.Add(NewValueField(str(STR_ST_AWAY_AFTER), ShareWindow::SHAREWINDOW_COMMAND_SET_AUTO_AWAY, "autoaway", kAway, sizeof(kAway)/sizeof(kAway[0]), s.GetInt32("autoaway",0), _target))
+		.Add(NewValueField(str(STR_ST_COMPRESSION), ShareWindow::SHAREWINDOW_COMMAND_SET_COMPRESSION_LEVEL, "complevel", kComp, sizeof(kComp)/sizeof(kComp[0]), s.GetInt32("complevel",0), _target))
 		.AddGlue()
 		.SetInsets(0);
-	return Card("Chat", v);
+	return Card(str(STR_ST_CHAT), v);
 }
 
 };  // namespace beshare

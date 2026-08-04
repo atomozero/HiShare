@@ -402,7 +402,65 @@ static const char * _englishStrings[NUM_STRINGS] = {
    "Font reset to default",
    "Couldn't find font",
    "Shortest Uploads First",
-   "Finnish"
+   "Finnish",
+   "Connected",              // STR_STATUS_CONNECTED
+   "Connecting\xE2\x80\xA6", // STR_STATUS_CONNECTING
+   "Offline",                // STR_STATUS_OFFLINE
+   "No transfers",           // STR_NO_TRANSFERS
+   "Information",            // STR_INFORMATION
+   "Profile",                                                                             // STR_ST_PROFILE
+   "Network",                                                                             // STR_ST_NETWORK
+   "Transfers",                                                                           // STR_ST_TRANSFERS
+   "Interface",                                                                           // STR_ST_INTERFACE
+   "Chat",                                                                                // STR_ST_CHAT
+   "Close",                                                                               // STR_ST_CLOSE
+   "Network & reachability",                                                              // STR_ST_CARD_NETWORK
+   "Transfers & sharing",                                                                 // STR_ST_CARD_TRANSFERS
+   "Profile",                                                                             // STR_ST_CARD_PROFILE
+   "Open the router port automatically (UPnP / NAT-PMP / PCP)",                           // STR_ST_AUTO_PORT
+   "Makes you reachable from outside your home NAT without manual configuration.",        // STR_ST_AUTO_PORT_HINT
+   "Test now",                                                                            // STR_ST_TEST_NOW
+   "I'm behind a firewall",                                                               // STR_ST_FIREWALLED
+   "PRIVACY & ACCOUNT",                                                                   // STR_ST_PRIVACY_ACCOUNT
+   "Encrypt file transfers (TLS)",                                                        // STR_ST_TLS
+   "Opportunistic encryption with peers that support it; plaintext with older clients.", // STR_ST_TLS_HINT
+   "Connect on startup",                                                                  // STR_ST_LOGIN_STARTUP
+   "Auto-update the server list",                                                         // STR_ST_AUTOUPDATE_SERVERS
+   "Max simultaneous uploads:",                                                           // STR_ST_MAX_UP
+   "Max uploads per user:",                                                               // STR_ST_MAX_UP_USER
+   "Max simultaneous downloads:",                                                         // STR_ST_MAX_DOWN
+   "Max downloads per user:",                                                             // STR_ST_MAX_DOWN_USER
+   "Share files with others",                                                             // STR_ST_SHARE_FILES
+   "Serve shortest uploads first",                                                        // STR_ST_SHORTEST_FIRST
+   "Auto-clear completed downloads",                                                      // STR_ST_AUTOCLEAR
+   "Remember original file paths",                                                        // STR_ST_RETAIN_PATHS
+   "Unlimited",                                                                           // STR_ST_UNLIMITED
+   "Show desktop notifications",                                                          // STR_ST_SHOW_NOTIF
+   "Finished downloads, private messages and name mentions.",                             // STR_ST_NOTIF_HINT
+   "Query results per page:",                                                             // STR_ST_PAGE_SIZE
+   "Use custom colours",                                                                  // STR_ST_CUSTOM_COLORS
+   "Colours\xE2\x80\xA6",                                                                 // STR_ST_COLORS_BTN
+   "When off, windows follow the Haiku system theme. Picking a colour turns this back on.", // STR_ST_COLORS_HINT
+   "Show full user queries",                                                              // STR_ST_FULL_QUERIES
+   "Log chat to a file",                                                                  // STR_ST_LOG_CHAT
+   "Mark me away after:",                                                                 // STR_ST_AWAY_AFTER
+   "Data compression:",                                                                   // STR_ST_COMPRESSION
+   "Never",                                                                               // STR_ST_NEVER
+   "None",                                                                                // STR_ST_NONE
+   "Low",                                                                                 // STR_ST_LOW
+   "Medium",                                                                              // STR_ST_MEDIUM
+   "Maximum",                                                                             // STR_ST_MAXIMUM
+   "IDENTITY ON THE SERVER",                                                              // STR_ST_IDENTITY
+   "Your name:",                                                                          // STR_ST_YOUR_NAME
+   "The name other users see in chat and file listings.",                                 // STR_ST_NAME_HINT
+   "Status:",                                                                             // STR_ST_STATUS
+   "Your presence line, e.g. \"here\" or \"away\". Press Enter to apply.",                // STR_ST_STATUS_HINT
+   "Set your status",                                                                     // STR_ST_SET_STATUS_TITLE
+   "OK",                                                                                  // STR_ST_OK
+   "Cancel",                                                                              // STR_ST_CANCEL
+   "Connect to additional server",                                                        // STR_ST_ADD_SERVER_TITLE
+   "Connect",                                                                             // STR_ST_CONNECT_BTN
+   "Custom\xE2\x80\xA6"                                                                   // STR_ST_CUSTOM
 };
 
 static const char _spanishShortcuts[NUM_SHORTCUTS] = {
@@ -2383,7 +2441,65 @@ static const char * _italianStrings[NUM_STRINGS] = {
    "Font reset to default",
    "Couldn't find font",
    "Shortest Uploads First",
-   "Finnish"
+   "Finnish",
+   "Connesso",               // STR_STATUS_CONNECTED
+   "Connessione\xE2\x80\xA6",// STR_STATUS_CONNECTING
+   "Non connesso",           // STR_STATUS_OFFLINE
+   "Nessun trasferimento",   // STR_NO_TRANSFERS
+   "Informazioni",           // STR_INFORMATION
+   "Profilo",                                                                              // STR_ST_PROFILE
+   "Rete",                                                                                 // STR_ST_NETWORK
+   "Trasferimenti",                                                                        // STR_ST_TRANSFERS
+   "Interfaccia",                                                                          // STR_ST_INTERFACE
+   "Chat",                                                                                 // STR_ST_CHAT
+   "Chiudi",                                                                               // STR_ST_CLOSE
+   "Rete e raggiungibilità",                                                               // STR_ST_CARD_NETWORK
+   "Trasferimenti e condivisione",                                                         // STR_ST_CARD_TRANSFERS
+   "Profilo",                                                                              // STR_ST_CARD_PROFILE
+   "Apri automaticamente la porta del router (UPnP / NAT-PMP / PCP)",                      // STR_ST_AUTO_PORT
+   "Ti rende raggiungibile da fuori il NAT di casa senza configurazione manuale.",        // STR_ST_AUTO_PORT_HINT
+   "Prova ora",                                                                            // STR_ST_TEST_NOW
+   "Sono dietro un firewall",                                                              // STR_ST_FIREWALLED
+   "PRIVACY E ACCOUNT",                                                                    // STR_ST_PRIVACY_ACCOUNT
+   "Cifra i trasferimenti (TLS)",                                                          // STR_ST_TLS
+   "Cifratura opportunistica con i peer che la supportano; in chiaro con i client più vecchi.", // STR_ST_TLS_HINT
+   "Connetti all'avvio",                                                                   // STR_ST_LOGIN_STARTUP
+   "Aggiorna automaticamente la lista server",                                             // STR_ST_AUTOUPDATE_SERVERS
+   "Upload simultanei max:",                                                               // STR_ST_MAX_UP
+   "Upload max per utente:",                                                               // STR_ST_MAX_UP_USER
+   "Download simultanei max:",                                                             // STR_ST_MAX_DOWN
+   "Download max per utente:",                                                             // STR_ST_MAX_DOWN_USER
+   "Condividi file con gli altri",                                                         // STR_ST_SHARE_FILES
+   "Servi prima gli upload più corti",                                                     // STR_ST_SHORTEST_FIRST
+   "Rimuovi automaticamente i download completati",                                        // STR_ST_AUTOCLEAR
+   "Ricorda i percorsi originali dei file",                                                // STR_ST_RETAIN_PATHS
+   "Illimitato",                                                                           // STR_ST_UNLIMITED
+   "Mostra notifiche desktop",                                                             // STR_ST_SHOW_NOTIF
+   "Download completati, messaggi privati e menzioni del nome.",                           // STR_ST_NOTIF_HINT
+   "Risultati per pagina:",                                                                // STR_ST_PAGE_SIZE
+   "Usa colori personalizzati",                                                            // STR_ST_CUSTOM_COLORS
+   "Colori…",                                                                              // STR_ST_COLORS_BTN
+   "Se disattivato, le finestre seguono il tema di sistema Haiku. Scegliere un colore lo riattiva.", // STR_ST_COLORS_HINT
+   "Mostra le query utente complete",                                                      // STR_ST_FULL_QUERIES
+   "Registra la chat su file",                                                             // STR_ST_LOG_CHAT
+   "Segnami assente dopo:",                                                                // STR_ST_AWAY_AFTER
+   "Compressione dati:",                                                                   // STR_ST_COMPRESSION
+   "Mai",                                                                                  // STR_ST_NEVER
+   "Nessuna",                                                                              // STR_ST_NONE
+   "Bassa",                                                                                // STR_ST_LOW
+   "Media",                                                                                // STR_ST_MEDIUM
+   "Massima",                                                                              // STR_ST_MAXIMUM
+   "IDENTITÀ SUL SERVER",                                                                  // STR_ST_IDENTITY
+   "Il tuo nome:",                                                                         // STR_ST_YOUR_NAME
+   "Il nome che gli altri utenti vedono in chat e negli elenchi file.",                    // STR_ST_NAME_HINT
+   "Stato:",                                                                               // STR_ST_STATUS
+   "La tua presenza, es. \"here\" o \"away\". Premi Invio per applicare.",                 // STR_ST_STATUS_HINT
+   "Imposta il tuo stato",                                                                 // STR_ST_SET_STATUS_TITLE
+   "OK",                                                                                   // STR_ST_OK
+   "Annulla",                                                                              // STR_ST_CANCEL
+   "Connetti a un altro server",                                                           // STR_ST_ADD_SERVER_TITLE
+   "Connetti",                                                                             // STR_ST_CONNECT_BTN
+   "Personalizzato…"                                                                       // STR_ST_CUSTOM
 };
 
 static const char _russianShortcuts[NUM_SHORTCUTS] = {
@@ -6787,6 +6903,12 @@ const char * str(int ws, int language)
          if ((tr)&&(tr != eng)&&(strcmp(tr, eng) != 0)) return tr;
       }
    }
+
+   // Universal English fallback: if the selected language table has no entry for this
+   // string (e.g. a newly added string only translated in some tables), use the English
+   // built-in text rather than returning NULL.  Lets new strings be added incrementally
+   // (English + a few languages) without NULL-crashing the other language tables.
+   if ((builtin == NULL)&&(ws >= 0)&&(ws < NUM_STRINGS)) builtin = _englishStrings[ws];
    return builtin;
 }
 
