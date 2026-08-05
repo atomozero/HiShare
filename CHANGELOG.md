@@ -1,5 +1,21 @@
 # Changelog
 
+## HiShare 1.1-5 (August 2026)
+
+Fixes the crash-on-quit that 1.1-4's watchdog only masked.
+
+### Robustness
+- **Fixed a SIGSEGV on quit** (thread-dump-confirmed). While tearing down a
+  server connection, `~ShareNetClient` runs `DisconnectFromServer()` *after* the
+  handler has already been detached from the window, so `Looper()` is `NULL`;
+  the code then dereferenced it (`((ShareWindow*)Looper())->SharesScanComplete()`
+  via `EndScanSharesBatch`, plus `SetQueryInProgress` / `SetConnectStatus` /
+  `UpdateTitleBar`), crashing on a `NULL` `this`. The crashed window thread was
+  then held alive by the debug server, which is what looked like a "hang after
+  the window closed". All of `ShareNetClient`'s window callbacks reached during
+  destruction now null-check `Looper()` first. The 1.1-4 quit watchdog stays as
+  a belt-and-suspenders guarantee.
+
 ## HiShare 1.1-4 (August 2026)
 
 Interface polish, full Italian localization, and a shutdown-hang safeguard.

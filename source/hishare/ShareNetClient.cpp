@@ -124,7 +124,12 @@ DisconnectFromServer()
 {
    AbortScanSharesThread();
 
-   ((ShareWindow *)Looper())->SetQueryInProgress(_owner, false);
+   // During ~ShareNetClient the handler has already been detached from the
+   // window (RemoveConnection calls RemoveHandler before deleting us), so
+   // Looper() is NULL here: never dereference it blindly, or we SIGSEGV on quit.
+   ShareWindow * win = (ShareWindow *) Looper();
+
+   if (win) win->SetQueryInProgress(_owner, false);
 
    delete _fileCountRunner;
    _fileCountRunner = NULL;
@@ -141,9 +146,9 @@ DisconnectFromServer()
       // since we're no longer connected, there's no point in watching the shared dirs anymore
       UnwatchAllDirs();
 
-      ((ShareWindow *)Looper())->SetConnectStatus(_owner, false, false);
+      if (win) win->SetConnectStatus(_owner, false, false);
    }
-   else ((ShareWindow*)Looper())->UpdateTitleBar();
+   else if (win) win->UpdateTitleBar();
 
    // Anything that was waiting to be slow-sent is irrelevant now, since the connection is gone
    _lowPriorityMessages.Clear();
@@ -312,7 +317,11 @@ void
 ShareNetClient::
 EndScanSharesBatch()
 {
-   if ((--_scanSharesBatchCount == 0)&&(_scanSharesThreadID < 0)) ((ShareWindow*)Looper())->SharesScanComplete();
+   if ((--_scanSharesBatchCount == 0)&&(_scanSharesThreadID < 0))
+   {
+      ShareWindow * win = (ShareWindow *) Looper();  // NULL while the handler is being destroyed on quit
+      if (win) win->SharesScanComplete();
+   }
 }
 
 void
