@@ -1,5 +1,44 @@
 # Changelog
 
+## HiShare 1.2 (August 2026)
+
+A focused pass on the multi-server experience, plus interface polish.
+
+### Multi-server identity & connections
+- **Your name and status now reach every connection.** They were only applied to
+  the primary connection, so on secondary servers you showed up under the client
+  default name (e.g. "binky"). Name and status are now published on all
+  connections, and a connection added at runtime inherits them.
+- **HiShare never publishes an empty name**, and a peer that publishes one is
+  shown as *Anonymous* instead of a blank row.
+- **Connect to all known servers** (File menu) — brings up every server in the
+  known-server list in one action, skipping loopback/localhost, your own public
+  IP, and servers you're already on.
+- **Duplicate connections are skipped.** Two connections that resolve to the same
+  box (e.g. the same server by hostname and by IP) no longer open two sessions
+  that make you appear multiple times and can get you dropped — the second stays
+  idle with a note in the log.
+
+### Speed & sharing
+- **Auto-detect connection speed** (Settings → Transfers, opt-in) — passively
+  measures your real upload and download throughput during transfers, advertises
+  the upload rate as your bandwidth, and shows both in the header (`↓ … ↑ …`).
+- **Correct shared-file count** in the header — it no longer flashes "0 files
+  shared" while a connection is reconnecting (it reports the largest count any
+  connection holds).
+- The bogus **"couldn't find shared folder"** error no longer appears when a
+  share scan is simply superseded by a reconnect.
+
+### Interface
+- **Search row aligned** — the Start/Stop query buttons are no longer taller than
+  the fields and menus beside them.
+- **Header connection status fixed** — it shows green "Connected" as soon as any
+  server is up (amber "Connecting…" only while actually establishing one), instead
+  of getting stuck on "Connecting…" whenever one configured connection was idle.
+- **Hide own echoed messages** (Settings → Chat, on by default) — a public message
+  you send is no longer shown once per server it was echoed back from.
+- More of the interface is **localized** (menu items, header, Settings).
+
 ## HiShare 1.1-6 (August 2026)
 
 Interface polish and localization follow-ups.

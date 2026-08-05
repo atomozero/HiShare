@@ -1,6 +1,9 @@
 #include <stdio.h>
 #include <string.h>
 #include <sys/socket.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
+#include <netdb.h>
 #include <time.h>
 #include <app/Application.h>
 #include <app/MessageRunner.h>
@@ -860,12 +863,46 @@ private:
 // Any servers in this list will *always* be added to the server menu on startup.
 // Most servers need not be listed here, as the auto-server-updater-thingy will
 // add them at run time based on the servers.txt file it downloads
-static const char * _defaultServers[] = 
+static const char * _defaultServers[] =
 {
    "coquilletkd.com",    // bbjimmy's server
    "beshare.tycomsystems.com", // Minox's Server
    "beshare.agmsmith.ca", // Alexander G. M. Smith's server
 };
+
+// Resolve the host part of a "host" or "host:port" server string to an IPv4 address
+// (network byte order), or 0 if it can't be resolved.  Used by "Connect to all known
+// servers" to skip self/loopback and to avoid opening a second session to the same box
+// under a different name/IP (which makes muscled drop us).  getaddrinfo() (never the
+// non-thread-safe gethostbyname) so we don't race muscle's own DNS lookups.
+static uint32 ResolveServerIPv4(const char * serverStr)
+{
+   if ((serverStr == NULL)||(serverStr[0] == '\0')) return 0;
+
+   char host[256];
+   strncpy(host, serverStr, sizeof(host)-1);
+   host[sizeof(host)-1] = '\0';
+   for (char * p = host; *p; p++) if ((*p == ':')||(*p == ' ')) { *p = '\0'; break; }  // drop :port / trailing junk
+   if (host[0] == '\0') return 0;
+
+   struct in_addr addr;
+   if (inet_pton(AF_INET, host, &addr) == 1) return addr.s_addr;   // already a dotted quad
+
+   struct addrinfo hints; memset(&hints, 0, sizeof(hints));
+   hints.ai_family = AF_INET; hints.ai_socktype = SOCK_STREAM;
+   struct addrinfo * res = NULL;
+   if ((getaddrinfo(host, NULL, &hints, &res) != 0)||(res == NULL)) return 0;
+   uint32 ip = ((struct sockaddr_in *)res->ai_addr)->sin_addr.s_addr;
+   freeaddrinfo(res);
+   return ip;
+}
+
+// True for a 127.0.0.0/8 loopback address (network byte order); false for 0 (unresolved),
+// so an only-temporarily-unresolvable server is still attempted rather than dropped.
+static bool IsLoopbackIPv4(uint32 netIP)
+{
+   return (netIP != 0)&&((ntohl(netIP) >> 24) == 127);
+}
 
 // Any connection that hasn't transferred data in >= 5 minutes will be cut
 #define MORIBUND_TIMEOUT_SECONDS (5*60)
@@ -1397,6 +1434,14 @@ ShareWindow :: ShareWindow(uint64 installID, BMessage & settingsMsg, const char 
    _userIntendedFirewalled(false),
    _mapperManagesFirewalled(true),
    _mapperClearedFirewalled(false),
+   _hideOwnEcho(true),
+   _autoDetectSpeed(false),
+   _lastUlSampleBytes(0),
+   _lastDlSampleBytes(0),
+   _lastUlSampleTime(0),
+   _measuredUploadBps(0),
+   _measuredDownloadBps(0),
+   _speedSampleRunner(NULL),
    _maxDownloadRate(0),
    _maxUploadRate(0),
    _doubleBufferBitmap(NULL),
@@ -1545,8 +1590,10 @@ ShareWindow :: ShareWindow(uint64 installID, BMessage & settingsMsg, const char 
    BMenu * fileMenu = new BMenu(str(STR_FILE));
    fileMenu->AddItem(_connectMenuItem = new BMenuItem(str(STR_CONNECT_TO_SERVER), new BMessage(SHAREWINDOW_COMMAND_RECONNECT_TO_SERVER), shortcut(SHORTCUT_CONNECT)));
    fileMenu->AddItem(_disconnectMenuItem = new BMenuItem(str(STR_DISCONNECT), new BMessage(SHAREWINDOW_COMMAND_DISCONNECT_FROM_SERVER), shortcut(SHORTCUT_DISCONNECT), B_SHIFT_KEY));
-   fileMenu->AddItem(new BMenuItem("Connect to additional server" B_UTF8_ELLIPSIS, new BMessage(SHAREWINDOW_COMMAND_CONNECT_ADDITIONAL_SERVER)));
-   fileMenu->AddItem(_connectionsMenu = new BMenu("Connections"));
+   String addServerLabel = str(STR_CONNECT_ADDITIONAL_SERVER); addServerLabel += B_UTF8_ELLIPSIS;
+   fileMenu->AddItem(new BMenuItem(addServerLabel(), new BMessage(SHAREWINDOW_COMMAND_CONNECT_ADDITIONAL_SERVER)));
+   fileMenu->AddItem(new BMenuItem(str(STR_CONNECT_ALL_SERVERS), new BMessage(SHAREWINDOW_COMMAND_CONNECT_ALL_SERVERS)));
+   fileMenu->AddItem(_connectionsMenu = new BMenu(str(STR_CONNECTIONS)));
    fileMenu->AddItem(new BSeparatorItem);
 
    fileMenu->AddItem(new BMenuItem(str(STR_OPEN_SHARED_FOLDER), new BMessage(SHAREWINDOW_COMMAND_OPEN_SHARED_FOLDER), shortcut(SHORTCUT_OPEN_SHARED_FOLDER)));
@@ -1594,6 +1641,12 @@ ShareWindow :: ShareWindow(uint64 installID, BMessage & settingsMsg, const char 
    bool fw;
    if ((settingsMsg.FindBool("firewalled", &fw) == B_NO_ERROR)&&(fw)) NetClient()->SetFirewalled(true);
    _userIntendedFirewalled = NetClient()->GetFirewalled();  // remember the user's own preference
+
+   bool hoe;
+   if (settingsMsg.FindBool("hideownecho", &hoe) == B_NO_ERROR) _hideOwnEcho = hoe;  // else keep the default (on)
+
+   bool ads;
+   if (settingsMsg.FindBool("autodetectspeed", &ads) == B_NO_ERROR) _autoDetectSpeed = ads;  // else keep the default (off)
 
    settingsMenu->AddItem(MakeLimitSubmenu(settingsMsg, SHAREWINDOW_COMMAND_SET_UPLOAD_LIMIT, str(STR_MAX_SIMULTANEOUS_UPLOADS), "uploads", _maxSimultaneousUploadSessions));
    settingsMenu->AddItem(MakeLimitSubmenu(settingsMsg, SHAREWINDOW_COMMAND_SET_UPLOAD_PER_USER_LIMIT, str(STR_MAX_SIMULTANEOUS_UPLOADS_PER_USER), "uploadsperuser", _maxSimultaneousUploadSessionsPerUser));
@@ -1908,7 +1961,9 @@ ShareWindow :: ShareWindow(uint64 installID, BMessage & settingsMsg, const char 
 
             if (settingsMsg.FindString("username", &un) != B_NO_ERROR)
                  un = first ? first : FACTORY_DEFAULT_USER_NAME;
-            NetClient()->SetLocalUserName(un);
+            // Name every connection (the primary and any extra servers restored from
+            // settings were already created above), so none logs in as "binky".
+            for (uint32 i=0; i<_connections.GetNumItems(); i++) _connections[i]->Client()->SetLocalUserName(un);
 
             _userNameEntry = new BTextControl(
                 BRect(userNameMenuLeft+userNameMenuWidth,6,STATUS_VIEW_WIDTH-(USER_STATUS_WIDTH+1),
@@ -1945,7 +2000,7 @@ ShareWindow :: ShareWindow(uint64 installID, BMessage & settingsMsg, const char 
 
             if (settingsMsg.FindString("userstatus", &us) != B_NO_ERROR)
                  us = first ? first : FACTORY_DEFAULT_USER_STATUS;
-            NetClient()->SetLocalUserStatus(us);
+            for (uint32 i=0; i<_connections.GetNumItems(); i++) _connections[i]->Client()->SetLocalUserStatus(us);
 
             _userStatusEntry = new BTextControl(
              BRect(userStatusMenuLeft+userStatusMenuWidth,6,STATUS_VIEW_WIDTH-1,statusViewFrame.Height()),
@@ -1973,9 +2028,20 @@ ShareWindow :: ShareWindow(uint64 installID, BMessage & settingsMsg, const char 
    BView * resultsView = new BView(resultsFrame, "IOView", B_FOLLOW_ALL_SIDES, 0);
    AddBorderView(resultsView);
 
+   // Shared geometry for the query/search row.  A BButton's minimum height is a bit taller
+   // than a bare BTextControl / BMenuField, so sizing everything to the plain font height
+   // makes the Start/Stop buttons stick out below the fields beside them.  Measure the
+   // button height and give every control on the row the same top/bottom so they line up.
+   float rowCtrlH;
+   { BButton probe(BRect(0, 0, 1, 1), "p", "M", NULL); float pw; probe.GetPreferredSize(&pw, &rowCtrlH); }
+   if (rowCtrlH < fontHeight) rowCtrlH = fontHeight;   // sanity fallback if the unattached measurement is off
+   const float rowTop = 3.0f;
+   const float rowBot = rowTop + rowCtrlH;
+   const float queryRowH = rowBot + 3.0f;              // query-row view height (replaces QUERY_VIEW_HEIGHT here)
+
    {
          // Fill out the query view
-         BRect queryViewFrame(0, 0, resultsFrame.Width(), QUERY_VIEW_HEIGHT);
+         BRect queryViewFrame(0, 0, resultsFrame.Width(), queryRowH);
          _queryView = new BView(queryViewFrame, NULL, B_FOLLOW_LEFT_RIGHT | B_FOLLOW_TOP, 0);
          AddBorderView(_queryView);
          resultsView->AddChild(_queryView);
@@ -1987,7 +2053,7 @@ ShareWindow :: ShareWindow(uint64 installID, BMessage & settingsMsg, const char 
             float serverMenuWidth = _queryView->StringWidth(str(STR_SERVER))+_queryView->StringWidth("MMM");
             _serverMenu = new BMenu(str(STR_SERVER));
             _queryView->AddChild(AddBorderView(_serverMenuField =
-                 new BMenuField(BRect(hMargin,4,hMargin+serverMenuWidth,fontHeight), NULL, NULL, _serverMenu)));
+                 new BMenuField(BRect(hMargin,rowTop,hMargin+serverMenuWidth,rowBot), NULL, NULL, _serverMenu)));
 
             const char * firstName = NULL;
             const char * sn = NULL;
@@ -2006,7 +2072,7 @@ ShareWindow :: ShareWindow(uint64 installID, BMessage & settingsMsg, const char 
 
             float serverEntryLeft = hMargin+serverMenuWidth;
             _serverEntry = new BTextControl(
-                BRect(serverEntryLeft, 4, serverEntryLeft+SERVER_ENTRY_WIDTH, fontHeight),
+                BRect(serverEntryLeft, rowTop, serverEntryLeft+SERVER_ENTRY_WIDTH, rowBot),
                  NULL, NULL, firstName, new BMessage(SHAREWINDOW_COMMAND_USER_CHANGED_SERVER),
                   B_FOLLOW_LEFT | B_FOLLOW_TOP);
             AddBorderView(_serverEntry);
@@ -2022,12 +2088,12 @@ ShareWindow :: ShareWindow(uint64 installID, BMessage & settingsMsg, const char 
          _queryMenu = new BMenu(q);
          float qw = _queryView->StringWidth(q)+extraMenuWidth;
          _queryView->AddChild(AddBorderView(new BMenuField(
-            BRect(queryLeft,4,queryLeft+qw,fontHeight), NULL, NULL, _queryMenu)));
+            BRect(queryLeft,rowTop,queryLeft+qw,rowBot), NULL, NULL, _queryMenu)));
 
          float right = queryViewFrame.Width()-hMargin;
          float stringWidth = _queryMenu->StringWidth(str(STR_STOP_QUERY))+extraMenuWidth;
          _disableQueryButton = new BButton(
-            BRect(right-stringWidth,4,right,fontHeight), NULL, str(STR_STOP_QUERY),
+            BRect(right-stringWidth,rowTop,right,rowBot), NULL, str(STR_STOP_QUERY),
              new BMessage(SHAREWINDOW_COMMAND_DISABLE_QUERY), B_FOLLOW_RIGHT | B_FOLLOW_TOP);
          AddBorderView(_disableQueryButton);
          _queryView->AddChild(_disableQueryButton);
@@ -2035,7 +2101,7 @@ ShareWindow :: ShareWindow(uint64 installID, BMessage & settingsMsg, const char 
 
          stringWidth = _queryMenu->StringWidth(str(STR_START_QUERY))+extraMenuWidth;
          _enableQueryButton = new BButton(
-            BRect(right-stringWidth,4,right,fontHeight), NULL, str(STR_START_QUERY),
+            BRect(right-stringWidth,rowTop,right,rowBot), NULL, str(STR_START_QUERY),
              new BMessage(SHAREWINDOW_COMMAND_ENABLE_QUERY), B_FOLLOW_RIGHT | B_FOLLOW_TOP);
          AddBorderView(_enableQueryButton);
          _queryView->AddChild(_enableQueryButton);
@@ -2046,7 +2112,7 @@ ShareWindow :: ShareWindow(uint64 installID, BMessage & settingsMsg, const char 
          // repo).  Only applies to fresh installs; a saved "query" setting wins.
          if (settingsMsg.FindString("query", &startupQuery) != B_NO_ERROR) startupQuery = "*.hpkg";
          _fileNameQueryEntry = new BTextControl(
-            BRect(queryLeft+qw-10.0f,4,right,fontHeight), NULL, NULL, startupQuery,
+            BRect(queryLeft+qw-10.0f,rowTop,right,rowBot), NULL, NULL, startupQuery,
              new BMessage(SHAREWINDOW_COMMAND_CHANGE_FILE_NAME_QUERY), B_FOLLOW_ALL_SIDES);
          AddBorderView(_fileNameQueryEntry);
          _fileNameQueryEntry->SetTarget(toMe);
@@ -2063,7 +2129,7 @@ ShareWindow :: ShareWindow(uint64 installID, BMessage & settingsMsg, const char 
 
       CLVContainerView* resultsContainerView;
    _resultsView = new ResultsView(SHAREWINDOW_COMMAND_SWITCH_TO_PAGE,
-     BRect(hMargin, vMargin+QUERY_VIEW_HEIGHT, resultsView->Bounds().Width()-(B_V_SCROLL_BAR_WIDTH+2),
+     BRect(hMargin, vMargin+queryRowH, resultsView->Bounds().Width()-(B_V_SCROLL_BAR_WIDTH+2),
       resultsView->Bounds().Height()-(vMargin+fontHeight+B_H_SCROLL_BAR_HEIGHT+8)),
       &resultsContainerView, NULL,
        B_FOLLOW_ALL_SIDES, B_WILL_DRAW|B_FRAME_EVENTS|B_NAVIGABLE,B_MULTIPLE_SELECTION_LIST,
@@ -2243,6 +2309,9 @@ ShareWindow :: ShareWindow(uint64 installID, BMessage & settingsMsg, const char 
    // This prevents someone with a broken connection from piling up
    // a lot of useless/stalled requests, DOS'ing your client.
    _connectionReaper = new BMessageRunner(toMe, new BMessage(SHAREWINDOW_COMMAND_CHECK_FOR_MORIBUND_CONNECTIONS), 60*1000000LL); // check once per minute
+
+   // Sample our upload throughput every 2s to auto-detect the advertised bandwidth.
+   _speedSampleRunner = new BMessageRunner(toMe, new BMessage(SHAREWINDOW_COMMAND_SAMPLE_UPLOAD_SPEED), 2*1000000LL);
 
    PostMessage(SHAREWINDOW_COMMAND_PRINT_STARTUP_MESSAGES);
 
@@ -2522,6 +2591,9 @@ ShareWindow :: ~ShareWindow()
    delete _connectionReaper;
    _connectionReaper = NULL;
 
+   delete _speedSampleRunner;
+   _speedSampleRunner = NULL;
+
    // delete MIME infos that aren't part of our menu hierarchy (the ones in the menu will be deleted by the BMenu)
    ShareMIMEInfo * mi;
    HashtableIterator<ShareMIMEInfo *, bool> miter = _emptyMimeInfos.GetIterator();
@@ -2628,6 +2700,8 @@ GenerateSettingsMessage(BMessage & settingsMsg)
       if (_connections[sc]->GetServerName().Length() > 0) settingsMsg.AddString("extraserver", _connections[sc]->GetServerName()());
 
    settingsMsg.AddBool("fulluserqueries", _fullUserQueries->IsMarked());
+   settingsMsg.AddBool("hideownecho", _hideOwnEcho);
+   settingsMsg.AddBool("autodetectspeed", _autoDetectSpeed);
    settingsMsg.AddBool("shortestfirst", _shortestUploadsFirst->IsMarked());
    settingsMsg.AddBool("autoclear", _autoClearCompletedDownloads->IsMarked());
    settingsMsg.AddBool("retainfilepaths", _retainFilePaths->IsMarked());
@@ -2814,6 +2888,17 @@ AddBandwidthOption(BMenu * bMenu, const char * label, int32 bps)
       NetClient()->SetUploadBandwidth(label, bps);
    }
    bMenu->AddItem(item);
+}
+
+// Advertise the passively-measured upload rate as our bandwidth on every connection.
+void
+ShareWindow ::
+_ApplyMeasuredUploadSpeed()
+{
+   if (_measuredUploadBps == 0) return;
+   char rate[24]; GetByteSizeString(_measuredUploadBps / 8, rate);   // bytes/sec, e.g. "2.4 MB"
+   char label[40]; snprintf(label, sizeof(label), "~%s/s", rate);    // -> "~2.4 MB/s"
+   for (uint32 i=0; i<_connections.GetNumItems(); i++) _connections[i]->Client()->SetUploadBandwidth(label, _measuredUploadBps);
 }
 
 uint64
@@ -3725,6 +3810,8 @@ void ShareWindow :: MessageReceived(BMessage * msg)
          st.AddBool("notifications",     _showNotifications->IsMarked());
          st.AddBool("customcolors",      GetCustomColorsEnabled());
          st.AddBool("fulluserqueries",   _fullUserQueries->IsMarked());
+         st.AddBool("hideownecho",       _hideOwnEcho);
+         st.AddBool("autodetectspeed",   _autoDetectSpeed);
          st.AddBool("logging",           _toggleFileLogging->IsMarked());
          st.AddInt32("uploads",          (int32)_maxSimultaneousUploadSessions);
          st.AddInt32("uploadsperuser",   (int32)_maxSimultaneousUploadSessionsPerUser);
@@ -3913,6 +4000,63 @@ void ShareWindow :: MessageReceived(BMessage * msg)
 
       case SHAREWINDOW_COMMAND_TOGGLE_FULL_USER_QUERIES:
          _fullUserQueries->SetMarked(!_fullUserQueries->IsMarked());
+      break;
+
+      case SHAREWINDOW_COMMAND_TOGGLE_HIDE_OWN_ECHO:
+         _hideOwnEcho = !_hideOwnEcho;
+      break;
+
+      case SHAREWINDOW_COMMAND_TOGGLE_AUTO_DETECT_SPEED:
+         _autoDetectSpeed = !_autoDetectSpeed;
+         if (_autoDetectSpeed)
+         {
+            // Publish whatever we've measured so far (if anything); otherwise the next
+            // sample with upload activity will advertise it.
+            if (_measuredUploadBps > 0) _ApplyMeasuredUploadSpeed();
+         }
+         else
+         {
+            // Back to the manual preset: re-publish the user's chosen bandwidth (or the
+            // "unknown" default of 0 -> "?") on every connection.
+            const char * label = (_uploadBandwidth > 0) ? "manual" : "?";
+            char rbuf[32];
+            if (_uploadBandwidth > 0) { char b[24]; GetByteSizeString(_uploadBandwidth/8, b); snprintf(rbuf, sizeof(rbuf), "%s/s", b); label = rbuf; }
+            for (uint32 i=0; i<_connections.GetNumItems(); i++) _connections[i]->Client()->SetUploadBandwidth(label, _uploadBandwidth);
+         }
+      break;
+
+      case SHAREWINDOW_COMMAND_SAMPLE_UPLOAD_SPEED:
+      {
+         // Periodic (2s) sample of our upload AND download throughput.  Track the best
+         // sustained rate seen this session in each direction; when auto-detect is on and
+         // a rate improves, advertise the upload rate as our bandwidth and refresh the
+         // header so the user sees the measured speeds.
+         const bigtime_t now = system_time();
+         if (_lastUlSampleTime > 0)
+         {
+            const bigtime_t dt = now - _lastUlSampleTime;
+            if (dt > 0)
+            {
+               bool improved = false;
+               const uint64 dUp = (_totalBytesUploaded   >= _lastUlSampleBytes) ? (_totalBytesUploaded   - _lastUlSampleBytes) : 0;
+               const uint64 dDn = (_totalBytesDownloaded >= _lastDlSampleBytes) ? (_totalBytesDownloaded - _lastDlSampleBytes) : 0;
+               if (dUp > 0)
+               {
+                  const uint64 bps = (dUp * 8ULL * 1000000ULL) / (uint64)dt;   // bits/sec (presets are in bits/sec)
+                  if (bps > (uint64)_measuredUploadBps) { _measuredUploadBps = (uint32)((bps > 0xFFFFFFFFULL) ? 0xFFFFFFFFULL : bps); improved = true; if (_autoDetectSpeed) _ApplyMeasuredUploadSpeed(); }
+               }
+               if (dDn > 0)
+               {
+                  const uint64 bps = (dDn * 8ULL * 1000000ULL) / (uint64)dt;
+                  if (bps > (uint64)_measuredDownloadBps) { _measuredDownloadBps = (uint32)((bps > 0xFFFFFFFFULL) ? 0xFFFFFFFFULL : bps); improved = true; }
+               }
+               if ((improved)&&(_autoDetectSpeed)) UpdateConnectStatus(false);  // show the new peak in the header
+            }
+         }
+         _lastUlSampleBytes = _totalBytesUploaded;
+         _lastDlSampleBytes = _totalBytesDownloaded;
+         _lastUlSampleTime  = now;
+      }
       break;
 
       case SHAREWINDOW_COMMAND_TOGGLE_SHORTEST_UPLOADS_FIRST:
@@ -4140,6 +4284,91 @@ void ShareWindow :: MessageReceived(BMessage * msg)
                   LogMessage(LOG_ERROR_MESSAGE, buf);
                }
             }
+         }
+      }
+      break;
+
+      case SHAREWINDOW_COMMAND_CONNECT_ALL_SERVERS:
+      {
+         // Connect to every server in the known-server menu in one shot: existing
+         // connections are brought online, missing ones get a fresh connection, up
+         // to the MAX_SERVER_CONNECTIONS cap.  Servers past the cap are reported.
+         //
+         // The known-server menu is a grab-bag (it can contain "localhost", our own
+         // public IP, and different names for the same box), so we filter as we go:
+         // skip loopback/localhost, skip our own public IP (self-connect), and skip any
+         // server that resolves to a box we're already on — a second session to the same
+         // muscled just makes the server drop us.
+         int skipped = 0;
+
+         Queue<uint32> takenIPs;  // IPs we must not open a (second) session to
+         {
+            const uint32 own = ResolveServerIPv4(_portMapper ? _portMapper->GetInternetIP()() : "");
+            if ((own != 0)&&(takenIPs.IndexOf(own) < 0)) (void) takenIPs.AddTail(own);
+            for (uint32 i=0; i<_connections.GetNumItems(); i++)
+            {
+               ServerConnection * c = _connections[i];
+               if (((c->IsConnected())||(c->IsConnecting()))&&(c->GetServerName().Length() > 0))
+               {
+                  const uint32 ip = ResolveServerIPv4(c->GetServerName()());
+                  if ((ip != 0)&&(takenIPs.IndexOf(ip) < 0)) (void) takenIPs.AddTail(ip);
+               }
+            }
+         }
+
+         // The idle/unnamed primary connection is reused for the first server we
+         // actually connect, instead of being left empty beside a new connection.
+         ServerConnection * primary = PrimaryConnection();
+         bool primaryFree = (primary)&&(primary->GetServerName().Length() == 0)&&
+                            (primary->IsConnected() == false)&&(primary->IsConnecting() == false);
+
+         for (int i=0; i<_serverMenu->CountItems(); i++)
+         {
+            const char * server = _serverMenu->ItemAt(i)->Label();
+            if ((server == NULL)||(server[0] == '\0')) continue;
+            if (strncasecmp(server, "localhost", 9) == 0) continue;   // never dial ourselves
+
+            ServerConnection * existing = FindConnectionByServerName(server);
+            if (existing)
+            {
+               if ((existing->IsConnected() == false)&&(existing->IsConnecting() == false))
+               {
+                  ResetAutoReconnectState(existing, true);
+                  ReconnectToServer(existing);
+               }
+               continue;
+            }
+
+            const uint32 ip = ResolveServerIPv4(server);
+            if (IsLoopbackIPv4(ip)) continue;                          // 127.0.0.0/8
+            if ((ip != 0)&&(takenIPs.IndexOf(ip) >= 0)) continue;      // self / same box as an existing connection
+
+            if (GetConnectionCount() >= MAX_SERVER_CONNECTIONS) { skipped++; continue; }
+
+            ServerConnection * conn;
+            if ((primaryFree)&&(primary->GetServerName().Length() == 0))
+            {
+               _serverEntry->SetText(server);
+               ResetAutoReconnectState(primary, true);
+               ReconnectToServer(primary);  // the primary follows the server field
+               conn = primary;
+            }
+            else
+            {
+               conn = AddConnection(server);
+               if (conn) ReconnectToServer(conn);
+            }
+            if ((conn)&&(ip != 0)&&(takenIPs.IndexOf(ip) < 0)) (void) takenIPs.AddTail(ip);
+         }
+
+         UpdateServerColumnVisibility();
+         UpdateConnectStatus(true);
+
+         if (skipped > 0)
+         {
+            char buf[160];
+            snprintf(buf, sizeof(buf), str(STR_CONNECT_ALL_LIMIT_REACHED), (int)MAX_SERVER_CONNECTIONS, skipped);
+            LogMessage(LOG_WARNING_MESSAGE, buf);
          }
       }
       break;
@@ -4871,7 +5100,13 @@ UpdateTitleBar()
          }
       }
 
-      int state = (numConnected == _connections.GetNumItems()) && (numConnected > 0) ? 2 : ((numConnected > 0)||(IsConnecting()) ? 1 : 0);
+      // Green "Connected" as soon as any connection is live; amber "Connecting…" only
+      // while actually establishing one and nothing is up yet; red otherwise.  (The old
+      // "green only when EVERY connection is up" rule left the header stuck on amber
+      // "Connecting…" whenever a configured connection was idle/down — e.g. a duplicate
+      // skipped on purpose — even though nothing was connecting.  The per-server count is
+      // in the subtitle and the ✓/…/✗ tooltip.)
+      int state = (numConnected > 0) ? 2 : (IsConnecting() ? 1 : 0);
       String sub;
       char nbuf[128];
       if (numConnected > 1)
@@ -4886,11 +5121,21 @@ UpdateTitleBar()
       if ((NetClient())&&(_sharingEnabled)&&(GetFileSharingEnabled()))
       {
          char scbuf[64];
-         const uint32 sc = NetClient()->GetSharedFileCount();
+         const uint32 sc = GetLocalSharedFileCount();  // robust against a reconnecting primary reading 0
          snprintf(scbuf, sizeof(scbuf), str((sc == 1) ? STR_HDR_FILE_SHARED_SING : STR_HDR_FILES_SHARED_PLUR), (unsigned long)sc);
          sub += "   \xE2\x80\xA2  "; sub += scbuf;
       }
       if (_publicMappingStr.Length() > 0) { sub += "   \xE2\x80\xA2  "; sub += _publicMappingStr; }
+
+      // When auto-detecting speed, show the best observed download/upload rates so far
+      // (\xE2\x86\x93 = down arrow, \xE2\x86\x91 = up arrow).  They appear once real transfers give us data.
+      if ((_autoDetectSpeed)&&((_measuredDownloadBps > 0)||(_measuredUploadBps > 0)))
+      {
+         char db[24]; GetByteSizeString((_measuredDownloadBps > 0) ? _measuredDownloadBps/8 : 0, db);
+         char ub[24]; GetByteSizeString((_measuredUploadBps   > 0) ? _measuredUploadBps/8   : 0, ub);
+         char spd[80]; snprintf(spd, sizeof(spd), "\xE2\x86\x93 %s/s   \xE2\x86\x91 %s/s", db, ub);
+         sub += "   \xE2\x80\xA2  "; sub += spd;
+      }
       _headerBanner->SetInfo(uname, sub(), state);
    }
    if (_connectToolButton)
@@ -5101,6 +5346,18 @@ AddConnection(const char * optServerName)
 
    ServerConnection * conn = new ServerConnection(_nextConnID++, _shareDir, (_acceptThread.GetPort() > 0) ? (int32)_acceptThread.GetPort() : -1);
    if (optServerName) conn->SetServerName(optServerName);
+
+   // A fresh connection's client carries its default identity; inherit the current
+   // local name/status from the primary so a connection added at runtime logs in as
+   // us, not as the client default ("binky").  (NetClient() is NULL for the very
+   // first connection, which is fine — it gets named when the profile loads.)
+   ShareNetClient * primaryClient = NetClient();  // the head, before we append the new one
+   if (primaryClient)
+   {
+      conn->Client()->SetLocalUserName(primaryClient->GetLocalUserName());
+      conn->Client()->SetLocalUserStatus(primaryClient->GetLocalUserStatus());
+   }
+
    _connections.AddTail(conn);
    AddHandler(conn->Client());
    return conn;
@@ -6798,6 +7055,20 @@ void ShareWindow :: ReconnectToServer(ServerConnection * conn)
    // The primary connection follows the server entry field; extra connections
    // reconnect to their own stored server name.
    if (conn == PrimaryConnection()) conn->SetServerName(_serverEntry->Text());
+
+   // Don't open a second session to a box we're already on (e.g. the same server named
+   // once by hostname and once by IP): it shows us multiple times and can get us dropped.
+   // The connection stays configured but idle; the user can remove it if unwanted.
+   ServerConnection * dup = FindOnlineConnectionWithSameIP(conn);
+   if (dup)
+   {
+      char buf[192];
+      snprintf(buf, sizeof(buf), str(STR_SKIP_DUPLICATE_SERVER), conn->GetServerName()(), dup->GetServerName()());
+      LogMessage(LOG_INFORMATION_MESSAGE, buf);
+      UpdateConnectStatus(false);
+      return;
+   }
+
    const String serverStr = conn->GetServerName();
    const char * server = serverStr();
    if (server)
@@ -6865,6 +7136,22 @@ FindConnectionByServerName(const char * serverName) const
    return NULL;
 }
 
+ServerConnection *
+ShareWindow ::
+FindOnlineConnectionWithSameIP(ServerConnection * conn) const
+{
+   if ((conn == NULL)||(_connections.GetNumItems() < 2)) return NULL;
+   const uint32 ip = ResolveServerIPv4(conn->GetServerName()());
+   if (ip == 0) return NULL;   // can't resolve -> can't compare; let it try to connect
+   for (uint32 i=0; i<_connections.GetNumItems(); i++)
+   {
+      ServerConnection * c = _connections[i];
+      if (c == conn) continue;
+      if (((c->IsConnected())||(c->IsConnecting()))&&(ResolveServerIPv4(c->GetServerName()()) == ip)) return c;
+   }
+   return NULL;
+}
+
 String
 ShareWindow ::
 GetConnectedTo() const
@@ -6920,7 +7207,10 @@ ShareWindow :: SetLocalUserName(const char * name)
    // See if the new name is in our user name list;  if not, add it to the beginning
    UpdateLRUMenu(_userNameMenu, name, SHAREWINDOW_COMMAND_USER_SELECTED_USER_NAME, "username", 20, true);
 
-   NetClient()->SetLocalUserName(name);
+   // Apply the name to EVERY connection, not just the primary: each connection
+   // publishes its own "beshare/name" node, so a secondary server would otherwise
+   // show us under its client's default name (e.g. "binky") instead of ours.
+   for (uint32 i=0; i<_connections.GetNumItems(); i++) _connections[i]->Client()->SetLocalUserName(name);
    String s(str(STR_YOUR_NAME_HAS_BEEN_CHANGED_TO));
    s += NetClient()->GetLocalUserName();
    LogMessage(LOG_USER_EVENT_MESSAGE, s());
@@ -6944,7 +7234,9 @@ ShareWindow :: SetLocalUserStatus(const char * status)
    // See if the new status is in our user status list;  if not, add it to the beginning
    UpdateLRUMenu(_userStatusMenu, status, SHAREWINDOW_COMMAND_USER_SELECTED_USER_STATUS, "userstatus", 20, true);
 
-   NetClient()->SetLocalUserStatus(status);
+   // Same as the name: every connection publishes its own status node, so apply
+   // the status to all of them (otherwise secondary servers keep the default).
+   for (uint32 i=0; i<_connections.GetNumItems(); i++) _connections[i]->Client()->SetLocalUserStatus(status);
    String s(str(STR_YOUR_STATUS_HAS_BEEN_CHANGED_TO));
    s += NetClient()->GetLocalUserStatus();
    LogMessage(LOG_USER_EVENT_MESSAGE, s());

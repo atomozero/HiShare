@@ -469,7 +469,14 @@ static const char * _englishStrings[NUM_STRINGS] = {
    "Connected to %s",                                                                     // STR_HDR_CONNECTED_TO_ONE
    "Not connected",                                                                       // STR_HDR_NOT_CONNECTED
    "%lu file shared",                                                                     // STR_HDR_FILE_SHARED_SING
-   "%lu files shared"                                                                     // STR_HDR_FILES_SHARED_PLUR
+   "%lu files shared",                                                                    // STR_HDR_FILES_SHARED_PLUR
+   "Connect to additional server",                                                        // STR_CONNECT_ADDITIONAL_SERVER
+   "Connections",                                                                         // STR_CONNECTIONS
+   "Connect to all known servers",                                                        // STR_CONNECT_ALL_SERVERS
+   "Connection limit reached (%d): %d more known server(s) were not connected.",           // STR_CONNECT_ALL_LIMIT_REACHED
+   "Hide my own messages echoed back by servers",                                          // STR_ST_HIDE_OWN_ECHO
+   "Auto-detect my connection speed",                                                      // STR_ST_AUTO_SPEED
+   "%s is the same server as %s (already connected); not opening a second session."        // STR_SKIP_DUPLICATE_SERVER
 };
 
 static const char _spanishShortcuts[NUM_SHORTCUTS] = {
@@ -2517,7 +2524,14 @@ static const char * _italianStrings[NUM_STRINGS] = {
    "Connesso a %s",                                                                        // STR_HDR_CONNECTED_TO_ONE
    "Non connesso",                                                                         // STR_HDR_NOT_CONNECTED
    "%lu file condiviso",                                                                   // STR_HDR_FILE_SHARED_SING
-   "%lu file condivisi"                                                                    // STR_HDR_FILES_SHARED_PLUR
+   "%lu file condivisi",                                                                   // STR_HDR_FILES_SHARED_PLUR
+   "Connetti a un altro server",                                                           // STR_CONNECT_ADDITIONAL_SERVER
+   "Connessioni",                                                                          // STR_CONNECTIONS
+   "Connetti a tutti i server noti",                                                       // STR_CONNECT_ALL_SERVERS
+   "Limite connessioni raggiunto (%d): %d altri server noti non sono stati collegati.",     // STR_CONNECT_ALL_LIMIT_REACHED
+   "Nascondi i miei messaggi rimandati indietro dai server",                               // STR_ST_HIDE_OWN_ECHO
+   "Rileva automaticamente la velocità della connessione",                                 // STR_ST_AUTO_SPEED
+   "%s è lo stesso server di %s (già connesso): non apro una seconda sessione."             // STR_SKIP_DUPLICATE_SERVER
 };
 
 static const char _russianShortcuts[NUM_SHORTCUTS] = {

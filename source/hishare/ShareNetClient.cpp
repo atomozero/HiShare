@@ -727,6 +727,13 @@ MessageReceived(const MessageRef & msgRef)
          ShareWindow * win = (ShareWindow *) Looper();
          if ((msg->FindString("text", &text) == B_NO_ERROR)&&(msg->FindString("session", &session) == B_NO_ERROR))
          {
+            // A public message we sent is echoed back to us by every server it went
+            // to (we're one of the "*" recipients).  We already logged a local echo
+            // when sending, so when the user opts to hide own-echoes, drop this copy
+            // instead of showing the same line once per connected server.
+            if ((win)&&(win->GetHideOwnServerEcho())&&(isPrivate == false)&&
+                (_localSessionID.Length() > 0)&&(strcmp(session, _localSessionID()) == 0)) break;
+
             // With several servers online, tag remote chat with its server of origin.
             String taggedText;
             if ((win->GetConnectionCount() > 1)&&(_owner))
@@ -1461,10 +1468,16 @@ void ShareNetClient :: ScanSharesThread(bool checkRemoves, bool checkAdds)
    {
       node_ref shareNodeRef;
       BEntry shareEntry;
-      if ((_shareDir.GetNodeRef(&shareNodeRef) == B_NO_ERROR)&&(_shareDir.GetEntry(&shareEntry) == B_NO_ERROR)) 
+      if ((_shareDir.GetNodeRef(&shareNodeRef) == B_NO_ERROR)&&(_shareDir.GetEntry(&shareEntry) == B_NO_ERROR))
       {
          bool success = (AddWatchedDirectory(shareNodeRef, shareEntry, (thread_id *) &_scanSharesThreadID, "", checkAdds) == B_NO_ERROR);
-         if (checkAdds == false) report.AddBool("success", success);
+         // AddWatchedDirectory returns B_ERROR both on a real failure AND when this scan
+         // was force-aborted by a newer one (a reconnect supersedes the in-flight scan).
+         // We only get here after GetNodeRef succeeded, so the folder was clearly found;
+         // reporting failure for an abort would raise a bogus "shared folder disabled"
+         // error (a fresh scan is already queued), so suppress the report when aborted.
+         const bool aborted = (_scanSharesThreadID != find_thread(NULL));
+         if ((checkAdds == false)&&(aborted == false)) report.AddBool("success", success);
       }
    }
    Looper()->PostMessage(&report, this);

@@ -91,6 +91,21 @@ public:
    // How many server connections currently exist (connected or not).
    uint32 GetConnectionCount() const {return _connections.GetNumItems();}
 
+   // When true, chat lines echoed back to us by a server for our own messages are
+   // not shown again (we already logged a local echo when we sent them).
+   bool GetHideOwnServerEcho() const {return _hideOwnEcho;}
+
+   // Number of local files we're sharing.  Every connection scans the same folder into
+   // its own list and clears it while disconnected, so a single reconnecting connection
+   // can transiently read 0; report the largest count any connection currently holds so
+   // the header doesn't flash "0 files shared" during a reconnect.
+   uint32 GetLocalSharedFileCount() const
+   {
+      uint32 m = 0;
+      for (uint32 i=0; i<_connections.GetNumItems(); i++) { const uint32 c = _connections[i]->Client()->GetSharedFileCount(); if (c > m) m = c; }
+      return m;
+   }
+
    // When doing a lot of add/remove file items, it's best to
    // bracket your calls with these for, efficieny in updates the GUI.
    void BeginBatchFileResultUpdate();
@@ -281,7 +296,11 @@ public:
       SHAREWINDOW_COMMAND_CONNECT_ADDITIONAL_SERVER,
       SHAREWINDOW_COMMAND_REMOVE_CONNECTION,
       SHAREWINDOW_COMMAND_CONNECT_CONNECTION,
-      SHAREWINDOW_COMMAND_DISCONNECT_CONNECTION
+      SHAREWINDOW_COMMAND_DISCONNECT_CONNECTION,
+      SHAREWINDOW_COMMAND_CONNECT_ALL_SERVERS,
+      SHAREWINDOW_COMMAND_TOGGLE_HIDE_OWN_ECHO,
+      SHAREWINDOW_COMMAND_TOGGLE_AUTO_DETECT_SPEED,
+      SHAREWINDOW_COMMAND_SAMPLE_UPLOAD_SPEED
    };
 
 protected:
@@ -492,6 +511,9 @@ private:
    bool AnyAutoReconnectPending() const;    // true iff any connection has a reconnect runner
    ServerConnection * FindConnectionByID(int32 connID) const;
    ServerConnection * FindConnectionByServerName(const char * serverName) const;  // case-insensitive; NULL if absent
+   // Another connection already connected/connecting to the same resolved IP as 'conn'
+   // (excluding 'conn'), or NULL — used to avoid two sessions to the same physical server.
+   ServerConnection * FindOnlineConnectionWithSameIP(ServerConnection * conn) const;
 
    // Dynamic connection management.  The window keeps at least one connection
    // alive at all times (lots of code assumes NetClient() is non-NULL).
@@ -605,6 +627,20 @@ private:
    bool _userIntendedFirewalled;   // the user's own preference (what gets persisted)
    bool _mapperManagesFirewalled;  // false once the user toggles firewalled by hand
    bool _mapperClearedFirewalled;  // true while our automatic "off" override is in effect
+
+   bool _hideOwnEcho;              // hide server-echoed copies of our own chat (default on)
+
+   // Passive auto-detection of our advertised upload bandwidth: sample the upload byte
+   // counter periodically, keep the best sustained rate, and (when enabled) advertise it
+   // instead of the manual preset.  See _ApplyMeasuredUploadSpeed().
+   bool _autoDetectSpeed;
+   uint64 _lastUlSampleBytes;
+   uint64 _lastDlSampleBytes;
+   bigtime_t _lastUlSampleTime;
+   uint32 _measuredUploadBps;      // best observed upload rate this session, bits/sec
+   uint32 _measuredDownloadBps;    // best observed download rate this session, bits/sec
+   BMessageRunner * _speedSampleRunner;
+   void _ApplyMeasuredUploadSpeed();
 
    uint32 _maxDownloadRate;
    uint32 _maxUploadRate;
