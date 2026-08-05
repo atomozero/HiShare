@@ -1,5 +1,30 @@
 # Changelog
 
+## HiShare 1.1-6 (August 2026)
+
+Interface polish and localization follow-ups.
+
+### Interface
+- **Nameless users are gone.** A peer that published an empty name (e.g. a
+  client whose user cleared their name field) used to appear as a **blank row**
+  in the users list. Two fixes: incoming — such a peer now shows as *Anonymous*
+  instead of an empty cell; outgoing — HiShare itself **never publishes an empty
+  name** anymore (it falls back to the default, so your own client can no longer
+  appear nameless to others).
+- **Carico / Load column no longer clips.** The right-justified load value
+  (e.g. `(0/20) 0%`) was chopped on the **left** — losing the leading `(` — when
+  the column was narrower than its content. It now keeps a minimum width that
+  fits its widest realistic value, enforced even over a saved column width
+  (the value is atomic and can't be sensibly abbreviated).
+
+### Localization
+- The **header subtitle** is now localized — *"Connesso a N server · N file
+  condivisi"* instead of the previous English text — with correct Italian
+  singular/plural.
+- The **reachability line** in Settings → Network (*"Raggiungibile…"* /
+  *"Non raggiungibile…"* / *"Raggiungibilità non ancora verificata."*) is
+  localized.
+
 ## HiShare 1.1-5 (August 2026)
 
 Fixes the crash-on-quit that 1.1-4's watchdog only masked.

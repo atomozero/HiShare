@@ -2172,7 +2172,7 @@ ShareWindow :: ShareWindow(uint64 installID, BMessage & settingsMsg, const char 
    AddUserColumn(settingsMsg, STR_ID,              0.24f, NULL, CLV_RIGHT_JUSTIFIED);
    AddUserColumn(settingsMsg, STR_FILES,           0.38f, NULL, CLV_RIGHT_JUSTIFIED);
    AddUserColumn(settingsMsg, STR_CONNECTION_KEY,  0.57f, str(STR_CONNECTION_KEY)+2, 0);
-   AddUserColumn(settingsMsg, STR_LOAD,            0.37f, NULL, CLV_RIGHT_JUSTIFIED);
+   AddUserColumn(settingsMsg, STR_LOAD,            0.37f, NULL, CLV_RIGHT_JUSTIFIED, "(00/00) 000%");
    AddUserColumn(settingsMsg, STR_CLIENT,          0.37f, NULL, 0);
    AddUserColumn(settingsMsg, STR_SERVER,          0.45f, "Server", CLV_HIDDEN);  // shown automatically with >1 connections
 
@@ -2310,14 +2310,29 @@ ShareWindow :: CreatePresetItem(int32 what, int32 which, bool enabled, bool shif
 
 void
 ShareWindow ::
-AddUserColumn(const BMessage & settingsMsg, int labelID, float dw, const char * optLabel, uint32 extraFlags)
+AddUserColumn(const BMessage & settingsMsg, int labelID, float dw, const char * optLabel, uint32 extraFlags, const char * optMinSample)
 {
    char buf[128];
    sprintf(buf, "usercolumnwidth_%i", labelID);
 
+   const char * label = optLabel ? optLabel : str(labelID);
+
    float width;
-   if (settingsMsg.FindFloat(buf, &width) != B_NO_ERROR) width = dw*_usersView->Bounds().Width();
-   _usersView->AddColumn(new CLVColumn(optLabel ? optLabel : str(labelID), width, CLV_SORT_KEYABLE | extraFlags));
+   const bool haveSaved = (settingsMsg.FindFloat(buf, &width) == B_NO_ERROR);
+   if (haveSaved == false) width = dw*_usersView->Bounds().Width();
+
+   // For a fresh default, floor the width so the header is never clipped.  For a
+   // column whose content is an atomic value that can't be sensibly ellipsized
+   // (optMinSample, e.g. Carico/Load "(0/20) 0%"), enforce that floor even over a
+   // saved width: right-justified text clips on the LEFT, chopping the leading
+   // "(" rather than an unimportant tail, which just looks like a bug.
+   if ((haveSaved == false)||(optMinSample))
+   {
+      float floorW = be_plain_font->StringWidth(label) + 22.0f;   // label + sort arrow + padding
+      if (optMinSample) { float s = be_plain_font->StringWidth(optMinSample) + 12.0f; if (s > floorW) floorW = s; }
+      if (width < floorW) width = floorW;
+   }
+   _usersView->AddColumn(new CLVColumn(label, width, CLV_SORT_KEYABLE | extraFlags));
 }
 
 void 
@@ -4858,21 +4873,21 @@ UpdateTitleBar()
 
       int state = (numConnected == _connections.GetNumItems()) && (numConnected > 0) ? 2 : ((numConnected > 0)||(IsConnecting()) ? 1 : 0);
       String sub;
+      char nbuf[128];
       if (numConnected > 1)
       {
-         char nbuf[64];
-         snprintf(nbuf, sizeof(nbuf), "Connected to %lu servers", (unsigned long) numConnected);
+         snprintf(nbuf, sizeof(nbuf), str(STR_HDR_CONNECTED_TO_N_SERVERS), (unsigned long) numConnected);
          sub = nbuf;
       }
-      else if (numConnected == 1) { sub = "Connected to "; sub += connectedName; }
+      else if (numConnected == 1)  { snprintf(nbuf, sizeof(nbuf), str(STR_HDR_CONNECTED_TO_ONE), connectedName()); sub = nbuf; }
       else if (IsConnecting())     sub = str(STR_CONNECTING_TO_SERVER_DOTDOTDOT);
-      else                         sub = "Not connected";
+      else                         sub = str(STR_HDR_NOT_CONNECTED);
       _headerBanner->SetToolTip((_connections.GetNumItems() > 1) ? tip() : NULL);
       if ((NetClient())&&(_sharingEnabled)&&(GetFileSharingEnabled()))
       {
-         char scbuf[48];
+         char scbuf[64];
          const uint32 sc = NetClient()->GetSharedFileCount();
-         snprintf(scbuf, sizeof(scbuf), "%lu file%s shared", (unsigned long)sc, (sc == 1) ? "" : "s");
+         snprintf(scbuf, sizeof(scbuf), str((sc == 1) ? STR_HDR_FILE_SHARED_SING : STR_HDR_FILES_SHARED_PLUR), (unsigned long)sc);
          sub += "   \xE2\x80\xA2  "; sub += scbuf;
       }
       if (_publicMappingStr.Length() > 0) { sub += "   \xE2\x80\xA2  "; sub += _publicMappingStr; }
@@ -5183,7 +5198,14 @@ PutUser(ServerConnection * conn, const char * sessionID, const char * userName, 
       _usersView->SortItems();
    }
    bool wasReadyForRestart = ((user->GetInstallID() > 0)&&((user->GetPort() > 0)||(user->GetFirewalled())));
-   if (userName) user->SetHandle(userName, SubstituteLabelledURLs(userName).Trim()());
+   if (userName)
+   {
+      // A peer that published an empty "name" node (e.g. a client whose user cleared
+      // their name) must not show up as a blank row: fall back to the Anonymous label.
+      String disp = SubstituteLabelledURLs(userName).Trim();
+      if (disp.Length() > 0) user->SetHandle(userName, disp());
+      else                   user->SetHandle(str(STR_ANONYMOUS), str(STR_ANONYMOUS));
+   }
    if (hostName) user->SetHostName(hostName);
    if (port >= 0) user->SetPort(port);
    if (isBot) user->SetIsBot(*isBot);
@@ -6887,7 +6909,12 @@ ResumeAllUploads()
 
 void 
 ShareWindow :: SetLocalUserName(const char * name)
-{      
+{
+   // Never let an empty name reach the network: a blank name publishes an empty
+   // "beshare/name" node, so every other client shows us as a nameless row.
+   // Fall back to the factory default instead (classic BeShare behaviour).
+   if ((name == NULL)||(String(name).Trim().Length() == 0)) name = FACTORY_DEFAULT_USER_NAME;
+
    _userNameEntry->SetText(name);
          
    // See if the new name is in our user name list;  if not, add it to the beginning

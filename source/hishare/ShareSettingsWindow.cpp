@@ -190,9 +190,9 @@ ShareSettingsWindow::MessageReceived(BMessage * msg)
 void
 ShareSettingsWindow::_FormatReachText(int32 reach, const char * ip, int32 extport, char * buf, size_t bufSize)
 {
-	if (reach == 1)      snprintf(buf, bufSize, "Reachable: %s:%ld is open to the internet.", ip, (long)extport);
-	else if (reach == 0) snprintf(buf, bufSize, "Not reachable from the internet (NAT). Public IP %s.", (ip && ip[0]) ? ip : "unknown");
-	else                 snprintf(buf, bufSize, "Reachability not tested yet.");
+	if (reach == 1)      snprintf(buf, bufSize, str(STR_ST_REACH_OPEN), ip, (long)extport);
+	else if (reach == 0) snprintf(buf, bufSize, str(STR_ST_REACH_NAT), (ip && ip[0]) ? ip : str(STR_ST_REACH_UNKNOWN));
+	else                 snprintf(buf, bufSize, "%s", str(STR_ST_REACH_UNTESTED));
 }
 
 // Wrap a card's controls in a padded vertical group inside a titled box.

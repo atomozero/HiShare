@@ -460,7 +460,16 @@ static const char * _englishStrings[NUM_STRINGS] = {
    "Cancel",                                                                              // STR_ST_CANCEL
    "Connect to additional server",                                                        // STR_ST_ADD_SERVER_TITLE
    "Connect",                                                                             // STR_ST_CONNECT_BTN
-   "Custom\xE2\x80\xA6"                                                                   // STR_ST_CUSTOM
+   "Custom\xE2\x80\xA6",                                                                  // STR_ST_CUSTOM
+   "Reachable: %s:%ld is open to the internet.",                                          // STR_ST_REACH_OPEN
+   "Not reachable from the internet (NAT). Public IP %s.",                                // STR_ST_REACH_NAT
+   "Reachability not tested yet.",                                                        // STR_ST_REACH_UNTESTED
+   "unknown",                                                                             // STR_ST_REACH_UNKNOWN
+   "Connected to %lu servers",                                                            // STR_HDR_CONNECTED_TO_N_SERVERS
+   "Connected to %s",                                                                     // STR_HDR_CONNECTED_TO_ONE
+   "Not connected",                                                                       // STR_HDR_NOT_CONNECTED
+   "%lu file shared",                                                                     // STR_HDR_FILE_SHARED_SING
+   "%lu files shared"                                                                     // STR_HDR_FILES_SHARED_PLUR
 };
 
 static const char _spanishShortcuts[NUM_SHORTCUTS] = {
@@ -2499,7 +2508,16 @@ static const char * _italianStrings[NUM_STRINGS] = {
    "Annulla",                                                                              // STR_ST_CANCEL
    "Connetti a un altro server",                                                           // STR_ST_ADD_SERVER_TITLE
    "Connetti",                                                                             // STR_ST_CONNECT_BTN
-   "Personalizzato…"                                                                       // STR_ST_CUSTOM
+   "Personalizzato…",                                                                      // STR_ST_CUSTOM
+   "Raggiungibile: %s:%ld è aperto verso internet.",                                       // STR_ST_REACH_OPEN
+   "Non raggiungibile da internet (NAT). IP pubblico %s.",                                 // STR_ST_REACH_NAT
+   "Raggiungibilità non ancora verificata.",                                               // STR_ST_REACH_UNTESTED
+   "sconosciuto",                                                                          // STR_ST_REACH_UNKNOWN
+   "Connesso a %lu server",                                                                // STR_HDR_CONNECTED_TO_N_SERVERS
+   "Connesso a %s",                                                                        // STR_HDR_CONNECTED_TO_ONE
+   "Non connesso",                                                                         // STR_HDR_NOT_CONNECTED
+   "%lu file condiviso",                                                                   // STR_HDR_FILE_SHARED_SING
+   "%lu file condivisi"                                                                    // STR_HDR_FILES_SHARED_PLUR
 };
 
 static const char _russianShortcuts[NUM_SHORTCUTS] = {

@@ -1218,6 +1218,11 @@ void
 ShareNetClient ::
 SetLocalUserName(const char * name)
 {
+   // Belt-and-suspenders: never publish an empty "name" node onto the server
+   // (it makes us a nameless row for every peer).  ShareWindow guards the UI
+   // path too; this protects any direct/re-publish caller.
+   if ((name == NULL)||(name[0] == '\0')) name = FACTORY_DEFAULT_USER_NAME;
+
    _localUserName = name;
    if (_mtt)
    {

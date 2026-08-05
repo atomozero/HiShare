@@ -468,7 +468,7 @@ private:
    void DequeueTransferSessions(bool upload);
 
    // Utility methods for saving/restoring userwindow column widths
-   void AddUserColumn(const BMessage & settingsMsg, int labelID, float defaultWidthPercentage, const char * optForceLabel, uint32 extraFlags);
+   void AddUserColumn(const BMessage & settingsMsg, int labelID, float defaultWidthPercentage, const char * optForceLabel, uint32 extraFlags, const char * optMinSample = NULL);
    void SaveUserColumn(BMessage & settingsMsg, int labelID, CLVColumn * col) const;
 
    void SavePrivateWindowInfo(const BMessage & msg);
