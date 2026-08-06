@@ -2246,8 +2246,10 @@ ShareWindow :: ShareWindow(uint64 installID, BMessage & settingsMsg, const char 
    _mainSplit->AddChild(_chatUsersSplit);
    AddBorderView(_mainSplit);
 
-   // contentView isn't a layout container, so place the split hierarchy manually and let
-   // it follow all sides; the BSplitView lays out its panes internally as it resizes.
+   // contentView isn't a layout container, so place the split hierarchy manually and let it
+   // follow all sides.  FrameResized() forces the BSplitView (and its nested layouts) to
+   // re-lay-out on every window resize, which a manually-placed layout view doesn't do on
+   // its own.
    _mainSplit->MoveTo(contentFrame.left, UPPER_VIEW_HEIGHT+1.0f);
    _mainSplit->ResizeTo(contentFrame.Width(), contentFrame.Height()-20.0f-(UPPER_VIEW_HEIGHT+1.0f));
    _mainSplit->SetResizingMode(B_FOLLOW_ALL_SIDES);
@@ -7479,6 +7481,11 @@ void ShareWindow :: SetSplit(int which, int pos, bool isPercent, char dir)
 void ShareWindow :: FrameResized(float w, float h)
 {
    ChatWindow::FrameResized(w, h);
+
+   // The main BSplitView is placed by hand (contentView isn't a layout container), so its
+   // nested BSplitViews / group layouts don't automatically re-flow when the window resizes.
+   // Force a full re-layout of the whole split hierarchy so every pane tracks the new size.
+   if (_mainSplit) { _mainSplit->InvalidateLayout(true); _mainSplit->Relayout(); }
 
    // Show or hide some of the less-necessary top-view controls so that things
    // don't look too messy when the window has been made skinny
