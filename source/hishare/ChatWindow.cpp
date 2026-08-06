@@ -10,6 +10,8 @@
 #include <app/Clipboard.h>
 #include <interface/Box.h>
 #include <interface/Font.h>
+#include <interface/GroupLayout.h>
+#include <interface/LayoutBuilder.h>
 #include <interface/ScrollBar.h>
 #include <interface/ScrollView.h>
 #include <interface/Input.h>
@@ -1256,29 +1258,35 @@ void ChatWindow :: CloseLogFile()
 
 void ChatWindow :: ReadyToRun()
 {
-   BRect chatViewBounds = GetChatView()->Bounds();
-
-   BRect chatTextBounds(0, 0, chatViewBounds.Width(), chatViewBounds.Height()-(TEXT_ENTRY_HEIGHT+5.0f));
-   BBox * box = new BBox(chatTextBounds, NULL, B_FOLLOW_ALL_SIDES);
-   GetChatView()->AddChild(box);        
-
-   _chatText = new ReflowingTextView(BRect(2,2,chatTextBounds.Width()-(2+B_V_SCROLL_BAR_WIDTH), chatTextBounds.Height()-2), NULL, chatTextBounds, B_FOLLOW_ALL_SIDES);
+   // The chat log (a scrolled text view) and the input line ("Chat:") are stacked
+   // vertically by the layout kit: the log expands to fill, the input keeps a fixed
+   // height at the bottom.  The chat view itself is resized by the surrounding
+   // SplitPane pane, and this group layout reflows to match.
+   _chatText = new ReflowingTextView(BRect(0, 0, 1, 1), NULL, BRect(0, 0, 1, 1), B_FOLLOW_ALL_SIDES);
 
    _chatText->MakeEditable(false);
    _chatText->SetStylable(true);
 
-   _chatScrollView = new BScrollView(NULL, _chatText, B_FOLLOW_ALL_SIDES, 0L, false, true, B_FANCY_BORDER);
-   box->AddChild(_chatScrollView);
+   _chatScrollView = new BScrollView(NULL, _chatText, 0, false, true, B_FANCY_BORDER);
 
    String chat(str(STR_CHAT_VERB));
    chat += ':';
-   _textEntry = new BTextControl(BRect(0, chatViewBounds.Height()-TEXT_ENTRY_HEIGHT, chatViewBounds.Width(), chatViewBounds.Height()), NULL, chat(), NULL, NULL, B_FOLLOW_LEFT_RIGHT | B_FOLLOW_BOTTOM);
+   _textEntry = new BTextControl(NULL, chat(), NULL, NULL);
    AddBorderView(_textEntry);
 
    _textEntry->TextView()->AddFilter(new PasteMessageFilter(CHATWINDOW_COMMAND_SEND_CHAT_TEXT, _textEntry));
    _textEntry->SetDivider(_textEntry->StringWidth(chat())+4.0f);
-         
-   GetChatView()->AddChild(_textEntry);
+
+   // Keep the input line to its natural height so it doesn't stretch vertically.
+   float entryW, entryH;
+   _textEntry->GetPreferredSize(&entryW, &entryH);
+   _textEntry->SetExplicitMinSize(BSize(B_SIZE_UNSET, entryH));
+   _textEntry->SetExplicitMaxSize(BSize(B_SIZE_UNLIMITED, entryH));
+
+   BLayoutBuilder::Group<>(GetChatView(), B_VERTICAL, B_USE_SMALL_SPACING)
+      .SetInsets(0)
+      .Add(_chatScrollView)
+      .Add(_textEntry);
 
    UpdateColors();
 
