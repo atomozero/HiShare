@@ -2162,16 +2162,23 @@ ShareWindow :: ShareWindow(uint64 installID, BMessage & settingsMsg, const char 
    BView * transferView = new BView(transferFrame, NULL, B_FOLLOW_RIGHT | B_FOLLOW_TOP_BOTTOM, 0);
    AddBorderView(transferView);
 
-   _transferList = new TransferListView(BRect(2, 2, transferFrame.Width()-(2+B_V_SCROLL_BAR_WIDTH), transferFrame.Height()-(5+fontHeight+vMargin)), SHAREWINDOW_COMMAND_BAN_USER);
+   // Transfer panel: the transfer list (in a scroll view) fills the panel with the
+   // "Remove selected" button below it, arranged by a vertical group.
+   _transferList = new TransferListView(BRect(0, 0, 10, 10), SHAREWINDOW_COMMAND_BAN_USER);
    AddBorderView(_transferList);
    _transferList->SetTarget(toMe);
    _transferList->SetSelectionMessage(new BMessage(SHAREWINDOW_COMMAND_RESULT_SELECTION_CHANGED));
    _transferList->SetInvocationMessage(new BMessage(SHAREWINDOW_COMMAND_LAUNCH_TRANSFER_ITEM));
-   transferView->AddChild(AddBorderView(new BScrollView(NULL, _transferList, B_FOLLOW_ALL_SIDES, 0L, false, true, B_FANCY_BORDER)));
+   BScrollView * transferScroll = new BScrollView(NULL, _transferList, 0, false, true, B_FANCY_BORDER);
+   AddBorderView(transferScroll);
 
-   _cancelTransfersButton = new BButton(BRect(0, _transferList->Frame().bottom+vMargin-1, transferFrame.Width(), transferFrame.Height()-1), NULL, str(STR_REMOVE_SELECTED), new BMessage(SHAREWINDOW_COMMAND_CANCEL_DOWNLOADS), B_FOLLOW_LEFT_RIGHT | B_FOLLOW_BOTTOM, B_WILL_DRAW|B_NAVIGABLE|B_FULL_UPDATE_ON_RESIZE);
+   _cancelTransfersButton = new BButton((const char *)NULL, str(STR_REMOVE_SELECTED), new BMessage(SHAREWINDOW_COMMAND_CANCEL_DOWNLOADS));
    AddBorderView(_cancelTransfersButton);
-   transferView->AddChild(_cancelTransfersButton);
+
+   BLayoutBuilder::Group<>(transferView, B_VERTICAL, B_USE_SMALL_SPACING)
+      .Add(transferScroll)
+      .Add(_cancelTransfersButton)
+      .SetInsets(2, 2, 2, 2);
 
    _resultsTransferSplit = new SplitPane(middleFrame, resultsView, transferView, B_FOLLOW_ALL_SIDES);
    _resultsTransferSplit->SetResizeViewOne(true, true);
