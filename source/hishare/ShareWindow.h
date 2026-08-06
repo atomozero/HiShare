@@ -10,7 +10,6 @@
 #include <interface/Menu.h>
 #include <interface/MenuField.h>
 #include <interface/MenuItem.h>
-#include <interface/SplitView.h>
 #include <storage/Directory.h>
 
 #include "util/Queue.h"
@@ -455,9 +454,9 @@ private:
 
    Hashtable<ShareMIMEInfo *, bool> _emptyMimeInfos;       /* MIME infos that aren't in the BMenu yet */
 
-   BSplitView * _resultsTransferSplit;
-   BSplitView * _mainSplit;
-   BSplitView * _chatUsersSplit;
+   SplitPane * _resultsTransferSplit;
+   SplitPane * _mainSplit;
+   SplitPane * _chatUsersSplit;
 
    BView * _chatView;
    BView * _statusView;
@@ -475,8 +474,8 @@ private:
 
    BMessageRunner * _connectionReaper;   // Every so often, causes us to check for moribund connections & kill them
 
-   void RestoreSplitPane(const BMessage & settingMsg, BSplitView * sp, const char * name) const;
-   void SaveSplitPane(BMessage & settingsMsg, const BSplitView * sp, const char * name) const;
+   void RestoreSplitPane(const BMessage & settingMsg, SplitPane * sp, const char * name) const;
+   void SaveSplitPane(BMessage & settingsMsg, const SplitPane * sp, const char * name) const;
 
    void ResetLayout();
 
