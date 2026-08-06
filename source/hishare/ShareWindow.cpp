@@ -2041,9 +2041,8 @@ ShareWindow :: ShareWindow(uint64 installID, BMessage & settingsMsg, const char 
    const float queryRowH = rowCtrlH + 6.0f;            // query-row view height
 
    {
-      _queryView = new BView(BRect(0, 0, resultsFrame.Width(), queryRowH), NULL, B_FOLLOW_LEFT_RIGHT | B_FOLLOW_TOP, 0);
+      _queryView = new BView(BRect(0, 0, resultsFrame.Width(), queryRowH), NULL, 0, 0);
       AddBorderView(_queryView);
-      resultsView->AddChild(_queryView);
 
       // Server menu + address field.  Typing an address and pressing Enter (re)connects
       // the primary server.
@@ -2118,7 +2117,6 @@ ShareWindow :: ShareWindow(uint64 installID, BMessage & settingsMsg, const char 
    _resultsView->SetTarget(toMe);
    _resultsView->SetSelectionMessage(new BMessage(SHAREWINDOW_COMMAND_RESULT_SELECTION_CHANGED));
    _resultsView->SetInvocationMessage(new BMessage(SHAREWINDOW_COMMAND_BEGIN_DOWNLOADS));
-   resultsView->AddChild(resultsContainerView);
 
    _resultsView->AddColumn(new CLVColumn("", 20.0f, CLV_LOCK_AT_BEGINNING | CLV_NOT_MOVABLE | CLV_NOT_RESIZABLE));
 
@@ -2126,9 +2124,8 @@ ShareWindow :: ShareWindow(uint64 installID, BMessage & settingsMsg, const char 
    // Bottom button row: page-prev, Information, Download (fills the gap), Clear, page-next.
    // A single horizontal group lays them out with a shared height/baseline; the narrow
    // page buttons keep a fixed width and the Download button expands to fill the middle.
-   BView * dlButtonView = new BView(BRect(resultsFrame.left, resultsView->Bounds().Height()-(fontHeight+vMargin+2), resultsFrame.right, resultsFrame.Height()-2), NULL, B_FOLLOW_LEFT_RIGHT | B_FOLLOW_BOTTOM, 0);
+   BView * dlButtonView = new BView(BRect(0, 0, 10, 10), NULL, 0, 0);
    AddBorderView(dlButtonView);
-   resultsView->AddChild(dlButtonView);
 
    const char * infoLabel = str(STR_INFORMATION);
 
@@ -2157,6 +2154,18 @@ ShareWindow :: ShareWindow(uint64 installID, BMessage & settingsMsg, const char 
       .Add(_clearFinishedDownloadsButton)
       .Add(_nextPageButton)
       .SetInsets(0, 0, 0, 0);
+
+   // Consolidate the results panel into one vertical group: the query row and the button
+   // row keep a fixed height while the results list fills the space between them.  This
+   // replaces the manual top/middle/bottom BRect placement of the three sub-views.
+   _queryView->SetExplicitMaxSize(BSize(B_SIZE_UNLIMITED, queryRowH));
+   dlButtonView->SetExplicitMaxSize(BSize(B_SIZE_UNLIMITED, rowCtrlH + 6.0f));
+   resultsContainerView->SetExplicitMaxSize(BSize(B_SIZE_UNLIMITED, B_SIZE_UNLIMITED));
+   BLayoutBuilder::Group<>(resultsView, B_VERTICAL, B_USE_SMALL_SPACING)
+      .Add(_queryView)
+      .Add(resultsContainerView)
+      .Add(dlButtonView)
+      .SetInsets(2, 2, 2, 2);
 
    BRect transferFrame(resultsFrame.right+hMargin, resultsFrame.top+3, middleFrame.Width()-hMargin, middleFrame.bottom-30);
    BView * transferView = new BView(transferFrame, NULL, B_FOLLOW_RIGHT | B_FOLLOW_TOP_BOTTOM, 0);
