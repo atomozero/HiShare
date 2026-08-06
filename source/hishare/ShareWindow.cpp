@@ -2162,6 +2162,9 @@ ShareWindow :: ShareWindow(uint64 installID, BMessage & settingsMsg, const char 
    _queryView->SetExplicitMaxSize(BSize(B_SIZE_UNLIMITED, queryRowH));
    dlButtonView->SetExplicitMaxSize(BSize(B_SIZE_UNLIMITED, rowCtrlH + 6.0f));
    resultsContainerView->SetExplicitMaxSize(BSize(B_SIZE_UNLIMITED, B_SIZE_UNLIMITED));
+   // Let the results list scroll horizontally rather than demanding the full column width:
+   // otherwise it hogs the split and squeezes the transfers pane.
+   resultsContainerView->SetExplicitMinSize(BSize(220.0f, B_SIZE_UNSET));
    BLayoutBuilder::Group<>(resultsView, B_VERTICAL, B_USE_SMALL_SPACING)
       .Add(_queryView)
       .Add(resultsContainerView)
@@ -2173,7 +2176,8 @@ ShareWindow :: ShareWindow(uint64 installID, BMessage & settingsMsg, const char 
    AddBorderView(transferView);
 
    // Transfer panel: the transfer list (in a scroll view) fills the panel with the
-   // "Remove selected" button below it, arranged by a vertical group.
+   // "Remove selected" button below it, arranged by a vertical group so it sizes correctly
+   // as a BSplitView item.
    _transferList = new TransferListView(BRect(0, 0, 10, 10), SHAREWINDOW_COMMAND_BAN_USER);
    AddBorderView(_transferList);
    _transferList->SetTarget(toMe);
@@ -2189,6 +2193,10 @@ ShareWindow :: ShareWindow(uint64 installID, BMessage & settingsMsg, const char 
       .Add(transferScroll)
       .Add(_cancelTransfersButton)
       .SetInsets(2, 2, 2, 2);
+
+   // Keep the transfers pane wide enough to actually show a download's name and progress
+   // bar: BSplitView honours this, so a lopsided divider can't squeeze it to a useless sliver.
+   transferView->SetExplicitMinSize(BSize(180.0f, B_SIZE_UNSET));
 
    // Results (left) | transfers (right), split by a native BSplitView.
    _resultsTransferSplit = new BSplitView(B_HORIZONTAL, B_USE_SMALL_SPACING);
@@ -2437,32 +2445,23 @@ RestoreSplitPane(const BMessage & settingsMsg, BSplitView * sp, const char * nam
    BMessage temp;
    if (settingsMsg.FindMessage(name, &temp) != B_NO_ERROR) return;
 
-   // New format: the two item weights are stored directly.
+   // Restore the saved item weights, but sanity-check the ratio: reject a lopsided value
+   // (one pane under ~12%) and keep the ResetLayout() default instead.  This guards against
+   // a bad saved value AND heals settings written by an earlier build whose migration could
+   // collapse a pane -- which is what hid the download list behind a sliver-thin panel.
    float w0, w1;
-   if ((temp.FindFloat("w0", &w0) == B_NO_ERROR)&&(temp.FindFloat("w1", &w1) == B_NO_ERROR))
+   if ((temp.FindFloat("w0", &w0) == B_NO_ERROR)&&(temp.FindFloat("w1", &w1) == B_NO_ERROR)&&(w0 > 0.0f)&&(w1 > 0.0f))
    {
-      sp->SetItemWeight(0, w0, false);
-      sp->SetItemWeight(1, w1, true);
-      return;
-   }
-
-   // Fallback for settings saved by the old custom SplitPane: it stored a pixel divider
-   // position ("pos") and an alignment ("align").  Convert that to a weight so upgrading
-   // users keep (approximately) their divider positions; once re-saved the new format wins.
-   BPoint pos; int32 align;
-   if ((temp.FindPoint("pos", &pos) == B_NO_ERROR)&&(temp.FindInt32("align", &align) == B_NO_ERROR))
-   {
-      const float coord  = (align == B_VERTICAL) ? pos.x : pos.y;              // vertical align = left/right divider
-      const float extent = (align == B_VERTICAL) ? sp->Bounds().Width() : sp->Bounds().Height();
-      if (extent > 1.0f)
+      const float frac0 = w0 / (w0 + w1);
+      if ((frac0 >= 0.12f)&&(frac0 <= 0.88f))
       {
-         float frac = coord / extent;
-         if (frac < 0.05f) frac = 0.05f; else if (frac > 0.95f) frac = 0.95f;
-         sp->SetItemWeight(0, frac, false);
-         sp->SetItemWeight(1, 1.0f - frac, true);
+         sp->SetItemWeight(0, w0, false);
+         sp->SetItemWeight(1, w1, true);
       }
-      // else: split not laid out yet, keep the ResetLayout() defaults.
    }
+   // Older SplitPane 'spst' settings (a pixel divider position + alignment) are intentionally
+   // not migrated: the split isn't laid out yet at restore time, so the pixel position can't
+   // be turned into a reliable weight.  Upgrading users just get the ResetLayout() defaults.
 }
 
 void

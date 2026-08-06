@@ -332,7 +332,14 @@ ShareFileTransfer(const BDirectory & fileDir, const char * localSessionID, uint6
    _lastRefreshTime(0),
    _banEndTime(0)
 {
-   // empty
+   // Give the row a sensible height up front.  Update() recomputes it from the list's font,
+   // but it isn't always called (e.g. transfers restored before the window is attached, or
+   // a list hosted inside the layout kit), and a zero-height row makes an active download --
+   // name and progress bar -- invisible.
+   font_height fh;
+   be_plain_font->GetHeight(&fh);
+   const float th = fh.ascent + fh.descent + fh.leading;
+   SetHeight(3.0f*th + 4.0f);
 }
 
 ShareFileTransfer ::
