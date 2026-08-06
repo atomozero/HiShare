@@ -28,6 +28,7 @@
 #include <interface/Bitmap.h>
 #include <interface/LayoutBuilder.h>
 #include <interface/GroupLayout.h>
+#include <interface/SplitView.h>
 #include <IconUtils.h>
 
 #include <storage/File.h>
@@ -2189,8 +2190,10 @@ ShareWindow :: ShareWindow(uint64 installID, BMessage & settingsMsg, const char 
       .Add(_cancelTransfersButton)
       .SetInsets(2, 2, 2, 2);
 
-   _resultsTransferSplit = new SplitPane(middleFrame, resultsView, transferView, B_FOLLOW_ALL_SIDES);
-   _resultsTransferSplit->SetResizeViewOne(true, true);
+   // Results (left) | transfers (right), split by a native BSplitView.
+   _resultsTransferSplit = new BSplitView(B_HORIZONTAL, B_USE_SMALL_SPACING);
+   _resultsTransferSplit->AddChild(resultsView);
+   _resultsTransferSplit->AddChild(transferView);
    AddBorderView(_resultsTransferSplit);
 
    BRect bottomFrame(hMargin, contentFrame.Height()+vMargin-CHAT_VIEW_HEIGHT, contentFrame.right-hMargin, contentFrame.Height()-vMargin);
@@ -2216,9 +2219,12 @@ ShareWindow :: ShareWindow(uint64 installID, BMessage & settingsMsg, const char 
       .Add(userContainerView)
       .SetInsets(0, 0, 0, 0);
 
-   _chatUsersSplit = new SplitPane(bottomFrame, _chatView, userListView, B_FOLLOW_LEFT_RIGHT | B_FOLLOW_BOTTOM);
-   _chatUsersSplit->SetResizeViewOne(true, true);
-   _chatUsersSplit->SetMinSizeOne(BPoint(100.0f, 0.0f));  // making the chat view too skinny can lock up BeShare :^P
+   // Chat (left) | users (right), split by a native BSplitView.  A too-skinny chat pane
+   // can lock things up, so give the chat view a minimum width.
+   _chatView->SetExplicitMinSize(BSize(100.0f, B_SIZE_UNSET));
+   _chatUsersSplit = new BSplitView(B_HORIZONTAL, B_USE_SMALL_SPACING);
+   _chatUsersSplit->AddChild(_chatView);
+   _chatUsersSplit->AddChild(userListView);
    AddBorderView(_chatUsersSplit);
 
    // NOTE: this frame is in contentView-LOCAL coordinates, so the bottom must be
@@ -2226,16 +2232,23 @@ ShareWindow :: ShareWindow(uint64 installID, BMessage & settingsMsg, const char 
    // bottom).  These coincided only while contentView started right below the menu
    // bar (~20px); with the header banner above it they differ by the banner height,
    // which otherwise pushes the chat/user-list split off the bottom edge.
-   _mainSplit = new SplitPane(BRect(contentFrame.left, UPPER_VIEW_HEIGHT+1.0f, contentFrame.right, contentFrame.Height()-20), _resultsTransferSplit, _chatUsersSplit, B_FOLLOW_ALL_SIDES);
+   // Results+transfers (top) | chat+users (bottom), the outer split.
+   _mainSplit = new BSplitView(B_VERTICAL, B_USE_SMALL_SPACING);
+   _mainSplit->AddChild(_resultsTransferSplit);
+   _mainSplit->AddChild(_chatUsersSplit);
    AddBorderView(_mainSplit);
-   _mainSplit->SetResizeViewOne(true, true);
+
+   // contentView isn't a layout container, so place the split hierarchy manually and let
+   // it follow all sides; the BSplitView lays out its panes internally as it resizes.
+   _mainSplit->MoveTo(contentFrame.left, UPPER_VIEW_HEIGHT+1.0f);
+   _mainSplit->ResizeTo(contentFrame.Width(), contentFrame.Height()-20.0f-(UPPER_VIEW_HEIGHT+1.0f));
+   _mainSplit->SetResizingMode(B_FOLLOW_ALL_SIDES);
+   contentView->AddChild(_mainSplit);
 
    ResetLayout();
-   RestoreSplitPane(settingsMsg, _resultsTransferSplit, "resultstransfersplit"); 
-   RestoreSplitPane(settingsMsg, _chatUsersSplit, "chatuserssplit"); 
-   RestoreSplitPane(settingsMsg, _mainSplit, "mainsplit"); 
-
-   contentView->AddChild(_mainSplit);
+   RestoreSplitPane(settingsMsg, _resultsTransferSplit, "resultstransfersplit");
+   RestoreSplitPane(settingsMsg, _chatUsersSplit, "chatuserssplit");
+   RestoreSplitPane(settingsMsg, _mainSplit, "mainsplit");
 
    AddUserColumn(settingsMsg, STR_NAME,            0.43f, NULL, 0);
    AddUserColumn(settingsMsg, STR_STATUS,          0.33f, NULL, 0);
@@ -2419,10 +2432,37 @@ SaveUserColumn(BMessage & settingsMsg, int labelID, CLVColumn * col) const
 
 void
 ShareWindow ::
-RestoreSplitPane(const BMessage & settingsMsg, SplitPane * sp, const char * name) const
+RestoreSplitPane(const BMessage & settingsMsg, BSplitView * sp, const char * name) const
 {
    BMessage temp;
-   if (settingsMsg.FindMessage(name, &temp) == B_NO_ERROR) sp->SetState(&temp);
+   if (settingsMsg.FindMessage(name, &temp) != B_NO_ERROR) return;
+
+   // New format: the two item weights are stored directly.
+   float w0, w1;
+   if ((temp.FindFloat("w0", &w0) == B_NO_ERROR)&&(temp.FindFloat("w1", &w1) == B_NO_ERROR))
+   {
+      sp->SetItemWeight(0, w0, false);
+      sp->SetItemWeight(1, w1, true);
+      return;
+   }
+
+   // Fallback for settings saved by the old custom SplitPane: it stored a pixel divider
+   // position ("pos") and an alignment ("align").  Convert that to a weight so upgrading
+   // users keep (approximately) their divider positions; once re-saved the new format wins.
+   BPoint pos; int32 align;
+   if ((temp.FindPoint("pos", &pos) == B_NO_ERROR)&&(temp.FindInt32("align", &align) == B_NO_ERROR))
+   {
+      const float coord  = (align == B_VERTICAL) ? pos.x : pos.y;              // vertical align = left/right divider
+      const float extent = (align == B_VERTICAL) ? sp->Bounds().Width() : sp->Bounds().Height();
+      if (extent > 1.0f)
+      {
+         float frac = coord / extent;
+         if (frac < 0.05f) frac = 0.05f; else if (frac > 0.95f) frac = 0.95f;
+         sp->SetItemWeight(0, frac, false);
+         sp->SetItemWeight(1, 1.0f - frac, true);
+      }
+      // else: split not laid out yet, keep the ResetLayout() defaults.
+   }
 }
 
 void
@@ -2561,10 +2601,12 @@ SetFirewalledMode(bool firewalled)
          
 void
 ShareWindow ::
-SaveSplitPane(BMessage & settingsMsg, const SplitPane * sp, const char * name) const
+SaveSplitPane(BMessage & settingsMsg, const BSplitView * sp, const char * name) const
 {
+   BSplitView * s = const_cast<BSplitView *>(sp);
    BMessage state;
-   sp->GetState(state);
+   state.AddFloat("w0", s->ItemWeight((int32)0));
+   state.AddFloat("w1", s->ItemWeight((int32)1));
    settingsMsg.AddMessage(name, &state);
 }
 
@@ -6008,23 +6050,19 @@ void
 ShareWindow ::
 ResetLayout()
 {
-   _mainSplit->SetSwapped(false);
-   _resultsTransferSplit->SetSwapped(false);
-   _chatUsersSplit->SetSwapped(false);
-
-   _mainSplit->SetAlignment(B_HORIZONTAL);
-   _resultsTransferSplit->SetAlignment(B_VERTICAL);
-   _chatUsersSplit->SetAlignment(B_VERTICAL);
-
-   _resultsTransferSplit->SetBarPosition(BPoint(_resultsTransferSplit->Bounds().Width()*0.75f, _resultsTransferSplit->Bounds().Height()*0.75f));
-   _chatUsersSplit->SetBarPosition(BPoint(_chatUsersSplit->Bounds().Width()*0.78f, _chatUsersSplit->Bounds().Height()*0.78f));
-
+   // Default divider proportions, expressed as BSplitView item weights: results 75% /
+   // transfers 25%, chat 78% / users 22%, and results+transfers vs chat+users 50/50.
 #ifdef SAVE_BEOS
-   const float mainPos = 0.75f;
+   const float mainTopWeight = 0.75f;
 #else
-   const float mainPos = 0.5f;
+   const float mainTopWeight = 0.5f;
 #endif
-   _mainSplit->SetBarPosition(BPoint(_mainSplit->Bounds().Width()*0.5f,_mainSplit->Bounds().Height()*mainPos));
+   _resultsTransferSplit->SetItemWeight(0, 0.75f, false);
+   _resultsTransferSplit->SetItemWeight(1, 0.25f, true);
+   _chatUsersSplit->SetItemWeight(0, 0.78f, false);
+   _chatUsersSplit->SetItemWeight(1, 0.22f, true);
+   _mainSplit->SetItemWeight(0, mainTopWeight, false);
+   _mainSplit->SetItemWeight(1, 1.0f - mainTopWeight, true);
 }
 
 // Pattern matching for BGA's tab-completion
@@ -7418,7 +7456,7 @@ void ShareWindow :: DoScreenShot(const String & fn, ChatWindow * optEchoTo)
 
 void ShareWindow :: SetSplit(int which, int pos, bool isPercent, char dir)
 {
-   SplitPane * sp = NULL;
+   BSplitView * sp = NULL;
    switch(which)
    {
       case 0:  sp = _mainSplit;            break;
@@ -7427,19 +7465,15 @@ void ShareWindow :: SetSplit(int which, int pos, bool isPercent, char dir)
    }
    if (sp)
    {
-      uint a = sp->GetAlignment();
-      switch(dir)
-      {
-         case 'v': case 'V':  a = B_VERTICAL;   break;
-         case 'h': case 'H':  a = B_HORIZONTAL; break;
-      }
-      sp->SetAlignment(a);
-
-      float extent = (a == B_VERTICAL) ? sp->Bounds().Width() : sp->Bounds().Height();
-      float newPos = (isPercent) ? extent*muscleClamp(((float)pos),0.0f,100.0f)/100.0f : muscleClamp((float)pos, 0.0f, extent);
-      newPos = muscleClamp(newPos, (a == B_VERTICAL) ? sp->GetMinSizeOne().x : sp->GetMinSizeOne().y, (a == B_VERTICAL) ? sp->Bounds().Width()-sp->GetMinSizeTwo().x : sp->Bounds().Height()-sp->GetMinSizeTwo().y);
-      BPoint oldPos = sp->GetBarPosition();
-      sp->SetBarPosition(BPoint((a==B_VERTICAL)?newPos:oldPos.x, (a==B_VERTICAL)?oldPos.y:newPos));
+      // BSplitView orientation is fixed at creation, so the old re-orient 'dir' is ignored;
+      // 'pos' sets the first pane's share (a percentage maps directly, an absolute pixel
+      // value is turned into a fraction of the split's current extent).
+      (void) dir;
+      const float extent = (sp->Orientation() == B_HORIZONTAL) ? sp->Bounds().Width() : sp->Bounds().Height();
+      float frac = isPercent ? ((float)pos)/100.0f : ((extent > 1.0f) ? ((float)pos)/extent : 0.5f);
+      if (frac < 0.05f) frac = 0.05f; else if (frac > 0.95f) frac = 0.95f;
+      sp->SetItemWeight(0, frac, false);
+      sp->SetItemWeight(1, 1.0f - frac, true);
    }
 }
 
