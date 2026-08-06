@@ -12,7 +12,7 @@ refreshed build on top of MUSCLE 6.11.
 
 > It all started as an update to BeShare 3.04 and grew into its own edition.
 
-![HiShare main window](screenshots/hishare-main.png)
+![HiShare main window](screenshots/HiShare_v1.2.png)
 
 If HiShare saves you time, consider supporting development: [![Buy Me A Coffee](https://img.shields.io/badge/Buy%20Me%20A%20Coffee-atomozero-yellow?logo=buymeacoffee)](https://buymeacoffee.com/atomozero)
 
@@ -26,7 +26,13 @@ If HiShare saves you time, consider supporting development: [![Buy Me A Coffee](
   results are aggregated, chat is broadcast (incoming lines are tagged with
   their server of origin), transfers and private messages follow their
   peer's server, and a Server column appears automatically in the lists.
-  Extra connections are remembered across restarts.
+  Extra connections are remembered across restarts. Your name and status
+  are published on every connection, duplicate connections to the same box
+  are skipped, and **File → Connect to all known servers** joins them all in
+  one action.
+* **Auto-detect connection speed** (opt-in): passively measures your real
+  upload/download throughput during transfers, advertises the upload rate as
+  your bandwidth, and shows both in the header (`↓ … ↑ …`).
 * Browse files with their Haiku **attributes**, like a Tracker view
 * Built-in **chat**, private messages and user watching
 * Any number of simultaneous uploads/downloads, serialized per-host for
@@ -39,10 +45,12 @@ If HiShare saves you time, consider supporting development: [![Buy Me A Coffee](
 * **Connect-back fallback**: if a direct connection to a peer with a stale
   or unreachable advertised address fails, the download is retried
   automatically through a server-mediated connect-back
-* **Modern, theme-aware GUI**: status header banner with live connection
-  state and quick-action buttons (Connect/Disconnect, Settings, Colours),
-  a categorised Settings window, and colours derived from the Haiku system
-  palette — light and dark themes respected everywhere, re-themed live
+* **Modern, theme-aware GUI**: rebuilt on the Haiku Layout Kit so it scales
+  cleanly with font size and window resizing — a status header banner with
+  live connection state and quick-action buttons (Connect/Disconnect,
+  Settings, Colours), a categorised Settings window, and colours derived from
+  the Haiku system palette — light and dark themes respected everywhere,
+  re-themed live
 * Drag & drop files or folders onto the window to share them
 * Desktop notifications for finished downloads, private messages and mentions
 * Localized via the Haiku Locale Kit (~20 languages) — the UI follows your
