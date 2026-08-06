@@ -26,6 +26,8 @@
 #include <interface/Input.h>
 #include <interface/PopUpMenu.h>
 #include <interface/Bitmap.h>
+#include <interface/LayoutBuilder.h>
+#include <interface/GroupLayout.h>
 #include <IconUtils.h>
 
 #include <storage/File.h>
@@ -2028,104 +2030,81 @@ ShareWindow :: ShareWindow(uint64 installID, BMessage & settingsMsg, const char 
    BView * resultsView = new BView(resultsFrame, "IOView", B_FOLLOW_ALL_SIDES, 0);
    AddBorderView(resultsView);
 
-   // Shared geometry for the query/search row.  A BButton's minimum height is a bit taller
-   // than a bare BTextControl / BMenuField, so sizing everything to the plain font height
-   // makes the Start/Stop buttons stick out below the fields beside them.  Measure the
-   // button height and give every control on the row the same top/bottom so they line up.
+   // Query/search row, laid out with the Haiku layout kit (a horizontal group): the menus,
+   // fields and buttons share one baseline and height automatically, and the filename field
+   // grows to fill the row on resize -- no manual per-control pixel math.  The row's own view
+   // height still comes from a probe button, since the row lives inside the results view,
+   // which is placed manually and isn't a layout container itself.
    float rowCtrlH;
    { BButton probe(BRect(0, 0, 1, 1), "p", "M", NULL); float pw; probe.GetPreferredSize(&pw, &rowCtrlH); }
    if (rowCtrlH < fontHeight) rowCtrlH = fontHeight;   // sanity fallback if the unattached measurement is off
-   const float rowTop = 3.0f;
-   const float rowBot = rowTop + rowCtrlH;
-   const float queryRowH = rowBot + 3.0f;              // query-row view height (replaces QUERY_VIEW_HEIGHT here)
+   const float queryRowH = rowCtrlH + 6.0f;            // query-row view height
 
    {
-         // Fill out the query view
-         BRect queryViewFrame(0, 0, resultsFrame.Width(), queryRowH);
-         _queryView = new BView(queryViewFrame, NULL, B_FOLLOW_LEFT_RIGHT | B_FOLLOW_TOP, 0);
-         AddBorderView(_queryView);
-         resultsView->AddChild(_queryView);
-         float extraMenuWidth = _queryView->StringWidth("MMMMM");
+      _queryView = new BView(BRect(0, 0, resultsFrame.Width(), queryRowH), NULL, B_FOLLOW_LEFT_RIGHT | B_FOLLOW_TOP, 0);
+      AddBorderView(_queryView);
+      resultsView->AddChild(_queryView);
 
-         // --- Server menu + text control (moved here from the old status row) -------
-         // Typing an address here and pressing Enter (re)connects the primary server.
-         {
-            float serverMenuWidth = _queryView->StringWidth(str(STR_SERVER))+_queryView->StringWidth("MMM");
-            _serverMenu = new BMenu(str(STR_SERVER));
-            _queryView->AddChild(AddBorderView(_serverMenuField =
-                 new BMenuField(BRect(hMargin,rowTop,hMargin+serverMenuWidth,rowBot), NULL, NULL, _serverMenu)));
+      // Server menu + address field.  Typing an address and pressing Enter (re)connects
+      // the primary server.
+      _serverMenu = new BMenu(str(STR_SERVER));
+      _serverMenuField = new BMenuField((const char *)NULL, (const char *)NULL, _serverMenu);
+      AddBorderView(_serverMenuField);
 
-            const char * firstName = NULL;
-            const char * sn = NULL;
-            for (int i=0; (settingsMsg.FindString("serverlist", i, &sn) == B_NO_ERROR); i++)
-            {
-               if (firstName == NULL) firstName = sn;
-               AddServerItem(sn, true, -1);
-            }
-
-            // Add any default servers that aren't in the list already
-            if (firstName == NULL) firstName = _defaultServers[0];
-            for (uint32 j=0; j<ARRAYITEMS(_defaultServers); j++)
-                 AddServerItem(_defaultServers[j], true, (j==0)?0:1);
-
-            if (settingsMsg.FindString("server", &sn) == B_NO_ERROR) firstName = sn;
-
-            float serverEntryLeft = hMargin+serverMenuWidth;
-            _serverEntry = new BTextControl(
-                BRect(serverEntryLeft, rowTop, serverEntryLeft+SERVER_ENTRY_WIDTH, rowBot),
-                 NULL, NULL, firstName, new BMessage(SHAREWINDOW_COMMAND_USER_CHANGED_SERVER),
-                  B_FOLLOW_LEFT | B_FOLLOW_TOP);
-            AddBorderView(_serverEntry);
-            _serverEntry->SetTarget(toMe);
-            _serverEntry->SetDivider(0.0f);
-            _queryView->AddChild(_serverEntry);
-         }
-         // The query menu/field start to the right of the Server field.
-         float queryLeft = hMargin+_queryView->StringWidth(str(STR_SERVER))+_queryView->StringWidth("MMM")+SERVER_ENTRY_WIDTH+hMargin;
-         // --------------------------------------------------------------------------
-
-         const char * q = str(STR_QUERY);
-         _queryMenu = new BMenu(q);
-         float qw = _queryView->StringWidth(q)+extraMenuWidth;
-         _queryView->AddChild(AddBorderView(new BMenuField(
-            BRect(queryLeft,rowTop,queryLeft+qw,rowBot), NULL, NULL, _queryMenu)));
-
-         float right = queryViewFrame.Width()-hMargin;
-         float stringWidth = _queryMenu->StringWidth(str(STR_STOP_QUERY))+extraMenuWidth;
-         _disableQueryButton = new BButton(
-            BRect(right-stringWidth,rowTop,right,rowBot), NULL, str(STR_STOP_QUERY),
-             new BMessage(SHAREWINDOW_COMMAND_DISABLE_QUERY), B_FOLLOW_RIGHT | B_FOLLOW_TOP);
-         AddBorderView(_disableQueryButton);
-         _queryView->AddChild(_disableQueryButton);
-         right -= (stringWidth + hMargin);
-
-         stringWidth = _queryMenu->StringWidth(str(STR_START_QUERY))+extraMenuWidth;
-         _enableQueryButton = new BButton(
-            BRect(right-stringWidth,rowTop,right,rowBot), NULL, str(STR_START_QUERY),
-             new BMessage(SHAREWINDOW_COMMAND_ENABLE_QUERY), B_FOLLOW_RIGHT | B_FOLLOW_TOP);
-         AddBorderView(_enableQueryButton);
-         _queryView->AddChild(_enableQueryButton);
-         right -= (stringWidth + hMargin);
-
-         const char * startupQuery;
-         // Default search: Haiku software packages (BeShare is widely used as an .hpkg
-         // repo).  Only applies to fresh installs; a saved "query" setting wins.
-         if (settingsMsg.FindString("query", &startupQuery) != B_NO_ERROR) startupQuery = "*.hpkg";
-         _fileNameQueryEntry = new BTextControl(
-            BRect(queryLeft+qw-10.0f,rowTop,right,rowBot), NULL, NULL, startupQuery,
-             new BMessage(SHAREWINDOW_COMMAND_CHANGE_FILE_NAME_QUERY), B_FOLLOW_ALL_SIDES);
-         AddBorderView(_fileNameQueryEntry);
-         _fileNameQueryEntry->SetTarget(toMe);
-         _queryView->AddChild(_fileNameQueryEntry);
-         // Restore any additional strings....
-         const char * listQuery;
-         for (int qh=1; (settingsMsg.FindString("query", qh, &listQuery) == B_NO_ERROR); qh++) 
-         {
-            BMessage * msg = new BMessage(SHAREWINDOW_COMMAND_CHANGE_FILE_NAME_QUERY);
-            msg->AddString("query", listQuery);
-            _queryMenu->AddItem(new BMenuItem(listQuery, msg));
-         }
+      const char * firstName = NULL;
+      const char * sn = NULL;
+      for (int i=0; (settingsMsg.FindString("serverlist", i, &sn) == B_NO_ERROR); i++)
+      {
+         if (firstName == NULL) firstName = sn;
+         AddServerItem(sn, true, -1);
       }
+      if (firstName == NULL) firstName = _defaultServers[0];   // add defaults not already listed
+      for (uint32 j=0; j<ARRAYITEMS(_defaultServers); j++) AddServerItem(_defaultServers[j], true, (j==0)?0:1);
+      if (settingsMsg.FindString("server", &sn) == B_NO_ERROR) firstName = sn;
+
+      _serverEntry = new BTextControl((const char *)NULL, NULL, firstName, new BMessage(SHAREWINDOW_COMMAND_USER_CHANGED_SERVER));
+      AddBorderView(_serverEntry);
+      _serverEntry->SetTarget(toMe);
+      _serverEntry->SetDivider(0.0f);
+      _serverEntry->SetExplicitSize(BSize(SERVER_ENTRY_WIDTH, B_SIZE_UNSET));   // fixed width; the query field expands instead
+
+      // Query menu + filename field (the filename field expands to fill the row).
+      _queryMenu = new BMenu(str(STR_QUERY));
+      BMenuField * queryMenuField = new BMenuField((const char *)NULL, (const char *)NULL, _queryMenu);
+      AddBorderView(queryMenuField);
+
+      const char * startupQuery;
+      // Default search: Haiku software packages.  Only for fresh installs; a saved "query" wins.
+      if (settingsMsg.FindString("query", &startupQuery) != B_NO_ERROR) startupQuery = "*.hpkg";
+      _fileNameQueryEntry = new BTextControl((const char *)NULL, NULL, startupQuery, new BMessage(SHAREWINDOW_COMMAND_CHANGE_FILE_NAME_QUERY));
+      AddBorderView(_fileNameQueryEntry);
+      _fileNameQueryEntry->SetTarget(toMe);
+      _fileNameQueryEntry->SetDivider(0.0f);
+      _fileNameQueryEntry->SetExplicitMaxSize(BSize(B_SIZE_UNLIMITED, B_SIZE_UNSET));
+
+      const char * listQuery;   // restore any additional saved query strings into the menu
+      for (int qh=1; (settingsMsg.FindString("query", qh, &listQuery) == B_NO_ERROR); qh++)
+      {
+         BMessage * msg = new BMessage(SHAREWINDOW_COMMAND_CHANGE_FILE_NAME_QUERY);
+         msg->AddString("query", listQuery);
+         _queryMenu->AddItem(new BMenuItem(listQuery, msg));
+      }
+
+      // Start / Stop query buttons (always both present; only their enabled state changes).
+      _enableQueryButton  = new BButton((const char *)NULL, str(STR_START_QUERY), new BMessage(SHAREWINDOW_COMMAND_ENABLE_QUERY));
+      AddBorderView(_enableQueryButton);
+      _disableQueryButton = new BButton((const char *)NULL, str(STR_STOP_QUERY), new BMessage(SHAREWINDOW_COMMAND_DISABLE_QUERY));
+      AddBorderView(_disableQueryButton);
+
+      BLayoutBuilder::Group<>(_queryView, B_HORIZONTAL, B_USE_SMALL_SPACING)
+         .Add(_serverMenuField)
+         .Add(_serverEntry)
+         .Add(queryMenuField)
+         .Add(_fileNameQueryEntry)
+         .Add(_enableQueryButton)
+         .Add(_disableQueryButton)
+         .SetInsets(hMargin, 2.0f, hMargin, 2.0f);
+   }
 
       CLVContainerView* resultsContainerView;
    _resultsView = new ResultsView(SHAREWINDOW_COMMAND_SWITCH_TO_PAGE,
