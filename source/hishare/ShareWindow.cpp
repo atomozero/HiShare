@@ -2194,14 +2194,18 @@ ShareWindow :: ShareWindow(uint64 installID, BMessage & settingsMsg, const char 
 
    CLVContainerView* userContainerView;
 
-   _usersView = new UserListView(SHAREWINDOW_COMMAND_OPEN_PRIVATE_CHAT_WINDOW, BRect(2, 2, userListView->Bounds().Width()-(B_V_SCROLL_BAR_WIDTH+2), userListView->Bounds().Height()-(B_H_SCROLL_BAR_HEIGHT+2)),&userContainerView,NULL,B_FOLLOW_ALL_SIDES, B_WILL_DRAW|B_FRAME_EVENTS|B_NAVIGABLE,B_MULTIPLE_SELECTION_LIST,false,true,true,true,B_FANCY_BORDER);
+   _usersView = new UserListView(SHAREWINDOW_COMMAND_OPEN_PRIVATE_CHAT_WINDOW, BRect(0, 0, 10, 10),&userContainerView,NULL,B_FOLLOW_ALL_SIDES, B_WILL_DRAW|B_FRAME_EVENTS|B_NAVIGABLE,B_MULTIPLE_SELECTION_LIST,false,true,true,true,B_FANCY_BORDER);
    AddBorderView(userContainerView);
+   userContainerView->SetExplicitMaxSize(BSize(B_SIZE_UNLIMITED, B_SIZE_UNLIMITED));
 
    _usersView->SetSortFunction((CLVCompareFuncPtr) UserCompareFunc);
    _usersView->SetMessage(new BMessage(SHAREWINDOW_COMMAND_SELECT_USER));
    _usersView->SetTarget(toMe);
 
-   userListView->AddChild(userContainerView);
+   // The users list fills its panel via a vertical group instead of B_FOLLOW geometry.
+   BLayoutBuilder::Group<>(userListView, B_VERTICAL, 0)
+      .Add(userContainerView)
+      .SetInsets(0, 0, 0, 0);
 
    _chatUsersSplit = new SplitPane(bottomFrame, _chatView, userListView, B_FOLLOW_LEFT_RIGHT | B_FOLLOW_BOTTOM);
    _chatUsersSplit->SetResizeViewOne(true, true);
