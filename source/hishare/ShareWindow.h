@@ -642,6 +642,10 @@ private:
    BMessageRunner * _speedSampleRunner;
    void _ApplyMeasuredUploadSpeed();
 
+   // One-shot timer that fires the initial server connect a moment after
+   // launch, so the GUI paints fully before we (possibly) block on the network.
+   BMessageRunner * _startupConnectRunner;
+
    uint32 _maxDownloadRate;
    uint32 _maxUploadRate;
 

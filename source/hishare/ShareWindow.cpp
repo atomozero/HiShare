@@ -1444,6 +1444,7 @@ ShareWindow :: ShareWindow(uint64 installID, BMessage & settingsMsg, const char 
    _measuredUploadBps(0),
    _measuredDownloadBps(0),
    _speedSampleRunner(NULL),
+   _startupConnectRunner(NULL),
    _maxDownloadRate(0),
    _maxUploadRate(0),
    _doubleBufferBitmap(NULL),
@@ -2326,7 +2327,13 @@ ShareWindow :: ShareWindow(uint64 installID, BMessage & settingsMsg, const char 
       _serverEntry->SetText(cs());
    }
 
-   if ((connectServer)||(_loginOnStartup->IsMarked())) PostMessage(SHAREWINDOW_COMMAND_RECONNECT_TO_SERVER);
+   // Don't connect straight away: posting RECONNECT here means the looper runs it
+   // before the first paint, and ReconnectToServer can briefly block the GUI thread
+   // (e.g. on DNS), so the window looks frozen/blank at launch.  Instead fire a
+   // one-shot timer shortly after, letting the layout draw fully and the window
+   // become responsive first, then connect.
+   if ((connectServer)||(_loginOnStartup->IsMarked()))
+      _startupConnectRunner = new BMessageRunner(toMe, new BMessage(SHAREWINDOW_COMMAND_RECONNECT_TO_SERVER), 250*1000LL, 1 /* one-shot */);
 
    UpdateServerColumnVisibility();  // extra connections may have been restored from settings
    UpdatePagingButtons();
@@ -2592,6 +2599,9 @@ ShareWindow :: ~ShareWindow()
 
    delete _speedSampleRunner;
    _speedSampleRunner = NULL;
+
+   delete _startupConnectRunner;
+   _startupConnectRunner = NULL;
 
    // delete MIME infos that aren't part of our menu hierarchy (the ones in the menu will be deleted by the BMenu)
    ShareMIMEInfo * mi;

@@ -51,6 +51,9 @@ If HiShare saves you time, consider supporting development: [![Buy Me A Coffee](
   Settings, Colours), a categorised Settings window, and colours derived from
   the Haiku system palette — light and dark themes respected everywhere,
   re-themed live
+* **Responsive at launch** — the window appears and is interactive right away;
+  connecting to your servers happens a moment later in the background, so the
+  app never looks frozen while it reaches the network
 * Drag & drop files or folders onto the window to share them
 * Desktop notifications for finished downloads, private messages and mentions
 * Localized via the Haiku Locale Kit (~20 languages) — the UI follows your

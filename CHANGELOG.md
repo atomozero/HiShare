@@ -1,5 +1,16 @@
 # Changelog
 
+## HiShare 1.2-2 (August 2026)
+
+Smoother startup.
+
+### Robustness
+- **No more "frozen" window at launch.** The initial connection to your
+  server(s) ran before the window had finished drawing, so at startup the app
+  could look blank and unresponsive while it reached the network (a slow DNS
+  lookup in particular). Connecting is now deferred until just after the GUI is
+  painted — the window appears and is interactive immediately, then connects.
+
 ## HiShare 1.2 (August 2026)
 
 A focused pass on the multi-server experience, plus interface polish.
